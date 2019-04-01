@@ -1,0 +1,38 @@
+{
+  "name": "rratfr-manager",
+  "version": "1.0.0",
+  "description": "Race Day Manager Platform",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "node app.js test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RAK3RMAN/rratfr-manager.git"
+  },
+  "author": "RAK3RMAN",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RAK3RMAN/rratfr-manager/issues"
+  },
+  "homepage": "https://github.com/RAK3RMAN/rratfr-manager#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.3",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.4",
+    "data-store": "^3.1.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "http": "0.0.0",
+    "http-errors": "^1.7.2",
+    "ip": "^1.1.5",
+    "mongoose": "^5.4.19",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "uuid": "^3.3.2"
+  }
+}
