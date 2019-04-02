@@ -1,5 +1,5 @@
 /*\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-App/Filename : AUTHBASE/app.js
+App/Filename : rratfr-manager/app.js
 Description  : Initializes nodejs
 Author       : RAk3rman
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\*/
@@ -88,7 +88,7 @@ app.use('/static', express.static(process.cwd() + '/static'));
 
 
 //===================================================//
-//       --- AUTHBASE Config Routes/Logic  ---       //
+//       --- RRATFR Manager Config Routes/Logic  ---       //
 //===================================================//
 
 //Secret Dashboard
@@ -112,7 +112,7 @@ app.post('/signup', passport.authenticate('local-signup', {
     failureFlash: true
 }));
 
-//End of AUTHBASE Config Routes/Logic - - - - - - - - -
+//End of RRATFR Manager Config Routes/Logic - - - - - - - - -
 
 
 //===================================================//
@@ -146,9 +146,9 @@ let http = require('http');
 let server = http.createServer(app);
 server.listen(storage.get('console_port'), function () {
     console.log(' ');
-    console.log('============================================');
-    console.log('  Auth-WebFramework-NodeJS | RAk3rman 2019  ');
-    console.log('============================================');
+    console.log('======================================');
+    console.log('    RRATFR Manager | RAk3rman 2019    ');
+    console.log('======================================');
     console.log('Web Page Accessable at: ' + ip.address() + ":" + storage.get('console_port'));
     console.log('MongoDB Accessed at: ' + storage.get('mongodb_url'));
     console.log(' ');
