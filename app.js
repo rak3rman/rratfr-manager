@@ -58,6 +58,7 @@ setTimeout(exitOpt.testCheck, 3000);
 //Routers
 let authRouter = require('./routes/authRoutes.js');
 let mainRouter = require('./routes/mainRoutes.js');
+let entryRouter = require('./routes/entryRoutes.js');
 
 //Resolvers
 let auth = require('./resolvers/authResolver.js');
@@ -88,13 +89,18 @@ app.use('/static', express.static(process.cwd() + '/static'));
 
 
 //===================================================//
-//       --- RRATFR Manager Config Routes/Logic  ---       //
+//    --- RRATFR Manager Config Routes/Logic  ---    //
 //===================================================//
+
+//Forward Entry Routes
+entryRouter(app);
 
 //Dashboard
 app.get('/', auth.isLoggedIn, mainRouter.homeRoute);
 //Time Interface
 app.get('/timing', auth.isLoggedIn, mainRouter.timingRoute);
+//Entry List
+app.get('/entry/list', auth.isLoggedIn, mainRouter.entryListRoute);
 
 //Auth Routes
 app.get('/login', authRouter.loginPage);

@@ -8,6 +8,11 @@ exports.homeRoute = function (req, res) {
     res.render('pages/dashboard.ejs', {title: 'Home', user: req.user})
 };
 
+//Entry List Page Route
+exports.entryListRoute = function (req, res) {
+    res.render('pages/entry_list.ejs', {title: 'Entry List', user: req.user})
+};
+
 //Time Interface Page Route
 exports.timingRoute = function (req, res) {
     res.render('pages/timing_interface.ejs', {title: 'Timing', user: req.user})

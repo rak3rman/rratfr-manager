@@ -1,5 +1,5 @@
 <div class="wrapper ">
-    <div class="sidebar" data-color="azure" data-background-color="white" data-image="/static/img/sidebar-1.jpg">
+    <div class="sidebar" data-color="azure" data-background-color="white" data-image="/static/img/race-1.jpg">
         <div class="logo">
             <a href="/" class="simple-text logo-normal">
                 <img src="/static/img/rratfr-logo.png" class="pr-1" style="width: auto; max-width: 45px">
@@ -11,8 +11,26 @@
             <ul class="nav">
                 <li class="nav-item active">
                     <a class="nav-link" href="/">
-                        <i class="material-icons">dashboard</i>
+                        <i class="fas fa-chart-line"></i>
                         <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/entry/list">
+                        <i class="fas fa-stream"></i>
+                        <p>Entry List</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/entry/check">
+                        <i class="fas fa-check-double"></i>
+                        <p>Safety Check</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/timing">
+                        <i class="fas fa-stopwatch"></i>
+                        <p>Race Timing</p>
                     </a>
                 </li>
             </ul>
@@ -36,8 +54,8 @@
                 <div class="collapse navbar-collapse justify-content-end">
                     <div class="navbar-form">
                         <div class="input-group no-border">
-                            <input type="text" value="" id="searchValue" class="form-control" placeholder="Node Search...">
-                            <button class="btn btn-default btn-round btn-just-icon" onclick="nodeSearch()">
+                            <input type="text" value="" id="searchValue" class="form-control" placeholder="Entry Search...">
+                            <button class="btn btn-default btn-round btn-just-icon" onclick="entrySearch()">
                                 <i class="material-icons">search</i>
                                 <div class="ripple-container"></div>
                             </button>
@@ -48,13 +66,12 @@
                             <a class="nav-link" href="javscript:void(0)" id="navbarDropdownMenuLink"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="material-icons">notifications</i>
-                                <span class="notification">1</span>
                                 <p class="d-lg-none d-md-block">
                                     Alerts
                                 </p>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="javascript:void(0)">Project Under Development!</a>
+                                <a class="dropdown-item" href="javascript:void(0)">No Recent Alerts</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -67,9 +84,6 @@
                                 <div class="ripple-container"></div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                                <a class="dropdown-item" href="#">Profile</a>
-                                <a class="dropdown-item" href="#">Settings</a>
-                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="/logout">Log out</a>
                             </div>
                         </li>
