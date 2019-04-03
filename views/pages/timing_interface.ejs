@@ -1,0 +1,122 @@
+<% include ../partials/head.ejs %>
+<nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top text-white">
+    <div class="container-fluid">
+        <div class="navbar-wrapper">
+            <a class="navbar-brand ml-2" href="/">
+                <img src="/static/img/rratfr-logo.png" class="pr-1"
+                     style="width: auto; max-width: 55px; -webkit-filter: invert(100%);">
+                <fontb>Race Manager</fontb>
+            </a>
+        </div>
+    </div>
+</nav>
+<div class="wrapper wrapper-full-page">
+    <div class="page-header login-page header-filter" filter-color="black"
+         style="background-image: url('/static/img/race-2.jpg'); background-size: cover; background-position: top center;">
+        <div class="container p-login">
+            <div class="row">
+                <div class="col-lg-5 col-md-6 col-sm-8 ml-auto mr-auto">
+                    <form class="form" method="post" action="/login" id="enter">
+                        <div class="card card-stats">
+                            <div class="card-header card-header-info card-header-icon">
+                                <div class="card-icon">
+                                    <i class="fas fa-user-clock"></i>
+                                </div>
+                                <p class="card-category">Race Timing</p>
+                                <h3 class="card-title">Entry Timing Clock</h3>
+                            </div>
+                            <div class="card-footer">
+                                <div class="col-6 pr-2 pl-2">
+                                    <span class="bmd-form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text pl-0">
+                                                <i class="fas fa-flag"></i>
+                                            </span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Bib Number..."
+                                               name="bib_number">
+                                    </div>
+                                    </span>
+                                </div>
+                                <div class="col-6 pr-2 pl-2">
+                                    <button class="btn btn-muted" style="width: 100%">
+                                        <i class="fas fa-stopwatch pr-1"></i> 00:00.00
+                                        <div class="ripple-container"></div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="container">
+                <nav class="float-left">
+                    <ul>
+                        <li>
+                            <a href="/entry/list">
+                                <i class="fas fa-stream"></i> Entry List
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="copyright float-right pr-2">
+                    Made with <i class="fas fa-heart"></i> by RAk3rman
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+<footer class="footer">
+    <div class="container">
+        <nav class="float-center">
+            <div class="col-md-12">
+                <div class="card card-plain">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Recent Timing Events</h4>
+                        <p class="card-category">Listed is events regarding any timing submission</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="">
+                                <tr><th>
+                                        Bib #
+                                    </th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Event
+                                    </th>
+                                </tr></thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        A106
+                                    </td>
+                                    <td>
+                                        The Fastest Raft
+                                    </td>
+                                    <td>
+                                        Time Started at 16:00:01
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</footer>
+<script type="text/javascript" src="/static/js/rratfr-js/authFunct.js"></script>
+<script>
+    document.ready = function () {
+        onEnter();
+    }
+</script>
+<% include ../partials/footer.ejs %>

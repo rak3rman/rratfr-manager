@@ -91,8 +91,10 @@ app.use('/static', express.static(process.cwd() + '/static'));
 //       --- RRATFR Manager Config Routes/Logic  ---       //
 //===================================================//
 
-//Secret Dashboard
+//Dashboard
 app.get('/', auth.isLoggedIn, mainRouter.homeRoute);
+//Time Interface
+app.get('/timing', auth.isLoggedIn, mainRouter.timingRoute);
 
 //Auth Routes
 app.get('/login', authRouter.loginPage);
