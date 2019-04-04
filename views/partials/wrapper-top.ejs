@@ -10,7 +10,7 @@
         <div class="sidebar-wrapper">
             <ul class="nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/">
+                    <a class="nav-link" href="/dashboard">
                         <i class="fas fa-chart-line"></i>
                         <p>Dashboard</p>
                     </a>
@@ -31,6 +31,12 @@
                     <a class="nav-link" href="/timing">
                         <i class="fas fa-stopwatch"></i>
                         <p>Race Timing</p>
+                    </a>
+                </li>
+                <li class="nav-item fixed-bottom pb-3">
+                    <a class="nav-link" href="/">
+                        <i class="fas fa-satellite-dish"></i>
+                        <p>Public Dashboard</p>
                     </a>
                 </li>
             </ul>
@@ -54,7 +60,8 @@
                 <div class="collapse navbar-collapse justify-content-end">
                     <div class="navbar-form">
                         <div class="input-group no-border">
-                            <input type="text" value="" id="searchValue" class="form-control" placeholder="Entry Search...">
+                            <input type="text" value="" id="searchValue" class="form-control"
+                                   placeholder="Entry Search...">
                             <button class="btn btn-default btn-round btn-just-icon" onclick="entrySearch()">
                                 <i class="material-icons">search</i>
                                 <div class="ripple-container"></div>

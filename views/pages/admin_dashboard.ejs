@@ -10,7 +10,7 @@
                             <i class="far fa-copy"></i>
                         </div>
                         <p class="card-category"><strong>Total Entries</strong></p>
-                        <h3 class="card-title">0</h3>
+                        <h3 class="card-title"><span id="totalStat">0</span></h3>
                     </div>
                     <div class="card-footer">
                         <div class="stats">
@@ -27,7 +27,7 @@
                             <i class="fas fa-exclamation-triangle"></i>
                         </div>
                         <p class="card-category"><strong>Missing Safety Check</strong></p>
-                        <h3 class="card-title text-danger">0</h3>
+                        <h3 class="card-title text-danger"><span id="safetyStat">0</span></h3>
                     </div>
                     <div class="card-footer">
                         <div class="stats">
@@ -44,7 +44,7 @@
                             <i class="fas fa-water"></i>
                         </div>
                         <p class="card-category"><strong>Entries in Water</strong></p>
-                        <h3 class="card-title">0</h3>
+                        <h3 class="card-title"><span id="inwaterStat">0</span></h3>
                     </div>
                     <div class="card-footer">
                         <div class="stats">
@@ -61,7 +61,7 @@
                             <i class="fas fa-flag-checkered"></i>
                         </div>
                         <p class="card-category"><strong>Entries Finished</strong></p>
-                        <h3 class="card-title text-success">0</h3>
+                        <h3 class="card-title text-success"><span id="finishStat">0</span></h3>
                     </div>
                     <div class="card-footer">
                         <div class="stats">
@@ -75,17 +75,17 @@
         <div class="row">
             <div class="col-lg-6 col-md-12">
                 <div class="card">
-                    <div class="card-header card-header-primary">
-                        <h4 class="card-title">Employees Stats</h4>
-                        <p class="card-category">New employees on 15th September, 2016</p>
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Overall Leaderboard</h4>
+                        <p class="card-category"><i class="fas fa-history"></i> Updated in Real Time</p>
                     </div>
                     <div class="card-body table-responsive">
                         <table class="table table-hover">
-                            <thead class="text-warning">
-                            <th>ID</th>
+                            <thead class="text-muted">
+                            <th>Place</th>
                             <th>Name</th>
-                            <th>Salary</th>
-                            <th>Country</th>
+                            <th>Time</th>
+                            <th>Category</th>
                             </thead>
                             <tbody>
                             <tr>
@@ -388,3 +388,9 @@
 </div>
 <% include ../partials/wrapper-bottom.ejs %>
 <% include ../partials/footer.ejs %>
+<script type="text/javascript" src="/static/js/rratfr-js/admin_dashboardFunct.js"></script>
+<script>
+    document.ready = function () {
+        getStatistics();
+    }
+</script>

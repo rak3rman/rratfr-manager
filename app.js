@@ -95,8 +95,10 @@ app.use('/static', express.static(process.cwd() + '/static'));
 //Forward Entry Routes
 entryRouter(app);
 
-//Dashboard
-app.get('/', auth.isLoggedIn, mainRouter.homeRoute);
+//Public Dashboard
+app.get('/', mainRouter.publicDashRoute);
+//Admin Dashboard
+app.get('/dashboard', auth.isLoggedIn, mainRouter.adminDashRoute);
 //Time Interface
 app.get('/timing', auth.isLoggedIn, mainRouter.timingRoute);
 //Entry List
@@ -110,12 +112,12 @@ app.get('/logout', function (req, res) {
     res.redirect('/login');
 });
 app.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/',
+    successRedirect: '/dashboard',
     failureRedirect: '/login',
     failureFlash: true
 }));
 app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/',
+    successRedirect: '/dashboard',
     failureRedirect: '/signup',
     failureFlash: true
 }));

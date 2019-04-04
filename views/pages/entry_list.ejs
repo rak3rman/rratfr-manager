@@ -33,7 +33,7 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-hover table-striped dt-responsive display nowrap"
-                                   id="activeTable" style="width: 100%">
+                                   id="entryTable" style="width: 100%">
                                 <thead class="text-success">
                                 <th>Bib Number</th>
                                 <th>Name</th>
@@ -49,12 +49,12 @@
         </div>
     </div>
 </div>
+<% include ../partials/wrapper-bottom.ejs %>
+<% include ../partials/footer.ejs %>
 <script type="text/javascript" src="/static/js/rratfr-js/entryFunct.js"></script>
 <script>
     document.ready = function () {
-        $('#activeTable').DataTable();
+        $('#entryTable').DataTable();
         entryList();
     }
 </script>
-<% include ../partials/wrapper-bottom.ejs %>
-<% include ../partials/footer.ejs %>

@@ -17,9 +17,15 @@ let entrySchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    entry_status: {
+    safety_status: {
         type: String,
-        default: "pending",
+        default: "false",
+    },
+    start_time: {
+        type: Date,
+    },
+    end_time: {
+        type: Date,
     },
     created_date: {
         type: Date,

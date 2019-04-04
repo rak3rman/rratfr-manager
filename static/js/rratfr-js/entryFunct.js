@@ -26,11 +26,11 @@ let tableSettings = {
         "search": searchValue,
     }
 };
-activeTable = $('#activeTable').DataTable(tableSettings);
+let entryTable = $('#entryTable').DataTable(tableSettings);
 
 //Entry List
 function entryList() {
-    activeTable.clear();
+    entryTable.clear();
     $.ajax({
         type: "GET",
         url: "/api/entry/details/all",
