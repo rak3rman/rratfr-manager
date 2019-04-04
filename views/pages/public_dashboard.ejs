@@ -10,7 +10,7 @@
     </div>
 </nav>
 <div class="wrapper wrapper-full-page">
-    <div class="page-header login-page header-filter" filter-color="black"
+    <div class="page-header login-page header-filter" id="coverImage" filter-color="black"
          style="background-image: url('/static/img/race-2.jpg'); background-size: cover; background-position: top center;">
         <div class="container p-login">
             <div class="row">
@@ -21,10 +21,21 @@
                                 <i class="fas fa-trophy"></i>
                             </div>
                             <p class="card-category">Race Timing</p>
-                            <h3 class="card-title">Raft Leaderboard</h3>
+                            <h3 class="card-title">Entry Leaderboard</h3>
                         </div>
                         <div class="card-footer">
-
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped dt-responsive display nowrap"
+                                       id="leaderTable" style="width: 100%">
+                                    <thead class="text-muted">
+                                    <th>Place</th>
+                                    <th>Name</th>
+                                    <th>Time</th>
+                                    <th>Category</th>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -104,6 +115,8 @@
 <script type="text/javascript" src="/static/js/rratfr-js/public_dashboardFunct.js"></script>
 <script>
     document.ready = function () {
-        getStatistics();
+        setImage();
+        leaderList();
+        setInterval(setImage, 600000);
     }
 </script>

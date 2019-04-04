@@ -62,6 +62,7 @@ let entryRouter = require('./routes/entryRoutes.js');
 
 //Resolvers
 let auth = require('./resolvers/authResolver.js');
+let socket = require('./resolvers/socketResolver.js');
 
 //Passport Setup
 require('./sys_funct/passport.js')(passport);
@@ -175,6 +176,9 @@ mongoose.connection.on('disconnected', function () {
     console.log('MongoDB: Disconnected')
 });
 mongoose.connect(storage.get('mongodb_url'), {useNewUrlParser: true, connectTimeoutMS: 10000});
+
+//Initialize Socket.io
+socket(server);
 
 //End of External Connections Setup - - - - - - - - - -
 
