@@ -34,7 +34,7 @@
                                             </span>
                                         </div>
                                         <input type="text" class="form-control" placeholder="Bib Number..."
-                                               name="bib_number">
+                                               oninput="check_Bib(this.value);">
                                     </div>
                                     </span>
                             </div>
@@ -113,10 +113,5 @@
         </nav>
     </div>
 </footer>
-<script type="text/javascript" src="/static/js/rratfr-js/authFunct.js"></script>
-<script>
-    document.ready = function () {
-        onEnter();
-    }
-</script>
 <% include ../partials/footer.ejs %>
+<script type="text/javascript" src="/static/js/rratfr-js/timingFunct.js"></script>

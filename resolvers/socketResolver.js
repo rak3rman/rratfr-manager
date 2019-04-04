@@ -13,6 +13,31 @@ module.exports = function (server) {
     io.on('connection', function (socket) {
         console.log('Socket.io: User Connected');
         getStatistics();
+        socket.on('check_bib', function (bib_number) {
+            console.log('Socket.io: Checking bib number: ' + bib_number);
+            entry.find({ bib_number: bib_number }, function (err, details) {
+                if (err) {
+                    console.log("Socket.io: Retrieve failed: " + err);
+                    socket.emit('error', err);
+                } else if (details.length === 0) {
+                    console.log("Socket.io: Bib number not found");
+                    socket.emit('check_bib_result', 'not_found');
+                } else {
+                    if (details[0]["timing_status"] === "waiting") {
+                        console.log("Socket.io: Bib " + bib_number + " - Ready to Start");
+                        socket.emit('check_bib_result', 'start_ready');
+                    }
+                    if (details[0]["timing_status"] === "en_route") {
+                        console.log("Socket.io: Bib " + bib_number + " - Ready to Finish");
+                        socket.emit('check_bib_result', 'finish_ready');
+                    }
+                    if (details[0]["timing_status"] === "finished") {
+                        console.log("Socket.io: Bib " + bib_number + " - Finished");
+                        socket.emit('check_bib_result', 'finished');
+                    }
+                }
+            });
+        });
         socket.on('disconnect', function () {
             console.log('Socket.io: User Disconnected');
         });
@@ -27,22 +52,22 @@ function getStatistics() {
     let entries_finished_count = 0;
     entry.find({}, function (err, listed_entries) {
         if (err) {
-            console.log("ENTRY Resolver: Retrieve failed: " + err);
+            console.log("Socket.io: Retrieve failed: " + err);
             io.emit('error', err);
         } else {
             for (let i in listed_entries) {
                 if (listed_entries[i]["safety_status"] === "false") {
                     missing_safety_count += 1;
                 }
-                if (listed_entries[i]["start_time"] != null) {
+                if (listed_entries[i]["timing_status"] === "en_route") {
                     entries_in_water_count += 1;
                 }
-                if (listed_entries[i]["end_time"] != null) {
+                if (listed_entries[i]["timing_status"] === "finished") {
                     entries_finished_count += 1;
                 }
                 total_entries_count += 1;
             }
-            if (debug_mode === "true") { console.log("ENTRY Resolver: Statistics Sent.")}
+            if (debug_mode === "true") { console.log("Socket.io: Statistics Sent.")}
         }
         io.emit('race_data', {
             total_entries: total_entries_count,

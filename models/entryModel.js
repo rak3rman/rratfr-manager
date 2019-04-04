@@ -21,6 +21,10 @@ let entrySchema = mongoose.Schema({
         type: String,
         default: "false",
     },
+    timing_status: {
+        type: String,
+        default: "waiting",
+    },
     start_time: {
         type: Date,
     },
