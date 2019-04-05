@@ -6,6 +6,7 @@ let entry = require('../models/entryModel.js');
 let dataStore = require('data-store');
 let storage = new dataStore({path: './config/sysConfig.json'});
 let debug_mode = storage.get('debug_mode');
+let socket = require('../resolvers/socketResolver.js');
 
 //Create a new entry
 exports.create_entry = function (req, res) {
@@ -18,6 +19,7 @@ exports.create_entry = function (req, res) {
             if (debug_mode === "true") {
                 console.log('ENTRY Resolver: Entry Created: ' + JSON.stringify(created_entry))
             }
+            socket.update_Sockets();
         }
         res.json(created_entry);
     });
@@ -82,6 +84,7 @@ exports.entry_timing_update = function (req, res) {
             }
         });
     }
+    socket.update_Sockets();
 };
 
 //Calculate the final time after finish and publish
@@ -125,6 +128,7 @@ function calcTime(bib_number) {
                                 });
                                 setPlace += 1;
                             }
+                            socket.update_Sockets();
                         }
                     });
                 }

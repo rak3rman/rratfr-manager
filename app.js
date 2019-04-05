@@ -184,7 +184,7 @@ mongoose.connection.on('disconnected', function () {
 mongoose.connect(storage.get('mongodb_url'), {useNewUrlParser: true, connectTimeoutMS: 10000});
 
 //Initialize Socket.io
-socket(server);
+socket.socket_config(server);
 
 //End of External Connections Setup - - - - - - - - - -
 

@@ -7,8 +7,9 @@ let dataStore = require('data-store');
 let storage = new dataStore({path: './config/sysConfig.json'});
 let debug_mode = storage.get('debug_mode');
 let io;
+
 //Socket.io on connection
-module.exports = function (server) {
+exports.socket_config = function(server) {
     io = require('socket.io')(server);
     io.on('connection', function (socket) {
         console.log('Socket.io: User Connected');
@@ -116,3 +117,10 @@ function getEntryData() {
         }
     });
 }
+
+//Update sockets with statistics
+exports.update_Sockets = function() {
+    getStatistics();
+    getEntryData();
+    console.log("Socket.io: Statistics Updated");
+};

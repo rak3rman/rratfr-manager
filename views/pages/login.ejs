@@ -10,8 +10,8 @@
     </div>
 </nav>
 <div class="wrapper wrapper-full-page">
-    <div class="page-header login-page header-filter" filter-color="black"
-         style="background-image: url('/static/img/race-1.jpg'); background-size: cover; background-position: top center;">
+    <div class="page-header login-page header-filter" id="coverImage" filter-color="black"
+         style="background-image: url('/static/img/race-2.jpg'); background-size: cover; background-position: top center;">
         <div class="container p-login">
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
@@ -62,9 +62,20 @@
         </div>
         <footer class="footer">
             <div class="container">
-                <div class="copyright float-left pl-2">
-                    © RAk3rman 2019
-                </div>
+                <nav class="float-left">
+                    <ul>
+                        <li>
+                            <a href="/">
+                                <i class="fas fa-chart-line"></i> Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.rratfr.com">
+                                <i class="far fa-window-maximize"></i> RRATFR Website
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
                 <div class="copyright float-right pr-2">
                     Made with <i class="fas fa-heart"></i> by RAk3rman
                 </div>
@@ -76,6 +87,7 @@
 <script>
     document.ready = function () {
         onEnter();
+        setImage();
     }
 </script>
 <% include ../partials/footer.ejs %>
