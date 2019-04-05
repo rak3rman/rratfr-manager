@@ -45,6 +45,12 @@ if (mongodb_url === undefined) {
     storage.set('mongodb_url', 'mongodb://localhost:27017');
     console.log('Auth Config Manager: MongoDB URL Set to DEFAULT: mongodb://localhost:27017');
 }
+//Debug Mode Check
+let debug_mode = storage.get('debug_mode');
+if (debug_mode === undefined) {
+    storage.set('debug_mode', 'false');
+    console.log('Lema Config Manager: Debug Mode Set to DEFAULT: false');
+}
 //End of System Config Checks - - - - - - - - - - - - - -
 
 //Declare App

@@ -77,7 +77,7 @@ function createEntry() {
             text: 'The category of the entry',
             input: 'select',
             inputOptions: {
-                'raft': 'Raft',
+                'RAFT': 'Raft',
             }
         }
     ]).then((result) => {

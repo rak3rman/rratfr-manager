@@ -13,6 +13,7 @@ module.exports = function (server) {
     io.on('connection', function (socket) {
         console.log('Socket.io: User Connected');
         getStatistics();
+        getEntryData();
         //Check Bib Number and Send Result
         socket.on('check_bib', function (bib_number) {
             console.log('Socket.io: Checking bib number: ' + bib_number);
@@ -92,7 +93,7 @@ function getStatistics() {
                 }
                 total_entries_count += 1;
             }
-            if (debug_mode === "true") { console.log("Socket.io: Statistics Sent.")}
+            if (debug_mode === "true") { console.log("Socket.io: Statistics Sent")}
         }
         io.emit('race_data', {
             total_entries: total_entries_count,
@@ -100,5 +101,18 @@ function getStatistics() {
             entries_in_water: entries_in_water_count,
             entries_finished: entries_finished_count
         })
+    });
+}
+
+//Get entries data and send
+function getEntryData() {
+    entry.find({}, function (err, listed_entries) {
+        if (err) {
+            console.log("Socket.io: Retrieve failed: " + err);
+            io.emit('error', err);
+        } else {
+            io.emit('entry_data', listed_entries);
+            if (debug_mode === "true") { console.log("Socket.io: Entries Sent")}
+        }
     });
 }

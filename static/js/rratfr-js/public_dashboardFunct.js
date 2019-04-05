@@ -10,23 +10,6 @@ const Toast = Swal.mixin({
     showConfirmButton: false,
     timer: 5000
 });
-
-//Socket.io Get Statistics
-socket.on('race_data', function(data){
-    document.getElementById("totalStat").innerHTML = data.total_entries;
-    document.getElementById("inwaterStat").innerHTML = data.entries_in_water;
-    document.getElementById("finishStat").innerHTML = data.entries_finished;
-});
-
-//Socket.io Error
-socket.on('error', function(data){
-    console.log(data);
-    Toast.fire({
-        type: 'error',
-        title: 'Error with retrieving data...'
-    });
-});
-
 //Set Table Settings
 let tableSettings = {
     "lengthMenu": [
@@ -34,11 +17,24 @@ let tableSettings = {
         [10, 25, 50, "All"]
     ],
     "responsive": true,
-    "language": {
-        "emptyTable": "No one has crossed the finish line yet!"
-    }
 };
 let leaderTable = $('#leaderTable').DataTable(tableSettings);
+
+//Socket.io Get Statistics
+socket.on('race_data', function (data) {
+    document.getElementById("totalStat").innerHTML = data.total_entries;
+    document.getElementById("inwaterStat").innerHTML = data.entries_in_water;
+    document.getElementById("finishStat").innerHTML = data.entries_finished;
+});
+
+//Socket.io Get Statistics
+socket.on('entry_data', function (data) {
+    leaderTable.clear();
+    $.each(data, function (i, value) {
+        leaderTable.row.add([value.final_place, value.entry_name, value.final_time, value.category]);
+    });
+    leaderTable.draw();
+});
 
 //Select Dashboard Image
 function setImage() {
@@ -51,6 +47,15 @@ function setImage() {
         showConfirmButton: false
     }).fire({
         type: 'info',
-        title: 'See the live timing results at rratfr.rockcodenight.org'
+        title: 'See live timing results at rratfr.rockcodenight.org'
     });
 }
+
+//Socket.io Error
+socket.on('error', function (data) {
+    console.log(data);
+    Toast.fire({
+        type: 'error',
+        title: 'Error with retrieving data...'
+    });
+});
