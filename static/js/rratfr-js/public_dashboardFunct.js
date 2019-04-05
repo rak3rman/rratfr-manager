@@ -40,31 +40,17 @@ let tableSettings = {
 };
 let leaderTable = $('#leaderTable').DataTable(tableSettings);
 
-//Leaderboard List
-function leaderList() {
-    leaderTable.clear();
-    $.ajax({
-        type: "GET",
-        url: "/api/leaderboard/rafts",
-        success: function (data) {
-            $.each(data, function (i, value) {
-                console.log(value.place, value.entry_name, value.category, value.created_date);
-                leaderTable.row.add([value.place, value.entry_name, value.category, value.created_date]);
-            });
-            leaderTable.draw();
-        },
-        error: function (data) {
-            console.log(data);
-            Toast.fire({
-                type: 'error',
-                title: 'Error with retrieving data...'
-            });
-        }
-    });
-}
-
 //Select Dashboard Image
 function setImage() {
     let random = (Math.floor(Math.random() * 8)) + 1;
     document.getElementById("coverImage").style = "background-image: url('/static/img/race-" + random + ".jpg'); background-size: cover; background-position: top center;";
+    //Create banner to reach website
+    Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false
+    }).fire({
+        type: 'info',
+        title: 'See the live timing results at rratfr.rockcodenight.org'
+    });
 }

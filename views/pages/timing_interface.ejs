@@ -33,18 +33,21 @@
                                                 <i class="fas fa-flag"></i>
                                             </span>
                                         </div>
-                                        <input type="text" class="form-control" placeholder="Bib Number..."
+                                        <input type="text" id="bibElement" class="form-control" placeholder="Bib Number..."
                                                oninput="check_Bib(this.value);">
                                     </div>
                                     </span>
                             </div>
                             <div class="col-6 pr-2 pl-2">
-                                <button class="btn btn-muted" style="width: 100%">
-                                    <i class="fas fa-stopwatch pr-1"></i> 00:00.00
-                                    <div class="ripple-container"></div>
-                                </button>
+                                <div id="buttonElement">
+                                    <button class="btn btn-muted" style="width: 100%">
+                                        <i class="fas fa-arrow-left"></i> Enter Bib #
+                                        <div class="ripple-container"></div>
+                                    </button>
+                                </div>
                             </div>
                         </div>
+                        <div id="infoElement"></div>
                     </div>
                 </div>
             </div>
@@ -55,7 +58,7 @@
                     <ul>
                         <li>
                             <a href="/dashboard">
-                                <i class="fas fa-stream"></i> Admin Dashboard
+                                <i class="fas fa-stream"></i> Dashboard
                             </a>
                         </li>
                     </ul>
@@ -69,48 +72,29 @@
 </div>
 <footer class="footer">
     <div class="container">
-        <nav class="float-center">
-            <div class="col-md-12">
-                <div class="card card-plain">
-                    <div class="card-header card-header-info">
-                        <h4 class="card-title">Recent Timing Events</h4>
-                        <p class="card-category">Listed is events regarding any timing submission</p>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead class="">
-                                <tr>
-                                    <th>
-                                        Bib #
-                                    </th>
-                                    <th>
-                                        Name
-                                    </th>
-                                    <th>
-                                        Event
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        A106
-                                    </td>
-                                    <td>
-                                        The Fastest Raft
-                                    </td>
-                                    <td>
-                                        Time Started at 16:00:01
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+        <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <p class="card-category">Race Timing</p>
+                <h3 class="card-title">Entry Leaderboard</h3>
+            </div>
+            <div class="card-footer">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped dt-responsive display nowrap"
+                           id="leaderTable" style="width: 100%">
+                        <thead class="text-muted">
+                        <th>Place</th>
+                        <th>Name</th>
+                        <th>Time</th>
+                        <th>Category</th>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
             </div>
-        </nav>
+        </div>
     </div>
 </footer>
 <% include ../partials/footer.ejs %>

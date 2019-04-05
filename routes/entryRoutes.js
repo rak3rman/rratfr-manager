@@ -19,10 +19,7 @@ module.exports = function (app) {
     //app.route('/api/entry/edit')
     //    .post(auth.isLoggedIn, entry.node_edit);
 
-    app.route('/api/statistics')
-        .get(entry.get_open_statistics);
-
-    app.route('/api/statistics/admin')
-        .get(auth.isLoggedIn, entry.get_admin_statistics);
+    app.route('/api/entry/timing/update')
+        .post(auth.isLoggedIn, entry.entry_timing_update);
 
 };

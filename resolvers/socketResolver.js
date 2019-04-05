@@ -13,6 +13,7 @@ module.exports = function (server) {
     io.on('connection', function (socket) {
         console.log('Socket.io: User Connected');
         getStatistics();
+        //Check Bib Number and Send Result
         socket.on('check_bib', function (bib_number) {
             console.log('Socket.io: Checking bib number: ' + bib_number);
             entry.find({ bib_number: bib_number }, function (err, details) {
@@ -25,15 +26,39 @@ module.exports = function (server) {
                 } else {
                     if (details[0]["timing_status"] === "waiting") {
                         console.log("Socket.io: Bib " + bib_number + " - Ready to Start");
-                        socket.emit('check_bib_result', 'start_ready');
+                        socket.emit('check_bib_result', {
+                            result: 'start_ready',
+                            entry_name: details[0]["entry_name"],
+                            category: details[0]["category"],
+                            safety_status: details[0]["safety_status"]
+                        });
                     }
                     if (details[0]["timing_status"] === "en_route") {
                         console.log("Socket.io: Bib " + bib_number + " - Ready to Finish");
-                        socket.emit('check_bib_result', 'finish_ready');
+                        socket.emit('check_bib_result', {
+                            result: 'finish_ready',
+                            entry_name: details[0]["entry_name"],
+                            category: details[0]["category"],
+                            safety_status: details[0]["safety_status"]
+                        });
                     }
                     if (details[0]["timing_status"] === "finished") {
                         console.log("Socket.io: Bib " + bib_number + " - Finished");
-                        socket.emit('check_bib_result', 'finished');
+                        socket.emit('check_bib_result', {
+                            result: 'finished',
+                            entry_name: details[0]["entry_name"],
+                            category: details[0]["category"],
+                            safety_status: details[0]["safety_status"]
+                        });
+                    }
+                    if (details[0]["timing_status"] === "dq") {
+                        console.log("Socket.io: Bib " + bib_number + " - DQ");
+                        socket.emit('check_bib_result', {
+                            result: 'dq',
+                            entry_name: details[0]["entry_name"],
+                            category: details[0]["category"],
+                            safety_status: details[0]["safety_status"]
+                        });
                     }
                 }
             });
