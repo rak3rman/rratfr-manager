@@ -20,14 +20,26 @@ let tableSettings = {
     ],
     "responsive": true,
 };
+let queueTable = $('#queueTable').DataTable(tableSettings);
+let enrouteTable = $('#enrouteTable').DataTable(tableSettings);
 let leaderTable = $('#leaderTable').DataTable(tableSettings);
 
 //Socket.io Get Statistics
 socket.on('entry_data', function (data) {
+    queueTable.clear();
+    enrouteTable.clear();
     leaderTable.clear();
     $.each(data, function (i, value) {
-        leaderTable.row.add([value.final_place, value.entry_name, value.final_time, value.category]);
+        if (value.timing_status === "waiting") {
+            queueTable.row.add([value.bib_number, value.entry_name, value.category]);
+        } else if (value.timing_status === "en_route") {
+            enrouteTable.row.add([value.bib_number, value.entry_name, moment(value.start_time).format('MM/DD/YY, h:mm:ss a'), value.category]);
+        } else {
+            leaderTable.row.add([value.final_place, value.entry_name, value.final_time, value.category]);
+        }
     });
+    queueTable.draw();
+    enrouteTable.draw();
     leaderTable.draw();
 });
 
@@ -205,4 +217,10 @@ function dqEntry(bib_number) {
             });
         }
     });
+}
+
+//Select Dashboard Image
+function setImage() {
+    let random = (Math.floor(Math.random() * 8)) + 1;
+    document.getElementById("coverImage").style = "background-image: url('/static/img/race-" + random + ".jpg'); background-size: cover; background-position: top center;";
 }
