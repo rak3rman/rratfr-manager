@@ -94,8 +94,8 @@ socket.on('check_bib_result', function (data) {
         );
     } else if (data.result === "dq") {
         buttonElement.append(
-            "<button class=\"btn btn-danger\" style=\"width: 100%\">\n" +
-            "   <i class=\"fas fa-book-dead\"></i> Entry DQ\n" +
+            "<button class=\"btn btn-danger\" onclick=\"resetEntry(currentBib)\" style=\"width: 100%\">\n" +
+            "   <i class=\"fas fa-history\"></i> Reset Entry\n" +
             "   <div class=\"ripple-container\"></div>\n" +
             "</button>"
         );
@@ -203,11 +203,53 @@ function dqEntry(bib_number) {
             bib_number: bib_number,
         },
         success: function (data) {
-            socket.emit('check_bib', bib_number);
+            buttonElement.empty();
+            buttonElement.append(
+                "<button class=\"btn btn-muted\" style=\"width: 100%\">\n" +
+                "   <i class=\"fas fa-arrow-left\"></i> Enter Bib #\n" +
+                "   <div class=\"ripple-container\"></div>\n" +
+                "</button>"
+            );
             Toast.fire({
                 type: 'success',
-                title: 'Entry ' + bib_number + ' has been DQ!'
+                title: 'Entry ' + bib_number + ' has DQ!'
             });
+            $('#bibElement').val('');
+            infoElement.empty();
+        },
+        error: function (data) {
+            console.log(data);
+            Toast.fire({
+                type: 'error',
+                title: 'Error with sending data...'
+            });
+        }
+    });
+}
+
+//Reset Entry
+function resetEntry(bib_number) {
+    $.ajax({
+        type: "POST",
+        url: "/api/entry/timing/update",
+        data: {
+            status: 'reset',
+            bib_number: bib_number,
+        },
+        success: function (data) {
+            buttonElement.empty();
+            buttonElement.append(
+                "<button class=\"btn btn-muted\" style=\"width: 100%\">\n" +
+                "   <i class=\"fas fa-arrow-left\"></i> Enter Bib #\n" +
+                "   <div class=\"ripple-container\"></div>\n" +
+                "</button>"
+            );
+            Toast.fire({
+                type: 'success',
+                title: 'Entry ' + bib_number + ' has reset!'
+            });
+            $('#bibElement').val('');
+            infoElement.empty();
         },
         error: function (data) {
             console.log(data);

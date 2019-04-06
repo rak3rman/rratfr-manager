@@ -39,11 +39,11 @@ let entrySchema = mongoose.Schema({
     },
     start_time: {
         type: Date,
-        default: Date.now
+        default: ""
     },
     end_time: {
         type: Date,
-        default: Date.now
+        default: ""
     },
     created_date: {
         type: Date,

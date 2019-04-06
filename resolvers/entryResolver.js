@@ -57,7 +57,8 @@ exports.entry_timing_update = function (req, res) {
                 res.json(data);
             }
         });
-    } else if (req.body["status"] === "finish") {
+    }
+    if (req.body["status"] === "finish") {
         entry.findOneAndUpdate({bib_number: req.body["bib_number"]}, {
             $set: {
                 timing_status: 'finished',
@@ -73,8 +74,9 @@ exports.entry_timing_update = function (req, res) {
                 calcTime(req.body["bib_number"]);
             }
         });
-    } else if (req.body["status"] === "dq") {
-        entry.findOneAndUpdate({bib_number: req.body["bib_number"]}, {$set: {timing_status: 'dq'}}, function (err, data) {
+    }
+    if (req.body["status"] === "dq") {
+        entry.findOneAndUpdate({bib_number: req.body["bib_number"]}, {$set: {timing_status: 'dq', final_place: 'DQ', final_time: 'NT', raw_final_time: 'NT'}}, function (err, data) {
             if (err || data == null) {
                 console.log("ENTRY Resolver: Retrieve failed: " + err);
                 res.status(500).send('error');
@@ -84,15 +86,29 @@ exports.entry_timing_update = function (req, res) {
             }
         });
     }
+    if (req.body["status"] === "reset") {
+        entry.findOneAndUpdate({bib_number: req.body["bib_number"]}, {$set: {timing_status: 'waiting', final_place: 'NT', final_time: 'NT', raw_final_time: 'NT'}}, function (err, data) {
+            if (err || data == null) {
+                console.log("ENTRY Resolver: Retrieve failed: " + err);
+                res.status(500).send('error');
+            } else {
+                console.log("ENTRY Resolver: Entry Status Updated: " + data);
+                res.json(data);
+            }
+        });
+        sortEntries();
+    }
     socket.update_Sockets();
 };
 
 //Calculate the final time after finish and publish
 function calcTime(bib_number) {
+    //Find the information about the raft that finished
     entry.find({bib_number: bib_number}, function (err, details) {
         if (err) {
             console.log("ENTRY Resolver: Retrieve failed: " + err);
         } else {
+            //Calculate final time
             let raw_time = details[0]["end_time"] - details[0]["start_time"];
             let hh = ("0" + Math.floor(raw_time / 1000 / 60 / 60)).slice(-2);
             raw_time -= hh * 1000 * 60 * 60;
@@ -104,35 +120,45 @@ function calcTime(bib_number) {
             let final_time = hh + ":" + mm + ":" + ss + "." + ms;
             let raw_final_time = hh + mm + ss + ms;
             console.log(bib_number + " - Final Time Difference: " + final_time);
+            //Find entry and update with final time
             entry.findOneAndUpdate({bib_number: bib_number}, {$set: {final_time: final_time, raw_final_time: raw_final_time}}, function (err, data) {
                 if (err || data == null) {
                     console.log("ENTRY Resolver: Retrieve failed: " + err);
                 } else {
                     console.log("ENTRY Resolver: Entry Status Updated: " + data);
-                    entry.find({}, function (err, listed_entries) {
-                        if (err) {
-                            console.log("ENTRY Resolver: Retrieve failed: " + err);
-                        } else {
-                            listed_entries.sort(function(a, b) {
-                                return parseFloat(a.raw_final_time) - parseFloat(b.raw_final_time);
-                            });
-                            console.log(listed_entries);
-                            let setPlace = 1;
-                            for (let i in listed_entries) {
-                                entry.findOneAndUpdate({bib_number: listed_entries[i]["bib_number"]}, {$set: {final_place: setPlace}}, function (err, data) {
-                                    if (err || data == null) {
-                                        console.log("ENTRY Resolver: Retrieve failed: " + err);
-                                    } else {
-                                        console.log("ENTRY Resolver: Entry Status Updated: " + data);
-                                    }
-                                });
-                                setPlace += 1;
-                            }
-                            socket.update_Sockets();
-                        }
-                    });
+                    sortEntries();
                 }
             });
+        }
+    });
+}
+
+//Sort all finished entries
+function sortEntries() {
+    //Look through finished results and place accordingly
+    entry.find({}, function (err, listed_entries) {
+        if (err) {
+            console.log("ENTRY Resolver: Retrieve failed: " + err);
+        } else {
+            //Pre-sort entries
+            listed_entries.sort(function(a, b) {
+                return parseFloat(a.raw_final_time) - parseFloat(b.raw_final_time);
+            });
+            let setPlace = 1;
+            //Set each finished result with place value
+            for (let i in listed_entries) {
+                if (listed_entries[i]["timing_status"] === "finished") {
+                    entry.findOneAndUpdate({bib_number: listed_entries[i]["bib_number"]}, {$set: {final_place: setPlace}}, function (err, data) {
+                        if (err || data == null) {
+                            console.log("ENTRY Resolver: Retrieve failed: " + err);
+                        } else {
+                            console.log("ENTRY Resolver: Entry Status Updated: " + data);
+                        }
+                    });
+                    setPlace += 1;
+                }
+            }
+            socket.update_Sockets();
         }
     });
 }
