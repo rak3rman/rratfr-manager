@@ -23,12 +23,14 @@ let tableSettings = {
     ],
 };
 let leaderTable = $('#leaderTable').DataTable(tableSettings);
-
 //Socket.io Get Statistics
 socket.on('race_data', function (data) {
     document.getElementById("totalStat").innerHTML = data.total_entries;
     document.getElementById("inwaterStat").innerHTML = data.entries_in_water;
     document.getElementById("finishStat").innerHTML = data.entries_finished;
+    document.getElementById("pushedDate1").innerHTML = 'Updated ' + moment(data.updated_total_entries).fromNow();
+    document.getElementById("pushedDate2").innerHTML = 'Updated ' + moment(data.updated_entries_in_water).fromNow();
+    document.getElementById("pushedDate3").innerHTML = 'Updated ' + moment(data.updated_entries_finished).fromNow();
 });
 
 //Socket.io Get Leaderboard Data
@@ -45,7 +47,8 @@ socket.on('entry_data', function (data) {
         if (value.final_place === "3") {
             final_place_text = "<strong><a style='color:#CD7F32'>" + value.final_place + "</a></strong>";
         }
-        leaderTable.row.add([final_place_text, value.entry_name, value.final_time, value.category]);
+        let detailed_name = value.entry_name + " <a class='text-gray'>" + value.bib_number + "</a>";
+        leaderTable.row.add([final_place_text, detailed_name, value.final_time, value.category]);
     });
     leaderTable.draw();
 });
@@ -67,7 +70,6 @@ function setImage() {
 
 //Socket.io Error
 socket.on('error', function (data) {
-    console.log(data);
     Toast.fire({
         type: 'error',
         title: 'Error with retrieving data...'

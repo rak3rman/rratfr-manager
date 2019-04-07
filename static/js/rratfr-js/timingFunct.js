@@ -13,6 +13,17 @@ const Toast = Swal.mixin({
 });
 
 //Set Table Settings
+let leadertableSettings = {
+    "lengthMenu": [
+        [10, 25, 50, -1],
+        [10, 25, 50, "All"]
+    ],
+    "responsive": true,
+    "order": [[ 2, "asc" ]],
+    "columnDefs": [
+        { "orderable": false, "targets": 0 }
+    ],
+};
 let tableSettings = {
     "lengthMenu": [
         [10, 25, 50, -1],
@@ -22,7 +33,7 @@ let tableSettings = {
 };
 let queueTable = $('#queueTable').DataTable(tableSettings);
 let enrouteTable = $('#enrouteTable').DataTable(tableSettings);
-let leaderTable = $('#leaderTable').DataTable(tableSettings);
+let leaderTable = $('#leaderTable').DataTable(leadertableSettings);
 
 //Socket.io Get Statistics
 socket.on('entry_data', function (data) {
@@ -45,7 +56,8 @@ socket.on('entry_data', function (data) {
             if (value.final_place === "3") {
                 final_place_text = "<strong><a style='color:#CD7F32'>" + value.final_place + "</a></strong>";
             }
-            leaderTable.row.add([final_place_text, value.entry_name, value.final_time, moment(value.start_time).format('MM/DD/YY, h:mm:ss a'), moment(value.end_time).format('MM/DD/YY, h:mm:ss a'), value.category]);
+            let detailed_name = value.entry_name + " <a class='text-gray'>" + value.bib_number + "</a>";
+            leaderTable.row.add([final_place_text, detailed_name, value.final_time, moment(value.start_time).format('MM/DD/YY, h:mm:ss a'), moment(value.end_time).format('MM/DD/YY, h:mm:ss a'), value.category]);
         }
     });
     queueTable.draw();
@@ -128,7 +140,6 @@ socket.on('check_bib_result', function (data) {
 
 //Socket.io Error
 socket.on('error', function (data) {
-    console.log(data);
     Toast.fire({
         type: 'error',
         title: 'Error with retrieving data...'
@@ -160,7 +171,6 @@ function startEntry(bib_number) {
             infoElement.empty();
         },
         error: function (data) {
-            console.log(data);
             Toast.fire({
                 type: 'error',
                 title: 'Error with sending data...'
@@ -194,7 +204,6 @@ function finishEntry(bib_number) {
             infoElement.empty();
         },
         error: function (data) {
-            console.log(data);
             Toast.fire({
                 type: 'error',
                 title: 'Error with sending data...'
@@ -222,13 +231,12 @@ function dqEntry(bib_number) {
             );
             Toast.fire({
                 type: 'success',
-                title: 'Entry ' + bib_number + ' has DQ!'
+                title: 'Entry ' + bib_number + ' has been DQed!'
             });
             $('#bibElement').val('');
             infoElement.empty();
         },
         error: function (data) {
-            console.log(data);
             Toast.fire({
                 type: 'error',
                 title: 'Error with sending data...'
@@ -262,7 +270,6 @@ function resetEntry(bib_number) {
             infoElement.empty();
         },
         error: function (data) {
-            console.log(data);
             Toast.fire({
                 type: 'error',
                 title: 'Error with sending data...'

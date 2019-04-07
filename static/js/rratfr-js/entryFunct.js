@@ -53,7 +53,6 @@ socket.on('entry_data', function (data) {
 
 //Socket.io Error
 socket.on('error', function (data) {
-    console.log(data);
     Toast.fire({
         type: 'error',
         title: 'Error with retrieving data...'
@@ -106,7 +105,6 @@ function createEntry() {
                     });
                 },
                 error: function (error_reason) {
-                    console.log(error_reason);
                     Swal.fire({
                         title: 'Error: ' + error_reason.responseText,
                         html: 'Parameters sent: <pre><code>' +
@@ -200,7 +198,6 @@ function editEntry(bib_number, entry_name, category, start_time, end_time) {
                     });
                 },
                 error: function (data) {
-                    console.log(data);
                     Toast.fire({
                         type: 'error',
                         title: 'Error in updating entry...'
@@ -236,7 +233,6 @@ function deleteEntry(bib_number) {
                     });
                 },
                 error: function (data) {
-                    console.log(data);
                     Toast.fire({
                         type: 'error',
                         title: 'Error in deleting entry...'

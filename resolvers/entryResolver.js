@@ -7,6 +7,7 @@ let dataStore = require('data-store');
 let storage = new dataStore({path: './config/sysConfig.json'});
 let debug_mode = storage.get('debug_mode');
 let socket = require('../resolvers/socketResolver.js');
+let events = require('../resolvers/eventResolver.js');
 
 //Create a new entry
 exports.create_entry = function (req, res) {
@@ -25,7 +26,9 @@ exports.create_entry = function (req, res) {
                     if (debug_mode === "true") {
                         console.log('ENTRY Resolver: Entry Created: ' + JSON.stringify(created_entry))
                     }
-                    socket.update_Sockets();
+                    socket.updateSockets();
+                    var_Updater('updated_time_total_entries', Date.now());
+                    events.save_event('Entries', 'Created new entry ' + created_entry.entry_name + ' - Bib #' + created_entry.bib_number)
                 }
                 res.json(created_entry);
             });
@@ -81,7 +84,8 @@ exports.entry_edit = function (req, res) {
                 } else {
                     console.log("ENTRY Resolver: Entry Updated: " + updatedEntry);
                     res.json(updatedEntry);
-                    socket.update_Sockets();
+                    socket.updateSockets();
+                    events.save_event('Entries', 'Updated entry ' + updatedEntry.entry_name + ' - Bib #' + updatedEntry.bib_number);
                 }
             });
             if (details[0]["timing_status"] === "finished") {
@@ -102,7 +106,10 @@ exports.entry_delete = function (req, res) {
         } else {
             console.log("ENTRY Resolver: Entry Deleted: " + req.body["bib_number"]);
             res.json(req.body["bib_number"]);
-            socket.update_Sockets();
+            socket.updateSockets();
+            sortEntries();
+            var_Updater('updated_time_total_entries', Date.now());
+            events.save_event('Entries', 'Deleted entry - Bib #' + req.body["bib_number"]);
         }
     });
 };
@@ -122,6 +129,8 @@ exports.entry_timing_update = function (req, res) {
             } else {
                 console.log("ENTRY Resolver: Entry Status Updated: " + data);
                 res.json(data);
+                var_Updater('updated_time_missing_safety', Date.now());
+                events.save_event('Timing', data.entry_name + ' - Bib #' + req.body["bib_number"] + ' has passed the Safety Check');
             }
         });
     }
@@ -139,6 +148,8 @@ exports.entry_timing_update = function (req, res) {
             } else {
                 console.log("ENTRY Resolver: Entry Status Updated: " + data);
                 res.json(data);
+                var_Updater('updated_time_entries_in_water', Date.now());
+                events.save_event('Timing', data.entry_name + ' - Bib #' + req.body["bib_number"] + ' has Started');
             }
         });
     }
@@ -156,6 +167,8 @@ exports.entry_timing_update = function (req, res) {
                 console.log("ENTRY Resolver: Entry Status Updated: " + data);
                 res.json(data);
                 calcTime(req.body["bib_number"]);
+                var_Updater('updated_time_entries_finished', Date.now());
+                events.save_event('Timing', data.entry_name + ' - Bib #' + req.body["bib_number"] + ' has Finished');
             }
         });
     }
@@ -164,7 +177,7 @@ exports.entry_timing_update = function (req, res) {
             $set: {
                 timing_status: 'dq',
                 final_place: 'DQ',
-                final_time: 'NT',
+                final_time: 'NT - Disqualified',
                 raw_final_time: 'NT'
             }
         }, function (err, data) {
@@ -174,8 +187,10 @@ exports.entry_timing_update = function (req, res) {
             } else {
                 console.log("ENTRY Resolver: Entry Status Updated: " + data);
                 res.json(data);
+                events.save_event('Timing', data.entry_name + ' - Bib #' + req.body["bib_number"] + ' has been Disqualified');
             }
         });
+        sortEntries();
     }
     if (req.body["status"] === "reset") {
         entry.findOneAndUpdate({bib_number: req.body["bib_number"]}, {
@@ -192,11 +207,12 @@ exports.entry_timing_update = function (req, res) {
             } else {
                 console.log("ENTRY Resolver: Entry Status Updated: " + data);
                 res.json(data);
+                events.save_event('Timing', data.entry_name + ' - Bib #' + req.body["bib_number"] + ' has been Reset');
             }
         });
         sortEntries();
     }
-    socket.update_Sockets();
+    socket.updateSockets();
 };
 
 //Calculate the final time after finish and publish
@@ -218,6 +234,7 @@ function calcTime(bib_number) {
             let final_time = hh + ":" + mm + ":" + ss + "." + ms;
             let raw_final_time = hh + mm + ss + ms;
             console.log(bib_number + " - Final Time Difference: " + final_time);
+            events.save_event('Timing', 'Calculated time for ' + details[0]["entry_name"] + ' - Bib #' + bib_number + ' is ' + final_time);
             //Find entry and update with final time
             entry.findOneAndUpdate({bib_number: bib_number}, {
                 $set: {
@@ -263,7 +280,32 @@ function sortEntries() {
                     setPlace += 1;
                 }
             }
-            socket.update_Sockets();
+            socket.updateSockets();
+            events.save_event('Timing', 'Sorted through finished entries');
+        }
+    });
+}
+
+//Update Variables to DB
+let varSet = require('../models/varModel.js');
+function var_Updater(var_name, var_value) {
+    varSet.findOneAndUpdate({ var_name: var_name }, { $set: { var_value: var_value }}, function (err, data) {
+        if (err) {
+            console.log("VAR Resolver: Retrieve failed: " + err);
+        }
+        if (data == null) {
+            let newVar = new varSet({ var_name: var_name, var_value: var_value });
+            newVar.save(function (err, created_var) {
+                if (err) {
+                    console.log("VAR Resolver: Save failed: " + err);
+                } else {
+                    if (debug_mode === "true") { console.log('VAR Resolver: VAR Created: ' + JSON.stringify(created_var)) }
+                }
+            });
+        } else {
+            if (debug_mode === "true") {
+                console.log("VAR Resolver: " + var_name + " Updated: " + var_value)
+            }
         }
     });
 }

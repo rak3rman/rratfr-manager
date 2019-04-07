@@ -20,6 +20,9 @@ let uuidv4 = require('uuid/v4');
 let mongoose = require('mongoose');
 let passport = require('passport');
 let flash = require('connect-flash');
+let RateLimit = require('express-rate-limit');
+let helmet = require('helmet');
+let ExpressBrute = require('express-brute');
 
 //Setup Local Database
 let dataStore = require('data-store');
@@ -92,6 +95,16 @@ app.use(passport.session());
 //Import Static Files to Webpages
 app.use('/static', express.static(process.cwd() + '/static'));
 
+//Application Security
+app.use(helmet());
+app.enable('trust proxy');
+let apiLimiter = new RateLimit({
+    windowMs: 15*60*1000, // 15 minutes
+    max: 100,
+});
+let store = new ExpressBrute.MemoryStore();
+let bruteforce = new ExpressBrute(store);
+
 //End of Initialize Packages and Routers - - - - - - - -
 
 
@@ -103,7 +116,7 @@ app.use('/static', express.static(process.cwd() + '/static'));
 entryRouter(app);
 
 //Public Dashboard
-app.get('/', mainRouter.publicDashRoute);
+app.get('/', mainRouter.publicDashRoute, apiLimiter);
 //Admin Dashboard
 app.get('/dashboard', auth.isLoggedIn, mainRouter.adminDashRoute);
 //Time Interface
@@ -112,13 +125,13 @@ app.get('/timing', auth.isLoggedIn, mainRouter.timingRoute);
 app.get('/entry/list', auth.isLoggedIn, mainRouter.entryListRoute);
 
 //Auth Routes
-app.get('/login', authRouter.loginPage);
+app.get('/login', authRouter.loginPage, apiLimiter);
 app.get('/signup', authRouter.signupPage);
 app.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/login');
 });
-app.post('/login', passport.authenticate('local-login', {
+app.post('/login', bruteforce.prevent, passport.authenticate('local-login', {
     successRedirect: '/dashboard',
     failureRedirect: '/login',
     failureFlash: true
