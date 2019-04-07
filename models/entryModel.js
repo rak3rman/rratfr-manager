@@ -31,11 +31,11 @@ let entrySchema = mongoose.Schema({
     },
     final_time: {
         type: String,
-        default: "NT",
+        default: "NT - WAITING",
     },
     raw_final_time: {
         type: String,
-        default: "NT",
+        default: "999999",
     },
     start_time: {
         type: Date,

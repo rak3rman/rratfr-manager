@@ -13,7 +13,7 @@ const Toast = Swal.mixin({
 
 //Set Table Settings
 let searchValue = "";
-window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
     if (value) {
         searchValue = decodeURI(value);
     }
@@ -26,7 +26,7 @@ let tableSettings = {
     "responsive": true,
     "search": {
         "search": searchValue,
-    }
+    },
 };
 let entryTable = $('#entryTable').DataTable(tableSettings);
 
@@ -39,7 +39,14 @@ socket.on('race_data', function (data) {
 socket.on('entry_data', function (data) {
     entryTable.clear();
     $.each(data, function (i, value) {
-        entryTable.row.add([value.bib_number, value.entry_name, value.category, value.safety_status, value.timing_status, moment(value.start_time).format('MM/DD/YY, h:mm:ss a'), moment(value.end_time).format('MM/DD/YY, h:mm:ss a'), value.final_time, value.final_place,]);
+        let tools = ("<div class=\"td-actions text-right\">\n" +
+            "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-info\" data-original-title=\"\" onclick=\"editEntry('" + value.bib_number + "', '" + value.entry_name + "', '" + value.category + "', '" + value.start_time + "', '" + value.end_time + "')\" title=\"\">\n" +
+            "<i class=\"fas fa-edit\"></i> Edit\n" +
+            "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-danger ml-2\" data-original-title=\"\" onclick=\"deleteEntry('" + value.bib_number + "')\" title=\"\">\n" +
+            "<i class=\"fas fa-times-circle\"></i> Delete\n" +
+            "</div></div>"
+        );
+        entryTable.row.add([value.bib_number, value.entry_name, value.category, value.safety_status, value.timing_status, moment(value.start_time).format('MM/DD/YY, h:mm:ss a'), moment(value.end_time).format('MM/DD/YY, h:mm:ss a'), value.final_time, value.final_place, tools]);
     });
     entryTable.draw();
 });
@@ -57,7 +64,6 @@ socket.on('error', function (data) {
 function createEntry() {
     Swal.mixin({
         confirmButtonText: 'Next &rarr;',
-        showLoaderOnConfirm: true,
         showCancelButton: true,
         progressSteps: ['1', '2', '3'],
     }).queue([
@@ -99,16 +105,142 @@ function createEntry() {
                         type: 'success'
                     });
                 },
-                error: function (data) {
-                    console.log(data);
+                error: function (error_reason) {
+                    console.log(error_reason);
                     Swal.fire({
-                        title: 'Entry was not created...',
+                        title: 'Error: ' + error_reason.responseText,
                         html: 'Parameters sent: <pre><code>' +
                             JSON.stringify(result.value) +
                             '</code></pre>',
                         confirmButtonText: 'OK',
                         type: 'error'
                     })
+                }
+            });
+        }
+    })
+}
+
+//Entry Edit SA
+function editEntry(bib_number, entry_name, category, start_time, end_time) {
+    Swal.fire({
+        title: 'Edit Entry: ' + entry_name,
+        html:
+            '<h6 class="mb-0">General Information:</h6>' +
+            '<div class="row">\n' +
+            '   <label class="col-sm-3 col-form-label text-left pb-0">Bib Number</label>\n' +
+            '   <div class="col-sm-9">\n' +
+            '       <div class="form-group has-default bmd-form-group">\n' +
+            '           <input type="text" class="form-control" value="' + bib_number + '" id="editBib">\n' +
+            '       </div>\n' +
+            '   </div>\n' +
+            '</div>' +
+            '<div class="row">\n' +
+            '   <label class="col-sm-3 col-form-label text-left pb-0">Entry Name</label>\n' +
+            '   <div class="col-sm-9">\n' +
+            '       <div class="form-group has-default bmd-form-group">\n' +
+            '           <input type="text" class="form-control" value="' + entry_name + '" id="editName">\n' +
+            '       </div>\n' +
+            '   </div>\n' +
+            '</div>' +
+            '<div class="row">\n' +
+            '   <label class="col-sm-3 col-form-label text-left pb-0">Category</label>\n' +
+            '   <div class="col-sm-9">\n' +
+            '       <div class="form-group has-default bmd-form-group">\n' +
+            '           <input type="text" class="form-control" value="' + category + '" id="editCategory">\n' +
+            '       </div>\n' +
+            '   </div>\n' +
+            '</div>' +
+            '<h6 class="mb-0 mt-2">Timing Information:</h6>' +
+            '<div class="row">\n' +
+            '   <label class="col-sm-3 col-form-label text-left pb-0">Start Time</label>\n' +
+            '   <div class="col-sm-9">\n' +
+            '       <div class="form-group has-default bmd-form-group">\n' +
+            '           <input type="text" class="form-control" value="' + start_time + '" id="editStartTime">\n' +
+            '       </div>\n' +
+            '   </div>\n' +
+            '</div>' +
+            '<div class="row">\n' +
+            '   <label class="col-sm-3 col-form-label text-left pb-0">End Time</label>\n' +
+            '   <div class="col-sm-9">\n' +
+            '       <div class="form-group has-default bmd-form-group">\n' +
+            '           <input type="text" class="form-control" value="' + end_time + '" id="editEndTime">\n' +
+            '       </div>\n' +
+            '   </div>\n' +
+            '</div>',
+        showCancelButton: true,
+        confirmButtonText: 'Update',
+    }).then(() => {
+        let new_bib_number = document.getElementById("editBib").value;
+        let new_entry_name = document.getElementById("editName").value;
+        let new_category = document.getElementById("editCategory").value;
+        let new_start_time = document.getElementById("editStartTime").value;
+        let new_end_time = document.getElementById("editEndTime").value;
+        if (new_bib_number !== bib_number || new_entry_name !== entry_name || new_category !== category || new_start_time !== start_time || new_end_time !== end_time) {
+            if (new_start_time === "null") {
+                new_start_time = "";
+            }
+            if (new_end_time === "null") {
+                new_end_time = "";
+            }
+            $.ajax({
+                type: "POST",
+                url: "/api/entry/edit",
+                data: {
+                    bib_number: new_bib_number,
+                    entry_name: new_entry_name,
+                    category: new_category,
+                    start_time: new_start_time,
+                    end_time: new_end_time,
+                },
+                success: function (data) {
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Entry has been updated'
+                    });
+                },
+                error: function (data) {
+                    console.log(data);
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Error in updating entry...'
+                    });
+                }
+            });
+        }
+    })
+}
+
+//Entry Delete SA
+function deleteEntry(bib_number) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This entry will be deleted forever!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                type: "POST",
+                url: "/api/entry/delete",
+                data: {
+                    bib_number: bib_number,
+                },
+                success: function (data) {
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Entry has been deleted!'
+                    });
+                },
+                error: function (data) {
+                    console.log(data);
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Error in deleting entry...'
+                    });
                 }
             });
         }

@@ -35,7 +35,17 @@ socket.on('entry_data', function (data) {
         } else if (value.timing_status === "en_route") {
             enrouteTable.row.add([value.bib_number, value.entry_name, moment(value.start_time).format('MM/DD/YY, h:mm:ss a'), value.category]);
         } else {
-            leaderTable.row.add([value.final_place, value.entry_name, value.final_time, value.category]);
+            let final_place_text = value.final_place;
+            if (value.final_place === "1") {
+                final_place_text = "<strong><a style='color:#D4AF37'>" + value.final_place + "</a></strong>";
+            }
+            if (value.final_place === "2") {
+                final_place_text = "<strong><a style='color:#C4CACE'>" + value.final_place + "</a></strong>";
+            }
+            if (value.final_place === "3") {
+                final_place_text = "<strong><a style='color:#CD7F32'>" + value.final_place + "</a></strong>";
+            }
+            leaderTable.row.add([final_place_text, value.entry_name, value.final_time, moment(value.start_time).format('MM/DD/YY, h:mm:ss a'), moment(value.end_time).format('MM/DD/YY, h:mm:ss a'), value.category]);
         }
     });
     queueTable.draw();

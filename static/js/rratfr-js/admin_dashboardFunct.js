@@ -28,11 +28,21 @@ socket.on('race_data', function(data){
     document.getElementById("finishStat").innerHTML = data.entries_finished;
 });
 
-//Socket.io Get Statistics
+//Socket.io Get Leaderboard Data
 socket.on('entry_data', function (data) {
     leaderTable.clear();
     $.each(data, function (i, value) {
-        leaderTable.row.add([value.final_place, value.entry_name, value.final_time, value.category]);
+        let final_place_text = value.final_place;
+        if (value.final_place === "1") {
+            final_place_text = "<strong><a style='color:#D4AF37'>" + value.final_place + "</a></strong>";
+        }
+        if (value.final_place === "2") {
+            final_place_text = "<strong><a style='color:#C4CACE'>" + value.final_place + "</a></strong>";
+        }
+        if (value.final_place === "3") {
+            final_place_text = "<strong><a style='color:#CD7F32'>" + value.final_place + "</a></strong>";
+        }
+        leaderTable.row.add([final_place_text, value.entry_name, value.final_time, value.category]);
     });
     leaderTable.draw();
 });
