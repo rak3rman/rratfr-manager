@@ -63,8 +63,8 @@ socket.on('entry_data', function (data) {
     queueTable.draw();
     enrouteTable.draw();
     leaderTable.draw();
+    $(window).trigger('resize');
 });
-
 
 //Pass socket.io call to check bib #
 let currentBib;

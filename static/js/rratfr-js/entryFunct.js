@@ -49,6 +49,7 @@ socket.on('entry_data', function (data) {
         entryTable.row.add([value.bib_number, value.entry_name, value.category, value.safety_status, value.timing_status, moment(value.start_time).format('MM/DD/YY, h:mm:ss a'), moment(value.end_time).format('MM/DD/YY, h:mm:ss a'), value.final_time, value.final_place, tools]);
     });
     entryTable.draw();
+    $(window).trigger('resize');
 });
 
 //Socket.io Error

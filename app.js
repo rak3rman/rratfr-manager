@@ -116,7 +116,7 @@ let bruteforce = new ExpressBrute(store);
 entryRouter(app);
 
 //Public Dashboard
-app.get('/', mainRouter.publicDashRoute, apiLimiter);
+app.get('/', mainRouter.publicDashRoute);
 //Admin Dashboard
 app.get('/dashboard', auth.isLoggedIn, mainRouter.adminDashRoute);
 //Time Interface
@@ -125,7 +125,7 @@ app.get('/timing', auth.isLoggedIn, mainRouter.timingRoute);
 app.get('/entry/list', auth.isLoggedIn, mainRouter.entryListRoute);
 
 //Auth Routes
-app.get('/login', authRouter.loginPage, apiLimiter);
+app.get('/login', authRouter.loginPage);
 app.get('/signup', authRouter.signupPage);
 app.get('/logout', function (req, res) {
     req.logout();

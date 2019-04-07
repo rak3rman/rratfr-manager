@@ -21,8 +21,12 @@ let tableSettings = {
     "columnDefs": [
         { "orderable": false, "targets": 0 }
     ],
+    "language": {
+        "emptyTable": "Entries will be updated soon!"
+    },
 };
 let leaderTable = $('#leaderTable').DataTable(tableSettings);
+$(window).trigger('resize');
 //Socket.io Get Statistics
 socket.on('race_data', function (data) {
     document.getElementById("totalStat").innerHTML = data.total_entries;

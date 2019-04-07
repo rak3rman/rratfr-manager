@@ -37,6 +37,9 @@ let leaderTable = $('#leaderTable').DataTable(tableSettings);
 let eventsAllTable = $('#eventsAllTable').DataTable(eventtableSettings);
 let eventsEntriesTable = $('#eventsEntriesTable').DataTable(eventtableSettings);
 let eventsTimingTable = $('#eventsTimingTable').DataTable(eventtableSettings);
+$('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+    $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+} );
 
 //Socket.io handle Statistics
 socket.on('race_data', function(data){
@@ -64,6 +67,7 @@ socket.on('entry_data', function (data) {
         leaderTable.row.add([final_place_text, detailed_name, value.final_time, value.category]);
     });
     leaderTable.draw();
+    $(window).trigger('resize');
 });
 
 //Socket.io handle Events
@@ -81,6 +85,7 @@ socket.on('new_event', function(data){
         eventsTimingTable.draw();
     }
     eventsAllTable.draw();
+    $(window).trigger('resize');
 });
 
 //Socket.io Error

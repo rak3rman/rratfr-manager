@@ -18,7 +18,7 @@ exports.socket_config = function (server) {
         getEntryData();
         //Check Bib Number and Send Result
         socket.on('check_bib', function (bib_number) {
-            console.log('Socket.io: Checking bib number: ' + bib_number);
+            console.log('Socket.io: Getting information for Bib #' + bib_number);
             entry.find({bib_number: bib_number}, function (err, details) {
                 if (err) {
                     console.log("Socket.io: Retrieve failed: " + err);
@@ -28,7 +28,7 @@ exports.socket_config = function (server) {
                     socket.emit('check_bib_result', 'not_found');
                 } else {
                     if (details[0]["timing_status"] === "waiting") {
-                        console.log("Socket.io: Bib " + bib_number + " - Ready to Start");
+                        console.log("Socket.io: Bib #" + bib_number + " - Ready to Start");
                         socket.emit('check_bib_result', {
                             result: 'start_ready',
                             entry_name: details[0]["entry_name"],
@@ -37,7 +37,7 @@ exports.socket_config = function (server) {
                         });
                     }
                     if (details[0]["timing_status"] === "en_route") {
-                        console.log("Socket.io: Bib " + bib_number + " - Ready to Finish");
+                        console.log("Socket.io: Bib #" + bib_number + " - Ready to Finish");
                         socket.emit('check_bib_result', {
                             result: 'finish_ready',
                             entry_name: details[0]["entry_name"],
@@ -46,7 +46,7 @@ exports.socket_config = function (server) {
                         });
                     }
                     if (details[0]["timing_status"] === "finished") {
-                        console.log("Socket.io: Bib " + bib_number + " - Finished");
+                        console.log("Socket.io: Bib #" + bib_number + " - Finished");
                         socket.emit('check_bib_result', {
                             result: 'finished',
                             entry_name: details[0]["entry_name"],
@@ -55,7 +55,7 @@ exports.socket_config = function (server) {
                         });
                     }
                     if (details[0]["timing_status"] === "dq") {
-                        console.log("Socket.io: Bib " + bib_number + " - DQ");
+                        console.log("Socket.io: Bib #" + bib_number + " - DQ");
                         socket.emit('check_bib_result', {
                             result: 'dq',
                             entry_name: details[0]["entry_name"],
@@ -118,9 +118,6 @@ function getStatistics() {
                             updated_time_entries_finished = variables[i]["var_value"];
                         }
                     }
-                    if (debug_mode === "true") {
-                        console.log("Socket.io: Statistics Sent")
-                    }
                     io.emit('race_data', {
                         total_entries: total_entries_count,
                         missing_safety: missing_safety_count,
@@ -130,7 +127,10 @@ function getStatistics() {
                         updated_missing_safety: updated_time_missing_safety,
                         updated_entries_in_water: updated_time_entries_in_water,
                         updated_entries_finished: updated_time_entries_finished
-                    })
+                    });
+                    if (debug_mode === "true") {
+                        console.log("Socket.io: Statistics Sent (race_data)")
+                    }
                 }
             });
         }
@@ -146,22 +146,24 @@ function getEntryData() {
         } else {
             io.emit('entry_data', listed_entries);
             if (debug_mode === "true") {
-                console.log("Socket.io: Entries Sent")
+                console.log("Socket.io: Entries Sent (entry_data)")
             }
         }
     });
 }
 
 //Update sockets with statistics
-exports.updateSockets = function () {
+exports.updateSockets = function (source) {
     getStatistics();
     getEntryData();
-    console.log("Socket.io: Statistics Updated");
+    console.log("Socket.io: Source: " + source + " | Data to be updated to client...");
 };
 
 //Update sockets with events
 exports.sendEvent = function (sent_category, sent_desc, sent_time) {
-    console.log("Socket.io: Event sent");
+    if (debug_mode === "true") {
+        console.log("Socket.io: Event Sent (new_event)");
+    }
     io.emit('new_event', {
         category: sent_category,
         desc: sent_desc,

@@ -18,7 +18,9 @@ exports.save_event = function(sent_category, sent_desc) {
         if (err) {
             console.log("EVENT Resolver: Save failed: " + err);
         } else {
-            console.log('EVENT Resolver: Event Logged: ' + JSON.stringify(created_event));
+            if (debug_mode === "true") {
+                console.log('EVENT Resolver: Event Logged: ' + JSON.stringify(created_event));
+            }
             socket.sendEvent(sent_category, sent_desc, created_event.created_date);
         }
     });

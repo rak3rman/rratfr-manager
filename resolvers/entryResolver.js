@@ -26,7 +26,7 @@ exports.create_entry = function (req, res) {
                     if (debug_mode === "true") {
                         console.log('ENTRY Resolver: Entry Created: ' + JSON.stringify(created_entry))
                     }
-                    socket.updateSockets();
+                    socket.updateSockets("create_entry");
                     var_Updater('updated_time_total_entries', Date.now());
                     events.save_event('Entries', 'Created new entry ' + created_entry.entry_name + ' - Bib #' + created_entry.bib_number)
                 }
@@ -84,7 +84,7 @@ exports.entry_edit = function (req, res) {
                 } else {
                     console.log("ENTRY Resolver: Entry Updated: " + updatedEntry);
                     res.json(updatedEntry);
-                    socket.updateSockets();
+                    socket.updateSockets("entry_edit");
                     events.save_event('Entries', 'Updated entry ' + updatedEntry.entry_name + ' - Bib #' + updatedEntry.bib_number);
                 }
             });
@@ -106,9 +106,11 @@ exports.entry_delete = function (req, res) {
         } else {
             console.log("ENTRY Resolver: Entry Deleted: " + req.body["bib_number"]);
             res.json(req.body["bib_number"]);
-            socket.updateSockets();
             sortEntries();
             var_Updater('updated_time_total_entries', Date.now());
+            var_Updater('updated_time_missing_safety', Date.now());
+            var_Updater('updated_time_entries_in_water', Date.now());
+            var_Updater('updated_time_entries_finished', Date.now());
             events.save_event('Entries', 'Deleted entry - Bib #' + req.body["bib_number"]);
         }
     });
@@ -127,10 +129,13 @@ exports.entry_timing_update = function (req, res) {
                 console.log("ENTRY Resolver: Retrieve failed: " + err);
                 res.status(500).send('error');
             } else {
-                console.log("ENTRY Resolver: Entry Status Updated: " + data);
+                if (debug_mode === "true") {
+                    console.log("ENTRY Resolver: Entry Status Updated: " + data);
+                }
                 res.json(data);
                 var_Updater('updated_time_missing_safety', Date.now());
                 events.save_event('Timing', data.entry_name + ' - Bib #' + req.body["bib_number"] + ' has passed the Safety Check');
+                socket.updateSockets("update_safety");
             }
         });
     }
@@ -146,10 +151,13 @@ exports.entry_timing_update = function (req, res) {
                 console.log("ENTRY Resolver: Retrieve failed: " + err);
                 res.status(500).send('error');
             } else {
-                console.log("ENTRY Resolver: Entry Status Updated: " + data);
+                if (debug_mode === "true") {
+                    console.log("ENTRY Resolver: Entry Status Updated: " + data);
+                }
                 res.json(data);
                 var_Updater('updated_time_entries_in_water', Date.now());
                 events.save_event('Timing', data.entry_name + ' - Bib #' + req.body["bib_number"] + ' has Started');
+                socket.updateSockets("update_start");
             }
         });
     }
@@ -164,7 +172,9 @@ exports.entry_timing_update = function (req, res) {
                 console.log("ENTRY Resolver: Retrieve failed: " + err);
                 res.status(500).send('error');
             } else {
-                console.log("ENTRY Resolver: Entry Status Updated: " + data);
+                if (debug_mode === "true") {
+                    console.log("ENTRY Resolver: Entry Status Updated: " + data);
+                }
                 res.json(data);
                 calcTime(req.body["bib_number"]);
                 var_Updater('updated_time_entries_finished', Date.now());
@@ -177,42 +187,45 @@ exports.entry_timing_update = function (req, res) {
             $set: {
                 timing_status: 'dq',
                 final_place: 'DQ',
-                final_time: 'NT - Disqualified',
-                raw_final_time: 'NT'
+                final_time: 'NT - DISQUALIFIED',
+                raw_final_time: '999999'
             }
         }, function (err, data) {
             if (err || data == null) {
                 console.log("ENTRY Resolver: Retrieve failed: " + err);
                 res.status(500).send('error');
             } else {
-                console.log("ENTRY Resolver: Entry Status Updated: " + data);
+                if (debug_mode === "true") {
+                    console.log("ENTRY Resolver: Entry Status Updated: " + data);
+                }
                 res.json(data);
+                sortEntries();
                 events.save_event('Timing', data.entry_name + ' - Bib #' + req.body["bib_number"] + ' has been Disqualified');
             }
         });
-        sortEntries();
     }
     if (req.body["status"] === "reset") {
         entry.findOneAndUpdate({bib_number: req.body["bib_number"]}, {
             $set: {
                 timing_status: 'waiting',
                 final_place: 'NT',
-                final_time: 'NT',
-                raw_final_time: 'NT'
+                final_time: 'NT - WAITING',
+                raw_final_time: '999999'
             }
         }, function (err, data) {
             if (err || data == null) {
                 console.log("ENTRY Resolver: Retrieve failed: " + err);
                 res.status(500).send('error');
             } else {
-                console.log("ENTRY Resolver: Entry Status Updated: " + data);
+                if (debug_mode === "true") {
+                    console.log("ENTRY Resolver: Entry Status Updated: " + data);
+                }
                 res.json(data);
+                sortEntries();
                 events.save_event('Timing', data.entry_name + ' - Bib #' + req.body["bib_number"] + ' has been Reset');
             }
         });
-        sortEntries();
     }
-    socket.updateSockets();
 };
 
 //Calculate the final time after finish and publish
@@ -233,7 +246,7 @@ function calcTime(bib_number) {
             let ms = (raw_time + "0").slice(0, 1);
             let final_time = hh + ":" + mm + ":" + ss + "." + ms;
             let raw_final_time = hh + mm + ss + ms;
-            console.log(bib_number + " - Final Time Difference: " + final_time);
+            console.log("TIMING: Bib #" + bib_number + " - Final Time Difference: " + final_time);
             events.save_event('Timing', 'Calculated time for ' + details[0]["entry_name"] + ' - Bib #' + bib_number + ' is ' + final_time);
             //Find entry and update with final time
             entry.findOneAndUpdate({bib_number: bib_number}, {
@@ -245,7 +258,9 @@ function calcTime(bib_number) {
                 if (err || data == null) {
                     console.log("ENTRY Resolver: Retrieve failed: " + err);
                 } else {
-                    console.log("ENTRY Resolver: Entry Status Updated: " + data);
+                    if (debug_mode === "true") {
+                        //console.log("ENTRY Resolver: Entry Status Updated: " + data);
+                    }
                     sortEntries();
                 }
             });
@@ -265,7 +280,7 @@ function sortEntries() {
                 return parseFloat(a.raw_final_time) - parseFloat(b.raw_final_time);
             });
             let setPlace = 1;
-            console.log(listed_entries);
+            console.log("Ordered Data: " + listed_entries);
             //Set each finished result with place value
             for (let i in listed_entries) {
                 if (listed_entries[i]["timing_status"] === "finished") {
@@ -280,7 +295,10 @@ function sortEntries() {
                     setPlace += 1;
                 }
             }
-            socket.updateSockets();
+            //Delay to wait for DB to update
+            setTimeout(function(){
+                socket.updateSockets("sort_entries");
+            }, 300);
             events.save_event('Timing', 'Sorted through finished entries');
         }
     });
@@ -304,7 +322,7 @@ function var_Updater(var_name, var_value) {
             });
         } else {
             if (debug_mode === "true") {
-                console.log("VAR Resolver: " + var_name + " Updated: " + var_value)
+                console.log("VAR Resolver: (" + var_name + ") updated to value: " + var_value)
             }
         }
     });
