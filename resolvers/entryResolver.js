@@ -118,10 +118,10 @@ exports.entry_delete = function (req, res) {
 
 //Update the timing status of an entry
 exports.entry_timing_update = function (req, res) {
-    if (req.body["status"] === "safety") {
+    if (req.body["status"] === " checked") {
         entry.findOneAndUpdate({bib_number: req.body["bib_number"]}, {
             $set: {
-                safety_status: 'true',
+                check_status: 'CHECKED',
                 final_time: 'NT - IN QUEUE'
             }
         }, function (err, data) {

@@ -17,9 +17,9 @@ let entrySchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    safety_status: {
+    check_status: {
         type: String,
-        default: "false",
+        default: "NOT CHECKED",
     },
     timing_status: {
         type: String,

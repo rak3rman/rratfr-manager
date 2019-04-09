@@ -119,10 +119,12 @@ entryRouter(app);
 app.get('/', mainRouter.publicDashRoute);
 //Admin Dashboard
 app.get('/dashboard', auth.isLoggedIn, mainRouter.adminDashRoute);
-//Time Interface
+//Timing Interface
 app.get('/timing', auth.isLoggedIn, mainRouter.timingRoute);
 //Entry List
 app.get('/entry/list', auth.isLoggedIn, mainRouter.entryListRoute);
+//Entry Check
+app.get('/entry/check', auth.isLoggedIn, mainRouter.entryCheckRoute);
 
 //Auth Routes
 app.get('/login', authRouter.loginPage);

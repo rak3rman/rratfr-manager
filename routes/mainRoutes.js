@@ -18,6 +18,11 @@ exports.entryListRoute = function (req, res) {
     res.render('pages/entry_list.ejs', {title: 'Entry List', user: req.user})
 };
 
+//Entry Check Page Route
+exports.entryCheckRoute = function (req, res) {
+    res.render('pages/entry_check.ejs', {title: 'Entry Check', user: req.user})
+};
+
 //Time Interface Page Route
 exports.timingRoute = function (req, res) {
     res.render('pages/timing_interface.ejs', {title: 'Timing', user: req.user})

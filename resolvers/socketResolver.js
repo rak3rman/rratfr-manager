@@ -33,7 +33,7 @@ exports.socket_config = function (server) {
                             result: 'start_ready',
                             entry_name: details[0]["entry_name"],
                             category: details[0]["category"],
-                            safety_status: details[0]["safety_status"]
+                            check_status: details[0]["check_status"]
                         });
                     }
                     if (details[0]["timing_status"] === "en_route") {
@@ -42,7 +42,7 @@ exports.socket_config = function (server) {
                             result: 'finish_ready',
                             entry_name: details[0]["entry_name"],
                             category: details[0]["category"],
-                            safety_status: details[0]["safety_status"]
+                            check_status: details[0]["check_status"]
                         });
                     }
                     if (details[0]["timing_status"] === "finished") {
@@ -51,7 +51,7 @@ exports.socket_config = function (server) {
                             result: 'finished',
                             entry_name: details[0]["entry_name"],
                             category: details[0]["category"],
-                            safety_status: details[0]["safety_status"]
+                            check_status: details[0]["check_status"]
                         });
                     }
                     if (details[0]["timing_status"] === "dq") {
@@ -60,7 +60,7 @@ exports.socket_config = function (server) {
                             result: 'dq',
                             entry_name: details[0]["entry_name"],
                             category: details[0]["category"],
-                            safety_status: details[0]["safety_status"]
+                            check_status: details[0]["check_status"]
                         });
                     }
                 }
@@ -75,7 +75,7 @@ exports.socket_config = function (server) {
 //Get Statistics and send
 function getStatistics() {
     let total_entries_count = 0;
-    let missing_safety_count = 0;
+    let missing_check_count = 0;
     let entries_in_water_count = 0;
     let entries_finished_count = 0;
     let updated_time_total_entries;
@@ -88,8 +88,8 @@ function getStatistics() {
             io.emit('error', err);
         } else {
             for (let i in listed_entries) {
-                if (listed_entries[i]["safety_status"] === "false") {
-                    missing_safety_count += 1;
+                if (listed_entries[i]["check_status"] === "NOT CHECKED") {
+                    missing_check_count += 1;
                 }
                 if (listed_entries[i]["timing_status"] === "en_route") {
                     entries_in_water_count += 1;
@@ -120,7 +120,7 @@ function getStatistics() {
                     }
                     io.emit('race_data', {
                         total_entries: total_entries_count,
-                        missing_safety: missing_safety_count,
+                        missing_check: missing_check_count,
                         entries_in_water: entries_in_water_count,
                         entries_finished: entries_finished_count,
                         updated_total_entries: updated_time_total_entries,

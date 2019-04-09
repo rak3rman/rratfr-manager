@@ -44,7 +44,7 @@ $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
 //Socket.io handle Statistics
 socket.on('race_data', function(data){
     document.getElementById("totalStat").innerHTML = data.total_entries;
-    document.getElementById("safetyStat").innerHTML = data.missing_safety;
+    document.getElementById("checkStat").innerHTML = data.missing_check;
     document.getElementById("inwaterStat").innerHTML = data.entries_in_water;
     document.getElementById("finishStat").innerHTML = data.entries_finished;
 });
