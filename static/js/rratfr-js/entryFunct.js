@@ -186,6 +186,7 @@ function editEntry(bib_number, entry_name, category, start_time, end_time) {
                 type: "POST",
                 url: "/api/entry/edit",
                 data: {
+                    old_bib_number: bib_number,
                     bib_number: new_bib_number,
                     entry_name: new_entry_name,
                     category: new_category,

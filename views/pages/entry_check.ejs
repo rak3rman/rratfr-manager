@@ -1,4 +1,5 @@
 <% include ../partials/head.ejs %>
+<body class="off-canvas-sidebar">
 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top text-white">
     <div class="container-fluid">
         <div class="navbar-wrapper">
@@ -11,53 +12,44 @@
     </div>
 </nav>
 <div class="wrapper wrapper-full-page">
-    <div class="page-header login-page header-filter" filter-color="black" id="coverImage"
-         style="background-image: url('/static/img/race-2.jpg'); background-size: cover; background-position: top center;">
-        <div class="container p-login">
+    <div class="page-header register-page header-filter" filter-color="black" style="background-image: url('../../assets/img/register.jpg')">
+        <div class="container">
             <div class="row">
                 <div class="col-md-10 ml-auto mr-auto">
-                    <div class="card card-stats">
-                        <div class="card-header card-header-info card-header-icon">
-                            <div class="card-icon">
-                                <i class="fas fa-user-clock"></i>
-                            </div>
-                            <p class="card-category">Race Management</p>
-                            <h3 class="card-title">Entry Check</h3>
-                        </div>
-                        <div class="card-footer">
+                    <div class="card card-signup">
+                        <h2 class="card-title text-center">Register</h2>
+                        <div class="card-body">
                             <div class="row">
                                 <div class="col-md-5 ml-auto">
                                     <div class="info info-horizontal">
-                                        <div class="text-rose">
+                                        <div class="icon icon-rose">
                                             <i class="material-icons">timeline</i>
                                         </div>
                                         <div class="description">
                                             <h4 class="info-title">Marketing</h4>
-                                            <p class="text-muted">
-                                                We've created the marketing campaign of the website. It was a very
-                                                interesting collaboration.
+                                            <p class="description">
+                                                We've created the marketing campaign of the website. It was a very interesting collaboration.
                                             </p>
                                         </div>
                                     </div>
                                     <div class="info info-horizontal">
-                                        <div class="text-primary">
+                                        <div class="icon icon-primary">
                                             <i class="material-icons">code</i>
                                         </div>
                                         <div class="description">
                                             <h4 class="info-title">Fully Coded in HTML5</h4>
-                                            <p class="text-muted">
-                                                We've developed the website with HTML5 and CSS3. The client has access
-                                                to the code using GitHub.
+                                            <p class="description">
+                                                We've developed the website with HTML5 and CSS3. The client has access to the code using GitHub.
                                             </p>
                                         </div>
                                     </div>
                                     <div class="info info-horizontal">
-                                        <div class="text-info">
+                                        <div class="icon icon-info">
                                             <i class="material-icons">group</i>
                                         </div>
                                         <div class="description">
                                             <h4 class="info-title">Built Audience</h4>
-                                            <p class="text-muted">
+                                            <p class="description">
                                                 There is also a Fully Customizable CMS Admin Dashboard for this product.
                                             </p>
                                         </div>
@@ -65,6 +57,15 @@
                                 </div>
                                 <div class="col-md-5 mr-auto">
                                     <div class="social text-center">
+                                        <button class="btn btn-just-icon btn-round btn-twitter">
+                                            <i class="fa fa-twitter"></i>
+                                        </button>
+                                        <button class="btn btn-just-icon btn-round btn-dribbble">
+                                            <i class="fa fa-dribbble"></i>
+                                        </button>
+                                        <button class="btn btn-just-icon btn-round btn-facebook">
+                                            <i class="fa fa-facebook"> </i>
+                                        </button>
                                         <h4 class="mt-3"> or be classical </h4>
                                     </div>
                                     <form class="form" method="" action="">
@@ -124,15 +125,33 @@
                 <nav class="float-left">
                     <ul>
                         <li>
-                            <a href="/dashboard">
-                                <i class="fas fa-stream"></i> Dashboard
+                            <a href="https://www.creative-tim.com">
+                                Creative Tim
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://creative-tim.com/presentation">
+                                About Us
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://blog.creative-tim.com">
+                                Blog
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.creative-tim.com/license">
+                                Licenses
                             </a>
                         </li>
                     </ul>
                 </nav>
-                <div class="copyright float-right pr-2">
-                    Made with <a class="text-danger"><i class="fas fa-heart"></i></a> by <a class="text-white"
-                                                                                            href="https://github.com/RAK3RMAN">RAk3rman</a>
+                <div class="copyright float-right">
+                    ©
+                    <script>
+                        document.write(new Date().getFullYear())
+                    </script>2019, made with <i class="material-icons">favorite</i> by
+                    <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a> for a better web.
                 </div>
             </div>
         </footer>

@@ -8,6 +8,11 @@ exports.publicDashRoute = function (req, res) {
     res.render('pages/public_dashboard.ejs', {title: 'Dashboard', user: req.user})
 };
 
+//Display Dashboard Page Route
+exports.displayDashRoute = function (req, res) {
+    res.render('pages/display_dashboard.ejs', {title: 'Dashboard', user: req.user})
+};
+
 //Admin Dashboard Page Route
 exports.adminDashRoute = function (req, res) {
     res.render('pages/admin_dashboard.ejs', {title: 'Dashboard', user: req.user})

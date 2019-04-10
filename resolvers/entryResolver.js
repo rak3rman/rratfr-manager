@@ -71,13 +71,13 @@ exports.entry_details_all = function (req, res) {
 
 //Edit an existing entry
 exports.entry_edit = function (req, res) {
-    entry.find({bib_number: req.body["bib_number"]}, function (err, details) {
+    entry.find({bib_number: req.body["old_bib_number"]}, function (err, details) {
         console.log(details);
         if (err) {
             console.log("ENTRY Resolver: Retrieve failed: " + err);
             res.status(500).send('500 Error');
         } else {
-            entry.findOneAndUpdate({bib_number: req.body["bib_number"]}, {$set: req.body}, function (err, updatedEntry) {
+            entry.findOneAndUpdate({bib_number: req.body["old_bib_number"]}, {$set: req.body}, function (err, updatedEntry) {
                 if (err) {
                     console.log("ENTRY Resolver: Update failed: " + err);
                     res.send(err);

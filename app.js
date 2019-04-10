@@ -117,6 +117,8 @@ entryRouter(app);
 
 //Public Dashboard
 app.get('/', mainRouter.publicDashRoute);
+//Display Dashboard
+app.get('/display', mainRouter.displayDashRoute);
 //Admin Dashboard
 app.get('/dashboard', auth.isLoggedIn, mainRouter.adminDashRoute);
 //Timing Interface
