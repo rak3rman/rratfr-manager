@@ -97,24 +97,16 @@ function createEntry() {
                     category: result.value[2]
                 },
                 success: function (data) {
-                    Swal.fire({
-                        title: 'Entry Created',
-                        html: 'Parameters sent: <pre><code>' +
-                            JSON.stringify(result.value) +
-                            '</code></pre>',
-                        confirmButtonText: 'OK',
-                        type: 'success'
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Entry has been created!'
                     });
                 },
                 error: function (error_reason) {
-                    Swal.fire({
+                    Toast.fire({
+                        type: 'error',
                         title: 'Error: ' + error_reason.responseText,
-                        html: 'Parameters sent: <pre><code>' +
-                            JSON.stringify(result.value) +
-                            '</code></pre>',
-                        confirmButtonText: 'OK',
-                        type: 'error'
-                    })
+                    });
                 }
             });
         }
@@ -200,10 +192,10 @@ function editEntry(bib_number, entry_name, category, start_time, end_time) {
                         title: 'Entry has been updated'
                     });
                 },
-                error: function (data) {
+                error: function (error_reason) {
                     Toast.fire({
                         type: 'error',
-                        title: 'Error in updating entry...'
+                        title: 'Error: ' + error_reason.responseText,
                     });
                 }
             });

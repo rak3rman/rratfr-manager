@@ -71,28 +71,39 @@ exports.entry_details_all = function (req, res) {
 
 //Edit an existing entry
 exports.entry_edit = function (req, res) {
-    entry.find({bib_number: req.body["old_bib_number"]}, function (err, details) {
-        console.log(details);
+    entry.find({bib_number: req.body["bib_number"]}, function (err, newdetails) {
+        console.log(newdetails);
         if (err) {
             console.log("ENTRY Resolver: Retrieve failed: " + err);
             res.status(500).send('500 Error');
-        } else {
-            entry.findOneAndUpdate({bib_number: req.body["old_bib_number"]}, {$set: req.body}, function (err, updatedEntry) {
+        } else if (newdetails.length === 0 || req.body["bib_number"] === req.body["old_bib_number"]) {
+            entry.find({bib_number: req.body["old_bib_number"]}, function (err, details) {
+                console.log(details);
                 if (err) {
-                    console.log("ENTRY Resolver: Update failed: " + err);
-                    res.send(err);
+                    console.log("ENTRY Resolver: Retrieve failed: " + err);
+                    res.status(500).send('500 Error');
                 } else {
-                    console.log("ENTRY Resolver: Entry Updated: " + updatedEntry);
-                    res.json(updatedEntry);
-                    socket.updateSockets("entry_edit");
-                    events.save_event('Entries', 'Updated entry ' + updatedEntry.entry_name + ' - Bib #' + updatedEntry.bib_number);
+                    entry.findOneAndUpdate({bib_number: req.body["old_bib_number"]}, {$set: req.body}, function (err, updatedEntry) {
+                        if (err) {
+                            console.log("ENTRY Resolver: Update failed: " + err);
+                            res.send(err);
+                        } else {
+                            console.log("ENTRY Resolver: Entry Updated: " + updatedEntry);
+                            res.json(updatedEntry);
+                            socket.updateSockets("entry_edit");
+                            events.save_event('Entries', 'Updated entry ' + updatedEntry.entry_name + ' - Bib #' + updatedEntry.bib_number);
+                        }
+                    });
+                    if (details[0]["timing_status"] === "finished") {
+                        if (details[0]["start_time"] !== req.body["start_time"] || details[0]["end_time"] !== req.body["end_time"]) {
+                            calcTime(req.body["bib_number"]);
+                        }
+                    }
                 }
             });
-            if (details[0]["timing_status"] === "finished") {
-                if (details[0]["start_time"] !== req.body["start_time"] || details[0]["end_time"] !== req.body["end_time"]) {
-                    calcTime(req.body["bib_number"]);
-                }
-            }
+        } else {
+            console.log("ENTRY Resolver: ERROR Bib # Already Exists");
+            res.status(400).send('Bib # Already Exists');
         }
     });
 };
@@ -119,26 +130,37 @@ exports.entry_delete = function (req, res) {
 //Update the timing status of an entry
 exports.entry_timing_update = function (req, res) {
     if (req.body["status"] === "checked") {
-        entry.findOneAndUpdate({bib_number: req.body["old_bib_number"]}, {
-            $set: {
-                check_status: 'CHECKED',
-                final_time: 'NT - IN QUEUE',
-                bib_number: req.body["bib_number"],
-                entry_name: req.body["entry_name"],
-                category: req.body["category"],
-            }
-        }, function (err, data) {
-            if (err || data == null) {
+        entry.find({bib_number: req.body["bib_number"]}, function (err, newdetails) {
+            console.log(newdetails);
+            if (err) {
                 console.log("ENTRY Resolver: Retrieve failed: " + err);
-                res.status(500).send('error');
+                res.status(500).send('500 Error');
+            } else if (newdetails.length === 0 || req.body["bib_number"] === req.body["old_bib_number"]) {
+                entry.findOneAndUpdate({bib_number: req.body["old_bib_number"]}, {
+                    $set: {
+                        check_status: 'CHECKED',
+                        final_time: 'NT - IN QUEUE',
+                        bib_number: req.body["bib_number"],
+                        entry_name: req.body["entry_name"],
+                        category: req.body["category"],
+                    }
+                }, function (err, data) {
+                    if (err || data == null) {
+                        console.log("ENTRY Resolver: Retrieve failed: " + err);
+                        res.status(500).send('error');
+                    } else {
+                        if (debug_mode === "true") {
+                            console.log("ENTRY Resolver: Entry Status Updated: " + data);
+                        }
+                        res.json(data);
+                        var_Updater('updated_time_missing_check', Date.now());
+                        events.save_event('Timing', data.entry_name + ' - Bib #' + req.body["bib_number"] + ' has passed the Entry Check');
+                        socket.updateSockets("update_check");
+                    }
+                });
             } else {
-                if (debug_mode === "true") {
-                    console.log("ENTRY Resolver: Entry Status Updated: " + data);
-                }
-                res.json(data);
-                var_Updater('updated_time_missing_check', Date.now());
-                events.save_event('Timing', data.entry_name + ' - Bib #' + req.body["bib_number"] + ' has passed the Entry Check');
-                socket.updateSockets("update_check");
+                console.log("ENTRY Resolver: ERROR Bib # Already Exists");
+                res.status(400).send('Bib # Already Exists');
             }
         });
     }
