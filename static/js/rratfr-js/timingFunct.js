@@ -130,7 +130,7 @@ socket.on('check_bib_result', function (data) {
         );
         infoElement.empty();
     }
-    if (data.check_status === "false") {
+    if (data.check_status === "NOT CHECKED") {
         Toast.fire({
             type: 'error',
             title: 'This entry is missing a pre-race check!'

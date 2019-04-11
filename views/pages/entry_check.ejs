@@ -24,18 +24,19 @@
                                     <h3 class="card-title">
                                         2019 Entry Check
                                     </h3>
-                                    <h5 class="card-description">Use this form to ensure that an entry is ready for race day.</h5>
+                                    <h5 class="card-description">Use this form to ensure that an entry is ready for race
+                                        day</h5>
                                 </div>
                                 <div class="wizard-navigation">
                                     <ul class="nav nav-pills">
                                         <li class="nav-item" style="width: 50%;">
                                             <a class="nav-link" href="#loopup" data-toggle="tab" role="tab">
-                                                Lookup
+                                                <strong>Lookup</strong>
                                             </a>
                                         </li>
                                         <li class="nav-item" style="width: 50%;">
-                                            <a class="nav-link" href="#details" data-toggle="tab" role="tab">
-                                                Details
+                                            <a class="nav-link" onclick="createEntry()">
+                                                <strong>Create Entry</strong>
                                             </a>
                                         </li>
                                     </ul>
@@ -43,108 +44,19 @@
                                 <div class="card-body">
                                     <div class="tab-content">
                                         <div class="tab-pane active" id="loopup">
-                                            <h5 class="info-text"> Let's start with the basic information (with validation)</h5>
-                                            <div class="row justify-content-center">
-                                                <div class="col-sm-4">
-                                                    <div class="picture-container">
-                                                        <div class="picture">
-                                                            <img src="../../assets/img/default-avatar.png" class="picture-src" id="wizardPicturePreview" title="">
-                                                            <input type="file" id="wizard-picture">
-                                                        </div>
-                                                        <h6 class="description">Choose Picture</h6>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <div class="input-group form-control-lg">
-                                                        <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                  <i class="material-icons">face</i>
-                                </span>
-                                                        </div>
-                                                        <div class="form-group bmd-form-group">
-                                                            <label for="exampleInput1" class="bmd-label-floating">First Name (required)</label>
-                                                            <input type="text" class="form-control" id="exampleInput1" name="firstname" required="" aria-required="true">
-                                                        </div>
-                                                    </div>
-                                                    <div class="input-group form-control-lg">
-                                                        <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                  <i class="material-icons">record_voice_over</i>
-                                </span>
-                                                        </div>
-                                                        <div class="form-group bmd-form-group">
-                                                            <label for="exampleInput11" class="bmd-label-floating">Second Name</label>
-                                                            <input type="text" class="form-control" id="exampleInput11" name="lastname" required="" aria-required="true">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-10 mt-3">
-                                                    <div class="input-group form-control-lg">
-                                                        <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                  <i class="material-icons">email</i>
-                                </span>
-                                                        </div>
-                                                        <div class="form-group bmd-form-group">
-                                                            <label for="exampleInput1" class="bmd-label-floating">Email (required)</label>
-                                                            <input type="email" class="form-control" id="exampleemalil" name="email" required="" aria-required="true">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane" id="details">
-                                            <h5 class="info-text"> What are you doing? (checkboxes) </h5>
-                                            <div class="row justify-content-center">
-                                                <div class="col-lg-10">
-                                                    <div class="row">
-                                                        <div class="col-sm-4">
-                                                            <div class="choice" data-toggle="wizard-checkbox">
-                                                                <input type="checkbox" name="jobb" value="Design">
-                                                                <div class="icon">
-                                                                    <i class="fa fa-pencil"></i>
-                                                                </div>
-                                                                <h6>Design</h6>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-4">
-                                                            <div class="choice" data-toggle="wizard-checkbox">
-                                                                <input type="checkbox" name="jobb" value="Code">
-                                                                <div class="icon">
-                                                                    <i class="fa fa-terminal"></i>
-                                                                </div>
-                                                                <h6>Code</h6>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-4">
-                                                            <div class="choice" data-toggle="wizard-checkbox">
-                                                                <input type="checkbox" name="jobb" value="Develop">
-                                                                <div class="icon">
-                                                                    <i class="fa fa-laptop"></i>
-                                                                </div>
-                                                                <h6>Develop</h6>
-                                                            </div>
-                                                            <div class="dropdown bootstrap-select"><select class="selectpicker" data-style="btn btn-primary btn-round" title="Single Select" data-size="7" tabindex="-98"><option class="bs-title-option" value=""></option>
-                                                                    <option disabled="" selected="">Choose city</option>
-                                                                    <option value="2">Foobar</option>
-                                                                    <option value="3">Is great</option>
-                                                                </select><button type="button" class="dropdown-toggle btn btn-primary btn-round" data-toggle="dropdown" role="button" title="Choose city"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">Choose city</div></div> </div></button><div class="dropdown-menu " role="combobox"><div class="inner show" role="listbox" aria-expanded="false" tabindex="-1"><ul class="dropdown-menu inner show"></ul></div></div></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div class="table-responsive">
+                                                <table class="table table-hover table-striped dt-responsive display nowrap"
+                                                       id="entryTable" style="width: 100%">
+                                                    <thead class="text-muted">
+                                                    <th>Name</th>
+                                                    <th>Bib #</th>
+                                                    <th>Category</th>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card-footer">
-                                    <div class="mr-auto">
-                                        <input type="button" class="btn btn-previous btn-fill btn-default btn-wd disabled" name="previous" value="Previous">
-                                    </div>
-                                    <div class="ml-auto">
-                                        <input type="button" class="btn btn-next btn-fill btn-rose btn-wd" name="next" value="Next">
-                                        <input type="button" class="btn btn-finish btn-fill btn-rose btn-wd" name="finish" value="Finish" style="display: none;">
-                                    </div>
-                                    <div class="clearfix"></div>
                                 </div>
                             </form>
                         </div>
@@ -165,40 +77,13 @@
                     </ul>
                 </nav>
                 <div class="copyright float-right pr-2">
-                    Made with <a class="text-danger"><i class="fas fa-heart"></i></a> by <a class="text-white" href="https://github.com/RAK3RMAN">RAk3rman</a>
+                    Made with <a class="text-danger"><i class="fas fa-heart"></i></a> by <a class="text-white"
+                                                                                            href="https://github.com/RAK3RMAN">RAk3rman</a>
                 </div>
             </div>
         </footer>
     </div>
 </div>
-<footer>
-    <div class="container" style="width: 100%">
-        <div class="card card-stats">
-            <div class="card-header card-header-info card-header-icon">
-                <div class="card-icon">
-                    <i class="far fa-copy"></i>
-                </div>
-                <p class="card-category">Race Timing</p>
-                <h3 class="card-title">Entry List</h3>
-            </div>
-            <div class="card-footer">
-                <div class="table-responsive">
-                    <table class="table table-hover table-striped dt-responsive display nowrap"
-                           id="entryTable" style="width: 100%">
-                        <thead class="text-muted">
-                        <th>Bib #</th>
-                        <th>Name</th>
-                        <th>Category</th>
-                        <th>Check Status</th>
-                        <th>Timing Status</th>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
 <% include ../partials/footer.ejs %>
 <script type="text/javascript" src="/static/js/rratfr-js/checkFunct.js"></script>
 <script>

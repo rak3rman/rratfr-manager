@@ -79,7 +79,7 @@ function getStatistics() {
     let entries_in_water_count = 0;
     let entries_finished_count = 0;
     let updated_time_total_entries;
-    let updated_time_missing_safety;
+    let updated_time_missing_check;
     let updated_time_entries_in_water;
     let updated_time_entries_finished;
     entry.find({}, function (err, listed_entries) {
@@ -108,8 +108,8 @@ function getStatistics() {
                         if (variables[i]["var_name"] === "updated_time_total_entries") {
                             updated_time_total_entries = variables[i]["var_value"];
                         }
-                        if (variables[i]["var_name"] === "updated_time_missing_safety") {
-                            updated_time_missing_safety = variables[i]["var_value"];
+                        if (variables[i]["var_name"] === "updated_time_missing_check") {
+                            updated_time_missing_check = variables[i]["var_value"];
                         }
                         if (variables[i]["var_name"] === "updated_time_entries_in_water") {
                             updated_time_entries_in_water = variables[i]["var_value"];
@@ -124,7 +124,7 @@ function getStatistics() {
                         entries_in_water: entries_in_water_count,
                         entries_finished: entries_finished_count,
                         updated_total_entries: updated_time_total_entries,
-                        updated_missing_safety: updated_time_missing_safety,
+                        updated_missing_check: updated_time_missing_check,
                         updated_entries_in_water: updated_time_entries_in_water,
                         updated_entries_finished: updated_time_entries_finished
                     });

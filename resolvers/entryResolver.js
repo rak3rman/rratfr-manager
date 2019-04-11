@@ -108,7 +108,7 @@ exports.entry_delete = function (req, res) {
             res.json(req.body["bib_number"]);
             sortEntries();
             var_Updater('updated_time_total_entries', Date.now());
-            var_Updater('updated_time_missing_safety', Date.now());
+            var_Updater('updated_time_missing_check', Date.now());
             var_Updater('updated_time_entries_in_water', Date.now());
             var_Updater('updated_time_entries_finished', Date.now());
             events.save_event('Entries', 'Deleted entry - Bib #' + req.body["bib_number"]);
@@ -118,11 +118,14 @@ exports.entry_delete = function (req, res) {
 
 //Update the timing status of an entry
 exports.entry_timing_update = function (req, res) {
-    if (req.body["status"] === " checked") {
-        entry.findOneAndUpdate({bib_number: req.body["bib_number"]}, {
+    if (req.body["status"] === "checked") {
+        entry.findOneAndUpdate({bib_number: req.body["old_bib_number"]}, {
             $set: {
                 check_status: 'CHECKED',
-                final_time: 'NT - IN QUEUE'
+                final_time: 'NT - IN QUEUE',
+                bib_number: req.body["bib_number"],
+                entry_name: req.body["entry_name"],
+                category: req.body["category"],
             }
         }, function (err, data) {
             if (err || data == null) {
@@ -133,9 +136,9 @@ exports.entry_timing_update = function (req, res) {
                     console.log("ENTRY Resolver: Entry Status Updated: " + data);
                 }
                 res.json(data);
-                var_Updater('updated_time_missing_safety', Date.now());
-                events.save_event('Timing', data.entry_name + ' - Bib #' + req.body["bib_number"] + ' has passed the Safety Check');
-                socket.updateSockets("update_safety");
+                var_Updater('updated_time_missing_check', Date.now());
+                events.save_event('Timing', data.entry_name + ' - Bib #' + req.body["bib_number"] + ' has passed the Entry Check');
+                socket.updateSockets("update_check");
             }
         });
     }
