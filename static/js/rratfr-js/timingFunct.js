@@ -42,7 +42,13 @@ socket.on('entry_data', function (data) {
     leaderTable.clear();
     $.each(data, function (i, value) {
         if (value.timing_status === "waiting") {
-            queueTable.row.add([value.bib_number, value.entry_name, value.category]);
+            let name;
+            if (value.check_status === "NOT CHECKED") {
+                name = "<a class='text-danger'><i class=\"fas fa-times-circle\"></i></a> " + value.entry_name;
+            } else {
+                name = "<a class='text-success'><i class=\"fas fa-check-circle\"></i></a> " + value.entry_name;
+            }
+            queueTable.row.add([value.bib_number, name, value.category]);
         } else if (value.timing_status === "en_route") {
             enrouteTable.row.add([value.bib_number, value.entry_name, moment(value.start_time).format('MM/DD/YY, h:mm:ss a'), value.category]);
         } else {

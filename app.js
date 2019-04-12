@@ -46,13 +46,20 @@ if (console_port === undefined) {
 let mongodb_url = storage.get('mongodb_url');
 if (mongodb_url === undefined) {
     storage.set('mongodb_url', 'mongodb://localhost:27017');
-    console.log('Auth Config Manager: MongoDB URL Set to DEFAULT: mongodb://localhost:27017');
+    console.log('Config Manager: MongoDB URL Set to DEFAULT: mongodb://localhost:27017');
 }
 //Debug Mode Check
 let debug_mode = storage.get('debug_mode');
 if (debug_mode === undefined) {
     storage.set('debug_mode', 'false');
-    console.log('Lema Config Manager: Debug Mode Set to DEFAULT: false');
+    console.log('Config Manager: Debug Mode Set to DEFAULT: false');
+}
+//Current Year Check
+let current_year = storage.get('current_year');
+let d = new Date();
+if (current_year !== d.getFullYear()) {
+    storage.set('current_year', d.getFullYear());
+    console.log('Config Manager: Current Year Set to ' + d.getFullYear());
 }
 //End of System Config Checks - - - - - - - - - - - - - -
 
