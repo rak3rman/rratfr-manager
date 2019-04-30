@@ -10,21 +10,35 @@ This platform is built for the specific use on race day of the Rock River Anythi
 ```
 --app.js # Primary NodeJS file
 --routes # Routes for views
+  --authRoutes.js
   --mainRoutes.js
+  --entryRoutes.js
 --views # Components of webpage, HTML
   --pages
-    --home.ejs # Home Page
-    --error.ejs # Error Page
+  --partials
 --config # Folder where configurations are set
   --exitOpt.js # Exit options when running in testing environment
   --sysConfig.json # Appears upon system configuration within application
---static # Place static files to be accessed by webpage here
+--resolvers # Logic Resolvers
+  --authResolver.js # Auth Logic
+  --entryResolver.js # Entry Config Logic
+  --eventResolver.js # Logic for creating Events
+  --socketResolver.js # Socket Logic
+--models # MongoDB Model's
+  --userModel.js # MongoDB Auth Model
+  --entryModel.js # Model for Entries
+  --eventsModel.js # Model for Events
+  --varModel.js # Model for storing variables
+--sys_funct # System Functions
+  --passport.js # Passport.js Logic
+--static # Static files contained here
 --package.json # NPM 
 --package-lock.json
 --start.sh
 --LICENSE
 --README.md
 --.travis.yml
+--.gitignore
 ```
 
 ## Install and Setup
