@@ -17,14 +17,26 @@ let tableSettings = {
         [10, 25, 50, "All"]
     ],
     "responsive": true,
-    "order": [[ 2, "asc" ]],
+    "order": [[2, "asc"]],
     "columnDefs": [
-        { "orderable": false, "targets": 0 }
+        {"orderable": false, "targets": 0}
     ],
     "language": {
         "emptyTable": "Entries will be updated soon!"
     },
 };
+let results2018 = $('#results2018').DataTable(
+    {
+        "lengthMenu": [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+        ],
+        "responsive": true,
+        "ordering": false,
+        "searching": false,
+        "bLengthChange": false
+    }
+);
 let leaderTable = $('#leaderTable').DataTable(tableSettings);
 $(window).trigger('resize');
 //Socket.io Get Statistics
