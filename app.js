@@ -22,7 +22,6 @@ let passport = require('passport');
 let flash = require('connect-flash');
 let RateLimit = require('express-rate-limit');
 let helmet = require('helmet');
-let ExpressBrute = require('express-brute');
 
 //Setup Local Database
 let dataStore = require('data-store');
@@ -109,8 +108,6 @@ let apiLimiter = new RateLimit({
     windowMs: 15*60*1000, // 15 minutes
     max: 100,
 });
-let store = new ExpressBrute.MemoryStore();
-let bruteforce = new ExpressBrute(store);
 
 //End of Initialize Packages and Routers - - - - - - - -
 
