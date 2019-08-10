@@ -94,8 +94,12 @@ socket.on('new_event', function(data){
 //Master Clock Logic
 setInterval(setClock, 100);
 function setClock() {
+    let posneg = "T-";
+    if (Math.sign(Date.now() - racestart) === 1) {
+        posneg = "T+";
+    }
     let duration = moment.duration(Math.abs(Date.now() - racestart), 'milliseconds');
-    document.getElementById("masterclock").innerHTML = Math.round(duration.asHours()) + ":" + duration.minutes() + ":" + duration.seconds() + "." + duration.milliseconds().toString().slice(0,1)
+    document.getElementById("masterclock").innerHTML = posneg + Math.round(duration.asHours()) + ":" + duration.minutes() + ":" + duration.seconds() + "." + duration.milliseconds().toString().slice(0,1)
 }
 
 //Socket.io Error
