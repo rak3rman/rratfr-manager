@@ -53,6 +53,18 @@ if (debug_mode === undefined) {
     storage.set('debug_mode', 'false');
     console.log('Config Manager: Debug Mode Set to DEFAULT: false');
 }
+//Single Sign Up Mode
+let signup_mode = storage.get('signup_mode');
+if (signup_mode === undefined) {
+    storage.set('signup_mode', 'true');
+    console.log('Config Manager: Signup Mode Set to DEFAULT: true');
+}
+//Race Date
+let racedate = storage.get('racedate');
+if (racedate === undefined) {
+    storage.set('racedate', ' ');
+    console.log('Config Manager: Race Date needs to be configured');
+}
 //Current Year Check
 let current_year = storage.get('current_year');
 let d = new Date();
@@ -104,10 +116,6 @@ app.use('/static', express.static(process.cwd() + '/static'));
 //Application Security
 app.use(helmet());
 app.enable('trust proxy');
-let apiLimiter = new RateLimit({
-    windowMs: 15*60*1000, // 15 minutes
-    max: 100,
-});
 
 //End of Initialize Packages and Routers - - - - - - - -
 
@@ -119,8 +127,20 @@ let apiLimiter = new RateLimit({
 //Forward Entry Routes
 entryRouter(app);
 
-//Public Dashboard
-app.get('/', mainRouter.publicDashRoute);
+//Live-Historic Scheduler
+if (storage.get('racedate') < Date.now()) {
+    app.get('/', (req, res) => {
+        res.redirect('/results/historic')
+    })
+} else {
+    app.get('/', (req, res) => {
+        res.redirect('/results/live')
+    })
+}
+//Live Results
+app.get('/results/live', mainRouter.liveResultsRoute);
+//Historical Results
+app.get('/results/historic', mainRouter.historicResultsRoute);
 //Display Dashboard
 app.get('/display', mainRouter.displayDashRoute);
 //Admin Dashboard
@@ -134,7 +154,6 @@ app.get('/entry/check', auth.isLoggedIn, mainRouter.entryCheckRoute);
 
 //Auth Routes
 app.get('/login', authRouter.loginPage);
-app.get('/signup', authRouter.signupPage);
 app.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/login');
@@ -144,11 +163,14 @@ app.post('/login', passport.authenticate('local-login', {
     failureRedirect: '/login',
     failureFlash: true
 }));
-app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/signup',
-    failureFlash: true
-}));
+if (storage.get('signup_mode') === 'true') {
+    app.get('/signup', authRouter.signupPage);
+    app.post('/signup', passport.authenticate('local-signup', {
+        successRedirect: '/dashboard',
+        failureRedirect: '/signup',
+        failureFlash: true
+    }));
+}
 
 //End of RRATFR Manager Config Routes/Logic - - - - - - - - -
 

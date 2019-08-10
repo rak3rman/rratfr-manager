@@ -84,6 +84,7 @@ function createEntry() {
             inputOptions: {
                 'DIY': 'DIY Division',
                 'HULL': 'HULL Division',
+                'UNKNOWN': 'UNKNOWN',
             }
         }
     ]).then((result) => {
