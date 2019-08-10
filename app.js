@@ -139,7 +139,7 @@ app.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/login');
 });
-app.post('/login', bruteforce.prevent, passport.authenticate('local-login', {
+app.post('/login', passport.authenticate('local-login', {
     successRedirect: '/dashboard',
     failureRedirect: '/login',
     failureFlash: true
