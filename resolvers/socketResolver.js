@@ -14,6 +14,7 @@ exports.socket_config = function (server) {
     io = require('socket.io')(server);
     io.on('connection', function (socket) {
         console.log('Socket.io: User Connected');
+        storage.set('userconnect', io.engine.clientsCount);
         getStatistics();
         getEntryData();
         //Check Bib Number and Send Result
@@ -68,6 +69,7 @@ exports.socket_config = function (server) {
         });
         socket.on('disconnect', function () {
             console.log('Socket.io: User Disconnected');
+            storage.set('userconnect', io.engine.clientsCount);
         });
     });
 };

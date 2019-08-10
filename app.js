@@ -20,7 +20,6 @@ let uuidv4 = require('uuid/v4');
 let mongoose = require('mongoose');
 let passport = require('passport');
 let flash = require('connect-flash');
-let RateLimit = require('express-rate-limit');
 let helmet = require('helmet');
 
 //Setup Local Database
@@ -65,6 +64,9 @@ if (racedate === undefined) {
     storage.set('racedate', ' ');
     console.log('Config Manager: Race Date needs to be configured');
 }
+//Number of Users Connected
+storage.set('userconnect', 0);
+console.log(storage.get('userconnect'));
 //Current Year Check
 let current_year = storage.get('current_year');
 let d = new Date();
@@ -128,7 +130,7 @@ app.enable('trust proxy');
 entryRouter(app);
 
 //Live-Historic Scheduler
-if (storage.get('racedate') < Date.now()) {
+if (storage.get('racedate') > Date.now()) {
     app.get('/', (req, res) => {
         res.redirect('/results/historic')
     })
