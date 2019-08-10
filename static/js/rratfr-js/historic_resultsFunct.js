@@ -47,11 +47,3 @@ function setImage() {
     let random = (Math.floor(Math.random() * 8)) + 1;
     document.getElementById("coverImage").style = "background-image: url('/static/img/race-" + random + ".jpg'); background-size: cover; background-position: top center;";
 }
-
-//Socket.io Error
-socket.on('error', function (data) {
-    Toast.fire({
-        type: 'error',
-        title: 'Error with retrieving data...'
-    });
-});
