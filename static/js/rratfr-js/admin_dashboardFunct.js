@@ -10,6 +10,7 @@ const Toast = Swal.mixin({
     showConfirmButton: false,
     timer: 5000
 });
+let racestart = 0;
 //Set Table Settings
 let tableSettings = {
     "lengthMenu": [
@@ -47,6 +48,8 @@ socket.on('race_data', function(data){
     document.getElementById("checkStat").innerHTML = data.missing_check;
     document.getElementById("inwaterStat").innerHTML = data.entries_in_water;
     document.getElementById("finishStat").innerHTML = data.entries_finished;
+    document.getElementById("connected_users").innerHTML = data.connected_users;
+    racestart = data.racestart;
 });
 
 //Socket.io handle Leaderboard Data
@@ -87,6 +90,13 @@ socket.on('new_event', function(data){
     eventsAllTable.draw();
     $(window).trigger('resize');
 });
+
+//Master Clock Logic
+setInterval(setClock, 100);
+function setClock() {
+    let duration = moment.duration(Math.abs(Date.now() - racestart), 'milliseconds');
+    document.getElementById("masterclock").innerHTML = Math.round(duration.asHours()) + ":" + duration.minutes() + ":" + duration.seconds() + "." + duration.milliseconds().toString().slice(0,1)
+}
 
 //Socket.io Error
 socket.on('error', function(data){

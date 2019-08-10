@@ -4,6 +4,7 @@ Author       : RAk3rman
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\*/
 let entry = require('../models/entryModel.js');
 let varSet = require('../models/varModel.js');
+let event = require('../models/eventsModel.js');
 let dataStore = require('data-store');
 let storage = new dataStore({path: './config/sysConfig.json'});
 let debug_mode = storage.get('debug_mode');
@@ -128,7 +129,9 @@ function getStatistics() {
                         updated_total_entries: updated_time_total_entries,
                         updated_missing_check: updated_time_missing_check,
                         updated_entries_in_water: updated_time_entries_in_water,
-                        updated_entries_finished: updated_time_entries_finished
+                        updated_entries_finished: updated_time_entries_finished,
+                        connected_users: storage.get('userconnect'),
+                        racestart: storage.get('racedate')
                     });
                     if (debug_mode === "true") {
                         console.log("Socket.io: Statistics Sent (race_data)")
@@ -139,7 +142,7 @@ function getStatistics() {
     });
 }
 
-//Get entries data and send
+//Get entry data and send
 function getEntryData() {
     entry.find({}, function (err, listed_entries) {
         if (err) {
