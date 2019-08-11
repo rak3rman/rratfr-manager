@@ -83,13 +83,13 @@ function refreshCounter(dataCounter) {
             refreshCounter(dataCounter);
         }, 1000);
     } else if (dataCounter === 1) {
-        document.getElementById("refreshCount").innerHTML = "Data will update in " + dataCounter + " Second";
+        document.getElementById("refreshCount").innerHTML = "Data will cycle in " + dataCounter + " Second";
         dataCounter -= 1;
         setTimeout(function(){
             refreshCounter(dataCounter);
         }, 1000);
     } else {
-        document.getElementById("refreshCount").innerHTML = "Data will update in " + dataCounter + " Seconds";
+        document.getElementById("refreshCount").innerHTML = "Data will cycle in " + dataCounter + " Seconds";
         dataCounter -= 1;
         setTimeout(function(){
             refreshCounter(dataCounter);
