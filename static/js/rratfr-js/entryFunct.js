@@ -238,3 +238,35 @@ function deleteEntry(bib_number) {
         }
     })
 }
+
+//Re-Sort Entries
+function sortEntries() {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to re-sort all entries?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, sort entries!'
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                type: "POST",
+                url: "/api/entry/sort",
+                success: function (data) {
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Entries have been sorted!'
+                    });
+                },
+                error: function (data) {
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Error in sorting entries...'
+                    });
+                }
+            });
+        }
+    })
+}

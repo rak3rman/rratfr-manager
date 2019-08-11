@@ -22,6 +22,9 @@ module.exports = function (app) {
     app.route('/api/entry/delete')
         .post(auth.isLoggedIn, entry.entry_delete);
 
+    app.route('/api/entry/sort')
+        .post(auth.isLoggedIn, entry.entry_sort);
+
     app.route('/api/entry/timing/update')
         .post(auth.isLoggedIn, entry.entry_timing_update);
 

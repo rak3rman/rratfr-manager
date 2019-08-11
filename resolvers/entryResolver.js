@@ -329,6 +329,12 @@ function sortEntries() {
     });
 }
 
+//Manual request to sort all entries
+exports.entry_sort = function (req, res) {
+    sortEntries();
+    res.status(200).send('success');
+};
+
 //Update Variables to DB
 let varSet = require('../models/varModel.js');
 function var_Updater(var_name, var_value) {
