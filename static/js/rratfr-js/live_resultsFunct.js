@@ -78,7 +78,7 @@ function setImage() {
 //Socket.io Error
 socket.on('error', function (data) {
     Toast.fire({
-        type: 'error',
-        title: 'Error with retrieving data...'
+        type: 'info',
+        title: 'Please refresh page'
     });
 });

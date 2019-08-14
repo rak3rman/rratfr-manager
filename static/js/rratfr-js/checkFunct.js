@@ -179,8 +179,8 @@ function checkEntry(bib_number, entry_name, category, start_time, end_time) {
 //Socket.io Error
 socket.on('error', function (data) {
     Toast.fire({
-        type: 'error',
-        title: 'Error with retrieving data...'
+        type: 'info',
+        title: 'Please refresh page'
     });
 });
 
