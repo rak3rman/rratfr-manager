@@ -13,6 +13,11 @@ let entrySchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    img: {
+        data: Buffer,
+        contentType: String,
+        required: false,
+    },
     category: {
         type: String,
         required: true,

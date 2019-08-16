@@ -1,0 +1,126 @@
+<% include ../partials/head.ejs %>
+<link href="/static/css/image-picker.css" rel="stylesheet"/>
+<body class="off-canvas-sidebar">
+<nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top text-white">
+    <div class="container-fluid">
+        <div class="navbar-wrapper">
+            <a class="navbar-brand" href="/">
+                <img src="/static/img/rratfr-logo.png" class="pr-1"
+                     style="width: auto; max-width: 55px; -webkit-filter: invert(100%);">
+                <fontb>Race Manager</fontb>
+            </a>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end pt-4">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="/results/live" class="nav-link">
+                        <i class="material-icons">dashboard</i> <strong>Live</strong> Results
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/results/historic" class="nav-link">
+                        <i class="material-icons">library_books</i> Historic Results
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="/peoples-choice" class="nav-link">
+                        <i class="material-icons">check</i> Vote for People's Choice
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/login" class="nav-link">
+                        <i class="material-icons">fingerprint</i> Login
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://www.rratfr.com" class="nav-link">
+                        <i class="material-icons">exit_to_app</i> RRATFR Website
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="wrapper wrapper-full-page">
+    <div class="page-header register-page header-filter" id="coverImage" filter-color="black"
+         style="background-image: url('/static/img/race-2.jpg'); background-size: cover; background-position: top center;">
+        <div class="container">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-9 col-sm-12 m-auto">
+                        <div class="card card-stats">
+                            <div class="card-header card-header-info card-header-icon">
+                                <div class="card-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <p class="card-category">Sunday, August 18th, 2019</p>
+                                <h3 class="card-title">People's Choice</h3>
+                            </div>
+                            <div class="card-footer">
+                                <div class="row p-3">
+                                    <h2 class="col-12 card-title m-auto">Vote for the People's Choice Award!
+                                    </h2>
+                                    <h4 class="col-12 m-auto"><u>Reminders:</u> Select below the entry that
+                                        <strong>you</strong> like the best based on <strong>creativity</strong> and
+                                        <strong>ingenuity</strong>. Voting is open August 18, 2019 from <strong>10am to 4pm CDT</strong>.
+                                        Each person is only allowed <strong>one</strong> entry per device. Please make sure to submit your vote at the bottom of the page!</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="container">
+                <div class="arrow bounce">
+                    <a style="color: white; text-decoration: none;" class="fa fa-arrow-down fa-2x" href="#"></a>
+                </div>
+                <div class="copyright float-right pr-2">
+                    Made with <a class="text-danger"><i class="fas fa-heart"></i></a> by <a class="text-white"
+                                                                                            href="https://github.com/RAK3RMAN">RAk3rman</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+<footer>
+    <div class="container" style="width: 100%">
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card card-stats">
+                    <div class="card-header card-header-success card-header-icon">
+                        <div class="card-icon">
+                            <i class="fas fa-vote-yea"></i>
+                        </div>
+                        <p class="card-category">People's Choice Award</p>
+                        <h3 class="card-title">2019 Entries</h3>
+                    </div>
+                    <div class="card-footer">
+                        <select class="image-picker show-labels show-html" id="entries"></select>
+                    </div>
+                    <button class="btn btn-success m-3" onclick="sendVote()">
+                        <i class="far fa-paper-plane"></i> <strong>Submit Vote</strong>
+                        <div class="ripple-container"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<% include ../partials/footer.ejs %>
+<script type="text/javascript" src="/static/js/plugins/image-picker.js"></script>
+<script type="text/javascript" src="/static/js/rratfr-js/peoples_choiceFunct.js"></script>
+<script>
+    document.ready = function () {
+        setImage();
+        getInfo();
+    }
+</script>

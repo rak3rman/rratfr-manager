@@ -145,6 +145,8 @@ app.get('/results/live', mainRouter.liveResultsRoute);
 app.get('/results/historic', mainRouter.historicResultsRoute);
 //Display Dashboard
 app.get('/display', mainRouter.displayDashRoute);
+//People's Choice Voting
+app.get('/peoples-choice', mainRouter.peoplesChoiceRoute);
 //Admin Dashboard
 app.get('/dashboard', auth.isLoggedIn, mainRouter.adminDashRoute);
 //Timing Interface

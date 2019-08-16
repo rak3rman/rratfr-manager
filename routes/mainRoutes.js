@@ -20,6 +20,11 @@ exports.displayDashRoute = function (req, res) {
     res.render('pages/display_live_results.ejs', {title: 'Dashboard', user: req.user})
 };
 
+//Display Dashboard Page Route
+exports.peoplesChoiceRoute = function (req, res) {
+    res.render('pages/peoples_choice.ejs', {title: "People's Choice Voting", user: req.user})
+};
+
 //Admin Dashboard Page Route
 exports.adminDashRoute = function (req, res) {
     res.render('pages/admin_dashboard.ejs', {title: 'Dashboard', user: req.user})

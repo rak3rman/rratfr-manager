@@ -65,7 +65,7 @@ function createEntry() {
     Swal.mixin({
         confirmButtonText: 'Next &rarr;',
         showCancelButton: true,
-        progressSteps: ['1', '2', '3'],
+        progressSteps: ['1', '2', '3', '4'],
     }).queue([
         {
             title: 'Bib Number',
@@ -86,7 +86,15 @@ function createEntry() {
                 'HULL': 'HULL Division',
                 'UNKNOWN': 'UNKNOWN',
             }
-        }
+        },
+        {
+            title: 'Select image',
+            input: 'file',
+            inputAttributes: {
+                accept: 'image/*',
+                'aria-label': 'Upload a picture of the entry'
+            }
+        },
     ]).then((result) => {
         if (result.value) {
             $.ajax({
@@ -95,8 +103,10 @@ function createEntry() {
                 data: {
                     bib_number: result.value[0],
                     entry_name: result.value[1],
-                    category: result.value[2]
+                    category: result.value[2],
+                    img: result.value[3]
                 },
+                processData: false,
                 success: function (data) {
                     Toast.fire({
                         type: 'success',
