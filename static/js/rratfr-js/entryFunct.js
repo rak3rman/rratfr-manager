@@ -46,7 +46,7 @@ socket.on('entry_data', function (data) {
             "<i class=\"fas fa-times-circle\"></i> Delete\n" +
             "</div></div>"
         );
-        entryTable.row.add([value.bib_number, value.entry_name, value.category, value.check_status, value.timing_status, moment(value.start_time).format('MM/DD/YY, h:mm:ss a'), moment(value.end_time).format('MM/DD/YY, h:mm:ss a'), value.final_time, value.final_place, tools]);
+        entryTable.row.add([value.bib_number, value.entry_name, value.category, value.vote_count, value.check_status, value.timing_status, moment(value.start_time).format('MM/DD/YY, h:mm:ss a'), moment(value.end_time).format('MM/DD/YY, h:mm:ss a'), value.final_time, value.final_place, tools]);
     });
     entryTable.draw();
     $(window).trigger('resize');
@@ -131,7 +131,7 @@ function editEntry(bib_number, entry_name, category, start_time, end_time) {
             '   <label class="col-sm-3 col-form-label text-left pb-0">Bib Number</label>\n' +
             '   <div class="col-sm-9">\n' +
             '       <div class="form-group has-default bmd-form-group">\n' +
-            '           <input type="text" class="form-control" value="' + bib_number + '" id="editBib">\n' +
+            '           <input type="text" class="form-control" disabled value="' + bib_number + '" id="editBib">\n' +
             '       </div>\n' +
             '   </div>\n' +
             '</div>' +

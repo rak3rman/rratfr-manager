@@ -374,12 +374,30 @@ exports.submit_vote = function (req, res) {
                     console.log("VOTE Resolver: Save failed: " + err);
                     res.send(err);
                 } else {
+                    //Vote is now stored, update vote_count of entry
                     if (debug_mode === "true") {
                         console.log('VOTE Resolver: Vote Created: ' + JSON.stringify(created_vote))
                     }
-                    events.save_event('Voting', 'Noted new vote from IP: ' + req.body.user_ip + ' for Bib #: ' + req.body.bib_number)
+                    events.save_event('Voting', 'Noted new vote from IP: ' + req.body.user_ip + ' for Bib #: ' + req.body.bib_number);
+                    entry.find({bib_number: req.body.bib_number}, function (err, details) {
+                        if (err) {
+                            console.log("ENTRY Resolver: Retrieve failed: " + err);
+                            res.status(500).send('500 Error');
+                        } else {
+                            entry.findOneAndUpdate({bib_number: req.body.bib_number}, {$set: {vote_count: (details[0].vote_count + 1)}}, function (err, updatedEntry) {
+                                if (err) {
+                                    console.log("ENTRY Resolver: Update failed: " + err);
+                                    res.send(err);
+                                } else {
+                                    console.log("ENTRY Resolver: Entry Updated: " + updatedEntry);
+                                    res.json(updatedEntry);
+                                    socket.updateSockets("entry_edit");
+                                    events.save_event('Entries', 'Updated entry ' + updatedEntry.entry_name + ' - Bib #' + updatedEntry.bib_number);
+                                }
+                            });
+                        }
+                    })
                 }
-                res.json(created_vote);
             });
         } else {
             console.log("VOTE Resolver: ERROR IP Already Voted");

@@ -23,6 +23,17 @@ let tableSettings = {
         { "orderable": false, "targets": 0 }
     ],
 };
+let votetableSettings = {
+    "lengthMenu": [
+        [10, 25, 50, -1],
+        [10, 25, 50, "All"]
+    ],
+    "responsive": true,
+    "order": [[ 0, "desc" ]],
+    "columnDefs": [
+        { "orderable": false, "targets": 0 }
+    ],
+};
 let eventtableSettings = {
     "lengthMenu": [
         [10, 25, 50, -1],
@@ -35,6 +46,7 @@ let eventtableSettings = {
     },
 };
 let leaderTable = $('#leaderTable').DataTable(tableSettings);
+let voteTable = $('#voteTable').DataTable(votetableSettings);
 let eventsAllTable = $('#eventsAllTable').DataTable(eventtableSettings);
 let eventsEntriesTable = $('#eventsEntriesTable').DataTable(eventtableSettings);
 let eventsTimingTable = $('#eventsTimingTable').DataTable(eventtableSettings);
@@ -56,6 +68,7 @@ socket.on('race_data', function(data){
 //Socket.io handle Leaderboard Data
 socket.on('entry_data', function (data) {
     leaderTable.clear();
+    voteTable.clear();
     $.each(data, function (i, value) {
         let final_place_text = value.final_place;
         if (value.final_place === "1") {
@@ -69,8 +82,10 @@ socket.on('entry_data', function (data) {
         }
         let detailed_name = value.entry_name + " <a class='text-gray'>" + value.bib_number + "</a>";
         leaderTable.row.add([final_place_text, detailed_name, value.final_time, value.category]);
+        voteTable.row.add([ value.vote_count, detailed_name, value.category]);
     });
     leaderTable.draw();
+    voteTable.draw();
     $(window).trigger('resize');
 });
 

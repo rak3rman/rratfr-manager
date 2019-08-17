@@ -45,6 +45,11 @@ let entrySchema = mongoose.Schema({
         type: Date,
         default: ""
     },
+    vote_count: {
+        type: Number,
+        required: false,
+        default: 0
+    },
     created_date: {
         type: Date,
         default: Date.now
