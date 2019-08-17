@@ -1,7 +1,7 @@
 <% include ../partials/head.ejs %>
 <body class="off-canvas-sidebar">
 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top text-white">
-    <div class="container">
+    <div class="container-fluid">
         <div class="navbar-wrapper">
             <a class="navbar-brand" href="/">
                 <img src="/static/img/rratfr-logo.png" class="pr-1" style="width: auto; max-width: 55px; -webkit-filter: invert(100%);">
@@ -17,8 +17,18 @@
         <div class="collapse navbar-collapse justify-content-end pt-4">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a href="/" class="nav-link">
-                        <i class="material-icons">dashboard</i> Dashboard
+                    <a href="/results/live" class="nav-link">
+                        <i class="material-icons">dashboard</i> <strong>Live</strong> Results
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/results/historic" class="nav-link">
+                        <i class="material-icons">library_books</i> Historic Results
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/peoples-choice" class="nav-link">
+                        <i class="material-icons">check</i> Vote for People's Choice
                     </a>
                 </li>
                 <li class="nav-item active">

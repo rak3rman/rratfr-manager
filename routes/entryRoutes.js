@@ -28,4 +28,7 @@ module.exports = function (app) {
     app.route('/api/entry/timing/update')
         .post(auth.isLoggedIn, entry.entry_timing_update);
 
+    app.route('/api/voting')
+        .post(entry.submit_vote);
+
 };

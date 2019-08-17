@@ -3,6 +3,7 @@ App/Filename : rratfr-manager/resolvers/entryResolver.js
 Author       : RAk3rman
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\*/
 let entry = require('../models/entryModel.js');
+let vote = require('../models/voteModel.js');
 let dataStore = require('data-store');
 let storage = new dataStore({path: './config/sysConfig.json'});
 let debug_mode = storage.get('debug_mode');
@@ -354,6 +355,37 @@ function sortEntries() {
 exports.entry_sort = function (req, res) {
     sortEntries();
     res.status(200).send('success');
+};
+
+//Submit Vote Logic
+exports.submit_vote = function (req, res) {
+    vote.find({user_ip: req.body.user_ip}, function (err, details) {
+        if (err) {
+            console.log("VOTE Resolver: Retrieve failed: " + err);
+            res.status(500).send('500 Error');
+        } else if (details.length === 0) {
+            let newVote = new vote({
+                bib_number: req.body.bib_number,
+                user_ip: req.body.user_ip,
+                user_data: JSON.stringify(req.body.user_data)
+            });
+            newVote.save(function (err, created_vote) {
+                if (err) {
+                    console.log("VOTE Resolver: Save failed: " + err);
+                    res.send(err);
+                } else {
+                    if (debug_mode === "true") {
+                        console.log('VOTE Resolver: Vote Created: ' + JSON.stringify(created_vote))
+                    }
+                    events.save_event('Voting', 'Noted new vote from IP: ' + req.body.user_ip + ' for Bib #: ' + req.body.bib_number)
+                }
+                res.json(created_vote);
+            });
+        } else {
+            console.log("VOTE Resolver: ERROR IP Already Voted");
+            res.status(403).send('User Already Voted');
+        }
+    });
 };
 
 //Update Variables to DB

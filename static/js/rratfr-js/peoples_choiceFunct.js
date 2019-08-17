@@ -16,7 +16,6 @@ const Toast = Swal.mixin({
 let entries = $('#entries');
 socket.on('entry_data', function (data) {
     if (getDataCheck === 0) {
-        console.log(data);
         entries.append(
             "<option value=\"\"></option>"
         );
@@ -32,15 +31,35 @@ socket.on('entry_data', function (data) {
     }
 });
 
+//Check to see if voting is open
+let votingstat = 0;
+let starttime = 1566144000000;
+let endtime = 1566162000000;
+
+function timeCheck() {
+    let closed = document.getElementById("closed");
+    let open = document.getElementById("open");
+    if (!((starttime < Date.now()) && (Date.now() < endtime))) {
+        //Voting Closed
+        closed.style.display = "block";
+        open.style.display = "none";
+    } else if (votingstat === 0) {
+        //Voting Open
+        closed.style.display = "none";
+        open.style.display = "block";
+        votingstat = 1;
+    }
+}
+
 //Get User Information for IP Limiter
 let userIP;
 let userData;
-function getInfo(){
+
+function getInfo() {
     $.ajax({
         type: "GET",
         url: "https://api.muctool.de/whois",
         success: function (data) {
-            console.log(data);
             userIP = data.ip;
             userData = data;
         },
@@ -76,16 +95,29 @@ function sendVote() {
                         user_data: userData
                     },
                     success: function (data) {
-                        Toast.fire({
+                        Swal.fire({
+                            title: 'Vote Submitted!',
+                            html: "<p>Thank you for casting your vote for the People's Choice Award! Click below to live the live results!</p>",
                             type: 'success',
-                            title: 'Success!'
-                        });
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Live Results'
+                        }).then((result) => {
+                            window.location.href = "/results/live";
+                        })
                     },
                     error: function (data) {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Error in sending vote...'
-                        });
+                        if (data.responseText) {
+                            Toast.fire({
+                                type: 'error',
+                                title: data.responseText
+                            });
+                        } else {
+                            Toast.fire({
+                                type: 'error',
+                                title: 'Error, please try again'
+                            });
+                        }
                     }
                 });
             }
