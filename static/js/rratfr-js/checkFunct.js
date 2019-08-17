@@ -64,7 +64,7 @@ function createEntry() {
     Swal.mixin({
         confirmButtonText: 'Next &rarr;',
         showCancelButton: true,
-        progressSteps: ['1', '2', '3'],
+        progressSteps: ['1', '2', '3', '4'],
     }).queue([
         {
             title: 'Bib Number',
@@ -83,33 +83,41 @@ function createEntry() {
             inputOptions: {
                 'DIY': 'DIY Division',
                 'HULL': 'HULL Division',
+                'UNKNOWN': 'UNKNOWN',
+            }
+        },
+        {
+            title: 'Entry Image',
+            input: 'file',
+            inputAttributes: {
+                accept: 'image/*',
+                'aria-label': 'Upload a picture of the entry'
+            }
+        },
+    ]).then((result) => {
+            if (result.value) {
+                let img = result.value[3];
+                let formData = new FormData();
+                formData.append('file', img, 'entryIMG');
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', "/api/entry/create?bib_number=" + result.value[0] + "&entry_name=" + result.value[1] + "&category=" + result.value[2], true);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Entry has been created!'
+                        });
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Error/Raft # Already Exists',
+                        });
+                    }
+                };
+                xhr.send(formData);
             }
         }
-    ]).then((result) => {
-        if (result.value) {
-            $.ajax({
-                type: "POST",
-                url: "/api/entry/create",
-                data: {
-                    bib_number: result.value[0],
-                    entry_name: result.value[1],
-                    category: result.value[2]
-                },
-                success: function (data) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Entry has been created!'
-                    });
-                },
-                error: function (error_reason) {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Error: ' + error_reason.responseText,
-                    });
-                }
-            });
-        }
-    })
+    )
 }
 
 //Entry Check SA

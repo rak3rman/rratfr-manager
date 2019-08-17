@@ -22,7 +22,7 @@ socket.on('entry_data', function (data) {
         );
         $.each(data, function (i, value) {
             entries.append(
-                "<option data-img-src=\"/static/img/race-1.jpg\" value='" + value.bib_number + "'>Bib #: " + value.bib_number + " | Category: " + value.category + "</option>"
+                "<option data-img-src='/static/img/entries/entry_" + value.bib_number + ".jpg' value='" + value.bib_number + "'>Bib #: " + value.bib_number + " | Category: " + value.category + "</option>"
             );
         });
         $("select").imagepicker({

@@ -8,16 +8,37 @@ let storage = new dataStore({path: './config/sysConfig.json'});
 let debug_mode = storage.get('debug_mode');
 let socket = require('../resolvers/socketResolver.js');
 let events = require('../resolvers/eventResolver.js');
+let Jimp = require('jimp');
+let formidable = require('formidable');
 
 //Create a new entry
 exports.create_entry = function (req, res) {
-    entry.find({bib_number: req.body["bib_number"]}, function (err, details) {
-        console.log(details);
+    entry.find({bib_number: req.query.bib_number}, function (err, details) {
         if (err) {
             console.log("ENTRY Resolver: Retrieve failed: " + err);
             res.status(500).send('500 Error');
         } else if (details.length === 0) {
-            let newEntry = new entry(req.body);
+            let newEntry = new entry({
+                bib_number: req.query.bib_number,
+                entry_name: req.query.entry_name,
+                category: req.query.category
+            });
+            console.log('ENTRY Resolver: Saving Image');
+            console.log(req.body, req.files);
+            let form = new formidable.IncomingForm();
+            form.parse(req, function(err, fields, files) {
+                console.log(files);
+            });
+            form.on('end', function(fields, files) {
+                /* Temporary location of our uploaded file */
+                let temp_path = this.openedFiles[0].path;
+                Jimp.read(temp_path, (err, image) => {
+                    if (err) throw err;
+                    image
+                        .resize(Jimp.AUTO, 500)
+                        .write('./static/img/entries/entry_' + req.query.bib_number + '.jpg')
+                });
+            });
             newEntry.save(function (err, created_entry) {
                 if (err) {
                     console.log("ENTRY Resolver: Save failed: " + err);
