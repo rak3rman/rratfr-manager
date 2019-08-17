@@ -98,8 +98,8 @@ function createEntry() {
     ]).then((result) => {
             if (result.value) {
                 let imageFile = result.value[3];
-                console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
-                console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
+                // console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
+                // console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
                 let options = {
                     maxSizeMB: 1,
                     maxWidthOrHeight: 1920,
@@ -107,8 +107,8 @@ function createEntry() {
                 };
                 imageCompression(imageFile, options)
                     .then(function (compressedFile) {
-                        console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
-                        console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+                        // console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+                        // console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
                         //Send image
                         let img = compressedFile;
                         let formData = new FormData();
@@ -137,7 +137,6 @@ function createEntry() {
         }
     )
 }
-
 
 //Entry Edit SA
 function editEntry(bib_number, entry_name, category, start_time, end_time) {
