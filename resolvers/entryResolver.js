@@ -11,6 +11,7 @@ let socket = require('../resolvers/socketResolver.js');
 let events = require('../resolvers/eventResolver.js');
 let Jimp = require('jimp');
 let formidable = require('formidable');
+let fs = require('fs');
 
 //Create a new entry
 exports.create_entry = function (req, res) {
@@ -144,6 +145,11 @@ exports.entry_delete = function (req, res) {
             var_Updater('updated_time_missing_check', Date.now());
             var_Updater('updated_time_entries_in_water', Date.now());
             var_Updater('updated_time_entries_finished', Date.now());
+            fs.unlink('./static/img/entries/entry_' + req.body["bib_number"] + '.jpg', (err) => {
+                if (err) {
+                    console.log("ENTRY Resolver: Problem deleting image associated: " + err);
+                }
+            });
             events.save_event('Entries', 'Deleted entry - Bib #' + req.body["bib_number"]);
         }
     });
