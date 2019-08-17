@@ -97,29 +97,47 @@ function createEntry() {
         },
     ]).then((result) => {
             if (result.value) {
-                let img = result.value[3];
-                let formData = new FormData();
-                formData.append('file', img, 'entryIMG');
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', "/api/entry/create?bib_number=" + result.value[0] + "&entry_name=" + result.value[1] + "&category=" + result.value[2], true);
-                xhr.onload = function () {
-                    if (xhr.status === 200) {
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Entry has been created!'
-                        });
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Error/Raft # Already Exists',
-                        });
-                    }
+                let imageFile = result.value[3];
+                console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
+                console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
+                let options = {
+                    maxSizeMB: 1,
+                    maxWidthOrHeight: 1920,
+                    useWebWorker: true
                 };
-                xhr.send(formData);
+                imageCompression(imageFile, options)
+                    .then(function (compressedFile) {
+                        console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+                        console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+                        //Send image
+                        let img = compressedFile;
+                        let formData = new FormData();
+                        formData.append('file', img, 'entryIMG');
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', "/api/entry/create?bib_number=" + result.value[0] + "&entry_name=" + result.value[1] + "&category=" + result.value[2], true);
+                        xhr.onload = function () {
+                            if (xhr.status === 200) {
+                                Toast.fire({
+                                    type: 'success',
+                                    title: 'Entry has been created!'
+                                });
+                            } else {
+                                Toast.fire({
+                                    type: 'error',
+                                    title: 'Error/Raft # Already Exists',
+                                });
+                            }
+                        };
+                        xhr.send(formData);
+                    })
+                    .catch(function (error) {
+                        console.log(error.message);
+                    });
             }
         }
     )
 }
+
 
 //Entry Edit SA
 function editEntry(bib_number, entry_name, category, start_time, end_time) {
