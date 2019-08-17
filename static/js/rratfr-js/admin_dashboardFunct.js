@@ -63,6 +63,7 @@ socket.on('race_data', function(data){
     document.getElementById("finishStat").innerHTML = data.entries_finished;
     document.getElementById("connected_users").innerHTML = data.connected_users;
     racestart = data.racestart;
+    document.getElementById("votes_cast").innerHTML = data.votes_cast;
 });
 
 //Socket.io handle Leaderboard Data

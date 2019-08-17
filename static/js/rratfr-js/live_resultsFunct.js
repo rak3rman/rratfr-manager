@@ -47,6 +47,7 @@ socket.on('race_data', function (data) {
     document.getElementById("pushedDate1").innerHTML = 'Updated ' + moment(data.updated_total_entries).fromNow();
     document.getElementById("pushedDate2").innerHTML = 'Updated ' + moment(data.updated_entries_in_water).fromNow();
     document.getElementById("pushedDate3").innerHTML = 'Updated ' + moment(data.updated_entries_finished).fromNow();
+    document.getElementById("votes_cast").innerHTML = data.votes_cast + ' Votes Cast';
 });
 
 //Socket.io Get Leaderboard Data

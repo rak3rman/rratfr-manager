@@ -3,6 +3,7 @@ App/Filename : rratfr-manager/resolvers/socketResolver.js
 Author       : RAk3rman
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\*/
 let entry = require('../models/entryModel.js');
+let vote = require('../models/voteModel.js');
 let varSet = require('../models/varModel.js');
 let event = require('../models/eventsModel.js');
 let dataStore = require('data-store');
@@ -81,10 +82,21 @@ function getStatistics() {
     let missing_check_count = 0;
     let entries_in_water_count = 0;
     let entries_finished_count = 0;
+    let votes_cast = 0;
     let updated_time_total_entries;
     let updated_time_missing_check;
     let updated_time_entries_in_water;
     let updated_time_entries_finished;
+    vote.find({}, function (err, listed_votes) {
+        if (err) {
+            console.log("Socket.io: Retrieve failed: " + err);
+            io.emit('error', err);
+        } else {
+            for (let i in listed_votes) {
+                votes_cast += 1;
+            }
+        }
+    });
     entry.find({}, function (err, listed_entries) {
         if (err) {
             console.log("Socket.io: Retrieve failed: " + err);
@@ -131,7 +143,8 @@ function getStatistics() {
                         updated_entries_in_water: updated_time_entries_in_water,
                         updated_entries_finished: updated_time_entries_finished,
                         connected_users: storage.get('userconnect'),
-                        racestart: storage.get('racedate')
+                        racestart: storage.get('racedate'),
+                        votes_cast: votes_cast
                     });
                     if (debug_mode === "true") {
                         console.log("Socket.io: Statistics Sent (race_data)")
