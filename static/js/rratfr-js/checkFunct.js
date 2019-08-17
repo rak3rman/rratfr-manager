@@ -68,7 +68,7 @@ function createEntry() {
     }).queue([
         {
             title: 'Bib Number',
-            text: 'Please enter the bib number',
+            text: 'Please enter the bib number. This number cannot change once set.',
             input: 'text'
         },
         {
@@ -88,6 +88,7 @@ function createEntry() {
         },
         {
             title: 'Entry Image',
+            text: 'Please upload a picture of the entry. This image can only be uploaded once.',
             input: 'file',
             inputAttributes: {
                 accept: 'image/*',
