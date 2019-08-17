@@ -38,6 +38,7 @@ let leaderTable = $('#leaderTable').DataTable(tableSettings);
 let eventsAllTable = $('#eventsAllTable').DataTable(eventtableSettings);
 let eventsEntriesTable = $('#eventsEntriesTable').DataTable(eventtableSettings);
 let eventsTimingTable = $('#eventsTimingTable').DataTable(eventtableSettings);
+let eventsVotingTable = $('#eventsVotingTable').DataTable(eventtableSettings);
 $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
 } );
@@ -86,6 +87,12 @@ socket.on('new_event', function(data){
         eventsAllTable.row.add([category, data.desc, moment(data.date).format('MM/DD/YY, h:mm:ss a')]);
         eventsTimingTable.row.add([category, data.desc, moment(data.date).format('MM/DD/YY, h:mm:ss a')]);
         eventsTimingTable.draw();
+    }
+    if (data.category === "Voting") {
+        let category = "<i class=\"fas fa-vote-yea\"></i> <strong>" + data.category + "</strong>";
+        eventsAllTable.row.add([category, data.desc, moment(data.date).format('MM/DD/YY, h:mm:ss a')]);
+        eventsVotingTable.row.add([category, data.desc, moment(data.date).format('MM/DD/YY, h:mm:ss a')]);
+        eventsVotingTable.draw();
     }
     eventsAllTable.draw();
     $(window).trigger('resize');
