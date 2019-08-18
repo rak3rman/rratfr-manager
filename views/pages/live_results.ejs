@@ -98,23 +98,21 @@
     <div class="container" style="width: 100%">
         <div class="row mt-4">
             <div class="col-12">
-                <a href="/peoples-choice">
-                    <div class="card card-stats">
-                        <div class="card-header card-header-primary card-header-icon">
-                            <div class="card-icon">
-                                <i class="fas fa-vote-yea"></i>
-                            </div>
-                            <p class="card-category">Click on the title below</p>
-                            <h3 class="card-title">Vote for People's Choice!</h3>
+                <div class="card card-stats" onclick="window.location.href = '/peoples-choice'">
+                    <div class="card-header card-header-primary card-header-icon">
+                        <div class="card-icon">
+                            <i class="fas fa-vote-yea"></i>
                         </div>
-                        <div class="card-footer">
-                            <div class="stats">
-                                <i class="material-icons">playlist_add_check</i>
-                                <span id="votes_cast"></span>
-                            </div>
+                        <p class="card-category">Click on the title below</p>
+                        <h3 class="card-title">Vote for People's Choice!</h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <i class="material-icons">playlist_add_check</i>
+                            <span id="votes_cast"></span>
                         </div>
                     </div>
-                </a>
+                </div>
             </div>
             <div class="col-md-4">
                 <div class="card card-stats mb-5">
