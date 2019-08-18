@@ -33,7 +33,7 @@ socket.on('entry_data', function (data) {
 
 //Check to see if voting is open
 let votingstat = 0;
-let starttime = 1566147600000;
+let starttime = 1566144000000;
 let endtime = 1566162000000;
 
 function timeCheck() {
