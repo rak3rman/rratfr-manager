@@ -25,6 +25,7 @@ let tableSettings = {
         "emptyTable": "Entries will be updated soon!"
     },
 };
+let results2019 = $('#results2019').DataTable(tableSettings);
 let results2018 = $('#results2018').DataTable(tableSettings);
 let results2017 = $('#results2017').DataTable(tableSettings);
 let results2016 = $('#results2016').DataTable(tableSettings);

@@ -54,6 +54,7 @@ socket.on('race_data', function (data) {
 socket.on('entry_data', function (data) {
     leaderTable.clear();
     $.each(data, function (i, value) {
+        console.log(value.final_place + ". " + value.entry_name +  " " + value.final_time + value.category);
         let final_place_text = value.final_place;
         if (value.final_place === "1") {
             final_place_text = "<strong><a style='color:#D4AF37'>" + value.final_place + "</a></strong>";
