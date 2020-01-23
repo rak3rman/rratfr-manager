@@ -1,45 +1,10 @@
 # RRATFR Manager
 [![Build Status](https://travis-ci.org/RAK3RMAN/rratfr-manager.svg?branch=master)](https://travis-ci.org/RAK3RMAN/rratfr-manager)
 
-RRATFR Race Day Manager Platform
+### Full documentation available at [notion.so](https://www.notion.so/a41e54eb6c05450b9d0787a8c5d98928?v=aa4705b0b97442f68cd8ff68766ac138)
 
 ### Basic Structure
 This platform is built for the specific use on race day of the Rock River Anything That Floats Race. Running on NodeJS, this platform provides a webpage with functions for listing rafts, displaying status of raft, and timing with an externally accessible api for timing results.
-
-### Application Map
-```
---app.js # Primary NodeJS file
---routes # Routes for views
-  --authRoutes.js
-  --mainRoutes.js
-  --entryRoutes.js
---views # Components of webpage, HTML
-  --pages
-  --partials
---config # Folder where configurations are set
-  --exitOpt.js # Exit options when running in testing environment
-  --sysConfig.json # Appears upon system configuration within application
---resolvers # Logic Resolvers
-  --authResolver.js # Auth Logic
-  --entryResolver.js # Entry Config Logic
-  --eventResolver.js # Logic for creating Events
-  --socketResolver.js # Socket Logic
---models # MongoDB Model's
-  --userModel.js # MongoDB Auth Model
-  --entryModel.js # Model for Entries
-  --eventsModel.js # Model for Events
-  --varModel.js # Model for storing variables
---sys_funct # System Functions
-  --passport.js # Passport.js Logic
---static # Static files contained here
---package.json # NPM 
---package-lock.json
---start.sh
---LICENSE
---README.md
---.travis.yml
---.gitignore
-```
 
 ## Install and Setup
 - Clone the repository from github.com
