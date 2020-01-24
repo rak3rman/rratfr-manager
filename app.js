@@ -155,6 +155,8 @@ app.get('/timing', auth.isLoggedIn, mainRouter.timingRoute);
 app.get('/entry/list', auth.isLoggedIn, mainRouter.entryListRoute);
 //Entry Check
 app.get('/entry/check', auth.isLoggedIn, mainRouter.entryCheckRoute);
+//Entry Check
+app.get('/settings', auth.isLoggedIn, mainRouter.settingsRoute);
 
 //Auth Routes
 app.get('/login', authRouter.loginPage);

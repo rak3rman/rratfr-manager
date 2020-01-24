@@ -44,3 +44,8 @@ exports.entryCheckRoute = function (req, res) {
 exports.timingRoute = function (req, res) {
     res.render('pages/timing_interface.ejs', {title: 'Timing', user: req.user})
 };
+
+//Settings Page Route
+exports.settingsRoute = function (req, res) {
+    res.render('pages/settings.ejs', {title: 'Admin Settings', user: req.user})
+};

@@ -17,8 +17,8 @@ exports.socket_config = function (server) {
     io.on('connection', function (socket) {
         console.log('Socket.io: User Connected');
         storage.set('userconnect', io.engine.clientsCount);
-        getStatistics();
-        getEntryData();
+        getStatistics(socket.id);
+        getEntryData(socket.id);
         //Check Bib Number and Send Result
         socket.on('check_bib', function (bib_number) {
             console.log('Socket.io: Getting information for Bib #' + bib_number);
@@ -77,7 +77,7 @@ exports.socket_config = function (server) {
 };
 
 //Get Statistics and send
-function getStatistics() {
+function getStatistics(socketid) {
     let total_entries_count = 0;
     let missing_check_count = 0;
     let entries_in_water_count = 0;
@@ -133,19 +133,36 @@ function getStatistics() {
                             updated_time_entries_finished = variables[i]["var_value"];
                         }
                     }
-                    io.emit('race_data', {
-                        total_entries: total_entries_count,
-                        missing_check: missing_check_count,
-                        entries_in_water: entries_in_water_count,
-                        entries_finished: entries_finished_count,
-                        updated_total_entries: updated_time_total_entries,
-                        updated_missing_check: updated_time_missing_check,
-                        updated_entries_in_water: updated_time_entries_in_water,
-                        updated_entries_finished: updated_time_entries_finished,
-                        connected_users: storage.get('userconnect'),
-                        racestart: storage.get('racedate'),
-                        votes_cast: votes_cast
-                    });
+                    console.log(socketid);
+                    if (socketid === undefined) {
+                        io.emit('race_data', {
+                            total_entries: total_entries_count,
+                            missing_check: missing_check_count,
+                            entries_in_water: entries_in_water_count,
+                            entries_finished: entries_finished_count,
+                            updated_total_entries: updated_time_total_entries,
+                            updated_missing_check: updated_time_missing_check,
+                            updated_entries_in_water: updated_time_entries_in_water,
+                            updated_entries_finished: updated_time_entries_finished,
+                            connected_users: storage.get('userconnect'),
+                            racestart: storage.get('racedate'),
+                            votes_cast: votes_cast
+                        });
+                    } else {
+                        io.to(socketid).emit('race_data', {
+                            total_entries: total_entries_count,
+                            missing_check: missing_check_count,
+                            entries_in_water: entries_in_water_count,
+                            entries_finished: entries_finished_count,
+                            updated_total_entries: updated_time_total_entries,
+                            updated_missing_check: updated_time_missing_check,
+                            updated_entries_in_water: updated_time_entries_in_water,
+                            updated_entries_finished: updated_time_entries_finished,
+                            connected_users: storage.get('userconnect'),
+                            racestart: storage.get('racedate'),
+                            votes_cast: votes_cast
+                        });
+                    }
                     if (debug_mode === "true") {
                         console.log("Socket.io: Statistics Sent (race_data)")
                     }
@@ -156,13 +173,17 @@ function getStatistics() {
 }
 
 //Get entry data and send
-function getEntryData() {
+function getEntryData(socketid) {
     entry.find({}, function (err, listed_entries) {
         if (err) {
             console.log("Socket.io: Retrieve failed: " + err);
             io.emit('error', err);
         } else {
-            io.emit('entry_data', listed_entries);
+            if (socketid === undefined) {
+                io.emit('entry_data', listed_entries);
+            } else {
+                io.to(socketid).emit('entry_data', listed_entries);
+            }
             if (debug_mode === "true") {
                 console.log("Socket.io: Entries Sent (entry_data)")
             }

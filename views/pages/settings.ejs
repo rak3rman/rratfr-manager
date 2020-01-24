@@ -1,0 +1,53 @@
+<% include ../partials/head.ejs %>
+<% include ../partials/wrapper-top.ejs %>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header card-header-tabs card-header-success">
+                        <div class="nav-tabs-navigation">
+                            <div class="nav-tabs-wrapper">
+                                <span class="nav-tabs-title p-0">
+                                    <h4 class="card-title"><strong>General Settings</strong></h4>
+                                    <p class="card-category">Edit system settings below. Hit save to update parameters.<strong><span
+                                                    id="totalCount"></span></strong></p>
+                                </span>
+                                <ul class="nav nav-tabs justify-content-end" data-tabs="tabs">
+                                    <li class="nav-item dropdown mr-2 mb-1">
+                                        <a class="nav-link active" onclick="location.reload()">
+                                            <i class="fas fa-sync-alt"></i>
+                                            <div class="ripple-container"></div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body ">
+                        <form class="form-horizontal">
+                            <div class="row">
+                                <label class="col-md-2 col-form-label">MongoDB URL</label>
+                                <div class="col-md-10">
+                                    <div class="form-group has-default bmd-form-group">
+                                        <input type="email" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-md-2 col-form-label">Race Time</label>
+                                <div class="col-md-10">
+                                    <div class="form-group bmd-form-group is-filled">
+                                        <input type="text" class="form-control datetimepicker" value="11/06/2018">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% include ../partials/wrapper-bottom.ejs %>
+<% include ../partials/footer.ejs %>
