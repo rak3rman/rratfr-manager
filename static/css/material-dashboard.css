@@ -15016,9 +15016,9 @@ a .material-icons {
 }
 
 .sidebar .sidebar-wrapper .user .user-info [data-toggle=collapse] ~ div > ul > li > a i, .sidebar .sidebar-wrapper > .nav [data-toggle=collapse] ~ div > ul > li > a i {
-    font-size: 17px;
-    line-height: 20px;
-    width: 26px
+    font-size: 20px;
+    line-height: 30px;
+    width: 30px
 }
 
 .sidebar .nav {

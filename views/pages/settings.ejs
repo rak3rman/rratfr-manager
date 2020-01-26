@@ -9,8 +9,8 @@
                         <div class="nav-tabs-navigation">
                             <div class="nav-tabs-wrapper">
                                 <span class="nav-tabs-title p-0">
-                                    <h4 class="card-title"><strong>General Settings</strong></h4>
-                                    <p class="card-category">Edit system settings below. Hit save to update parameters.<strong><span
+                                    <h4 class="card-title"><strong><i class="fas fa-stopwatch"></i> Race Settings</strong></h4>
+                                    <p class="card-category">Settings that define how the manager will operate on race day<strong><span
                                                     id="totalCount"></span></strong></p>
                                 </span>
                                 <ul class="nav nav-tabs justify-content-end" data-tabs="tabs">
@@ -24,25 +24,74 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body ">
+                    <div class="card-body">
+                        <form class="form-horizontal">
+                            <div class="row">
+                                <label class="col-md-2 col-form-label">Race Start Time</label>
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="racedate" value=""/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-md-2 col-form-label">People's Choice Voting End Time</label>
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="voting_end_time" value=""/>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-fill btn-info" onclick="updateSettings()"><i class="fas fa-save"></i> Save Settings<div class="ripple-container"></div></button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header card-header-tabs card-header-success">
+                        <div class="nav-tabs-navigation">
+                            <div class="nav-tabs-wrapper">
+                                <span class="nav-tabs-title p-0">
+                                    <h4 class="card-title"><strong><i class="fas fa-network-wired"></i> System Settings</strong></h4>
+                                    <p class="card-category">Backend configuration settings related to network, data, and usage<strong><span
+                                                    id="totalCount"></span></strong></p>
+                                </span>
+                                <ul class="nav nav-tabs justify-content-end" data-tabs="tabs">
+                                    <li class="nav-item dropdown mr-2 mb-1">
+                                        <a class="nav-link active" onclick="location.reload()">
+                                            <i class="fas fa-sync-alt"></i>
+                                            <div class="ripple-container"></div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
                         <form class="form-horizontal">
                             <div class="row">
                                 <label class="col-md-2 col-form-label">MongoDB URL</label>
                                 <div class="col-md-10">
                                     <div class="form-group has-default bmd-form-group">
-                                        <input type="email" class="form-control">
+                                        <input type="url" class="form-control" id="mongodb_url" value="">
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <label class="col-md-2 col-form-label">Race Time</label>
+                                <label class="col-md-2 col-form-label">Website Port</label>
                                 <div class="col-md-10">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control datetimepicker" value="21/06/2018"/>
+                                    <div class="form-group has-default bmd-form-group">
+                                        <input type="number" class="form-control" id="console_port" value="">
                                     </div>
                                 </div>
                             </div>
                         </form>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-fill btn-info" onclick="updateSettings()"><i class="fas fa-save"></i> Save Settings<div class="ripple-container"></div></button>
                     </div>
                 </div>
             </div>
@@ -51,18 +100,10 @@
 </div>
 <% include ../partials/wrapper-bottom.ejs %>
 <% include ../partials/footer.ejs %>
+<script type="text/javascript" src="/static/js/rratfr-js/settingsFunct.js"></script>
 <script>
-    $('.datetimepicker').datetimepicker({
-        icons: {
-            time: "fa fa-clock-o",
-            date: "fa fa-calendar",
-            up: "fa fa-chevron-up",
-            down: "fa fa-chevron-down",
-            previous: 'fa fa-chevron-left',
-            next: 'fa fa-chevron-right',
-            today: 'fa fa-screenshot',
-            clear: 'fa fa-trash',
-            close: 'fa fa-remove'
-        }
-    });
+    document.ready = function () {
+        setupPicker();
+        getSettings();
+    }
 </script>

@@ -412,6 +412,24 @@ exports.submit_vote = function (req, res) {
     });
 };
 
+//Get Settings Data
+exports.settings_get = function (req, res) {
+    res.json({
+        racedate: storage.get('racedate'),
+        voting_end_time: storage.get('voting_end_time'),
+        console_port: storage.get('console_port'),
+        mongodb_url: storage.get('mongodb_url')
+    });
+};
+
+//Update Settings Data
+exports.settings_update = function (req, res) {
+    console.log(req.body["racedate"]);
+    storage.set('racedate', req.body["racedate"]);
+    storage.set('voting_end_time', req.body["voting_end_time"]);
+    res.status(200).send('success');
+};
+
 //Update Variables to DB
 let varSet = require('../models/varModel.js');
 function var_Updater(var_name, var_value) {

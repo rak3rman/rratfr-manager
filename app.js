@@ -58,22 +58,20 @@ if (signup_mode === undefined) {
     storage.set('signup_mode', 'true');
     console.log('Config Manager: Signup Mode Set to DEFAULT: true');
 }
-//Race Date
+//Race Start Time
 let racedate = storage.get('racedate');
 if (racedate === undefined) {
     storage.set('racedate', ' ');
     console.log('Config Manager: Race Date needs to be configured');
 }
+//People's Choice Voting End Time
+let voting_end_time = storage.get('voting_end_time');
+if (voting_end_time === undefined) {
+    storage.set('voting_end_time', ' ');
+    console.log('Config Manager: People\'s Choice Voting End Time needs to be configured');
+}
 //Number of Users Connected
 storage.set('userconnect', 0);
-console.log(storage.get('userconnect'));
-//Current Year Check
-let current_year = storage.get('current_year');
-let d = new Date();
-if (current_year !== d.getFullYear()) {
-    storage.set('current_year', d.getFullYear());
-    console.log('Config Manager: Current Year Set to ' + d.getFullYear());
-}
 //End of System Config Checks - - - - - - - - - - - - - -
 
 //Declare App
