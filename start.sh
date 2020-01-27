@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-node app.js
+nodemon app.js --ignore static/img/entries

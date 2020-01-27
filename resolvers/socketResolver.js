@@ -10,13 +10,14 @@ let dataStore = require('data-store');
 let storage = new dataStore({path: './config/sysConfig.json'});
 let debug_mode = storage.get('debug_mode');
 let io;
+let userconnect = 0;
 
 //Socket.io on connection
 exports.socket_config = function (server) {
     io = require('socket.io')(server);
     io.on('connection', function (socket) {
         console.log('Socket.io: User Connected');
-        storage.set('userconnect', io.engine.clientsCount);
+        userconnect = io.engine.clientsCount;
         getStatistics(socket.id);
         getEntryData(socket.id);
         //Check Bib Number and Send Result
@@ -71,7 +72,7 @@ exports.socket_config = function (server) {
         });
         socket.on('disconnect', function () {
             console.log('Socket.io: User Disconnected');
-            storage.set('userconnect', io.engine.clientsCount);
+            userconnect = io.engine.clientsCount;
         });
     });
 };
@@ -152,7 +153,7 @@ function getStatistics(socketid) {
                             updated_missing_check: updated_time_missing_check,
                             updated_entries_in_water: updated_time_entries_in_water,
                             updated_entries_finished: updated_time_entries_finished,
-                            connected_users: storage.get('userconnect'),
+                            connected_users: userconnect,
                             race_start_time: race_start_time,
                             voting_end_time: voting_end_time,
                             votes_cast: votes_cast
@@ -167,7 +168,7 @@ function getStatistics(socketid) {
                             updated_missing_check: updated_time_missing_check,
                             updated_entries_in_water: updated_time_entries_in_water,
                             updated_entries_finished: updated_time_entries_finished,
-                            connected_users: storage.get('userconnect'),
+                            connected_users: userconnect,
                             race_start_time: race_start_time,
                             voting_end_time: voting_end_time,
                             votes_cast: votes_cast

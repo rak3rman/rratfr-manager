@@ -434,7 +434,9 @@ exports.settings_get = function (req, res) {
                 race_start_time: race_start_time,
                 voting_end_time: voting_end_time,
                 console_port: storage.get('console_port'),
-                mongodb_url: storage.get('mongodb_url')
+                mongodb_url: storage.get('mongodb_url'),
+                signup_mode: storage.get('signup_mode'),
+                debug_mode: storage.get('debug_mode')
             });
             if (debug_mode === "true") {
                 console.log("SETTINGS Resolver: Current settings sent")
@@ -445,9 +447,24 @@ exports.settings_get = function (req, res) {
 
 //Update Settings Data
 exports.settings_update = function (req, res) {
-    console.log(req.body["race_start_time"]);
     var_Updater("race_start_time", req.body["race_start_time"]);
     var_Updater("voting_end_time", req.body["voting_end_time"]);
+    if (storage.get('mongodb_url') !== req.body["mongodb_url"]) {
+        console.log("SETTINGS Resolver: Restarting due to mongodb_url");
+        storage.set('mongodb_url', req.body["mongodb_url"]);
+    }
+    if (storage.get('console_port') !== req.body["console_port"]) {
+        console.log("SETTINGS Resolver: Restarting due to console_port");
+        storage.set('console_port', req.body["console_port"]);
+    }
+    if (storage.get('signup_mode') !== req.body["signup_mode"]) {
+        console.log("SETTINGS Resolver: Restarting due to signup_mode");
+        storage.set('signup_mode', req.body["signup_mode"]);
+    }
+    if (storage.get('debug_mode') !== req.body["debug_mode"]) {
+        console.log("SETTINGS Resolver: Restarting due to debug_mode");
+        storage.set('debug_mode', req.body["debug_mode"]);
+    }
     events.save_event('System', 'Saved new system and race settings');
     res.status(200).send('success');
     if (debug_mode === "true") {

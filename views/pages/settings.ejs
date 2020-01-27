@@ -15,7 +15,7 @@
                                 </span>
                                 <ul class="nav nav-tabs justify-content-end" data-tabs="tabs">
                                     <li class="nav-item dropdown mr-2 mb-1">
-                                        <a class="nav-link active" onclick="location.reload()">
+                                        <a class="nav-link active" onclick="getSettings()">
                                             <i class="fas fa-sync-alt"></i>
                                             <div class="ripple-container"></div>
                                         </a>
@@ -61,7 +61,7 @@
                                 </span>
                                 <ul class="nav nav-tabs justify-content-end" data-tabs="tabs">
                                     <li class="nav-item dropdown mr-2 mb-1">
-                                        <a class="nav-link active" onclick="location.reload()">
+                                        <a class="nav-link active" onclick="getSettings()">
                                             <i class="fas fa-sync-alt"></i>
                                             <div class="ripple-container"></div>
                                         </a>
@@ -87,6 +87,18 @@
                                         <input type="number" class="form-control" id="console_port" value="">
                                     </div>
                                 </div>
+                            </div>
+                            <div class="togglebutton mt-2">
+                                <label>
+                                    <input type="checkbox" id="signup">
+                                    <span class="toggle"></span>
+                                    Allow new user creation
+                                </label>
+                                <label class="ml-3">
+                                    <input type="checkbox" id="debug">
+                                    <span class="toggle"></span>
+                                    Console debugger
+                                </label>
                             </div>
                         </form>
                     </div>

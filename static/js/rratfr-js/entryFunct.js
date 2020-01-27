@@ -46,7 +46,7 @@ socket.on('entry_data', function (data) {
             "<i class=\"fas fa-times-circle\"></i> Delete\n" +
             "</div></div>"
         );
-        entryTable.row.add([value.bib_number, value.entry_name, value.category, value.vote_count, value.check_status, value.timing_status, moment(value.start_time).format('MM/DD/YY, h:mm:ss a'), moment(value.end_time).format('MM/DD/YY, h:mm:ss a'), value.final_time, value.final_place, tools]);
+        entryTable.row.add([value.bib_number, value.entry_name, value.category, value.vote_count, value.check_status, value.timing_status, moment(value.start_time).format('MM/DD/YY h:mm:ss a'), moment(value.end_time).format('MM/DD/YY h:mm:ss a'), value.final_time, value.final_place, tools]);
     });
     entryTable.draw();
     $(window).trigger('resize');
@@ -144,7 +144,7 @@ function editEntry(bib_number, entry_name, category, start_time, end_time) {
     Swal.fire({
         title: 'Edit Entry: ' + entry_name,
         html:
-            '<h6 class="mb-0">General Information:</h6>' +
+            '<h5 class="mb-0"><strong>General Information:</strong></h5>' +
             '<div class="row">\n' +
             '   <label class="col-sm-3 col-form-label text-left pb-0">Bib Number</label>\n' +
             '   <div class="col-sm-9">\n' +
@@ -169,62 +169,97 @@ function editEntry(bib_number, entry_name, category, start_time, end_time) {
             '       </div>\n' +
             '   </div>\n' +
             '</div>' +
-            '<h6 class="mb-0 mt-2">Timing Information:</h6>' +
+            '<h5 class="mb-0 mt-2"><strong>Timing Information:</strong></h5>' +
+            '<h6 class="mb-0 mt-0">Entry must be in finished state to recalculate final time</h6>' +
             '<div class="row">\n' +
             '   <label class="col-sm-3 col-form-label text-left pb-0">Start Time</label>\n' +
             '   <div class="col-sm-9">\n' +
-            '       <div class="form-group has-default bmd-form-group">\n' +
-            '           <input type="text" class="form-control" value="' + start_time + '" id="editStartTime">\n' +
+            '       <div class="form-group">\n' +
+            '           <input type="text" class="form-control" value="' + moment(start_time).format("MM/DD/YYYY hh:mm A") + '" id="editStartTime">\n' +
             '       </div>\n' +
             '   </div>\n' +
             '</div>' +
             '<div class="row">\n' +
             '   <label class="col-sm-3 col-form-label text-left pb-0">End Time</label>\n' +
             '   <div class="col-sm-9">\n' +
-            '       <div class="form-group has-default bmd-form-group">\n' +
-            '           <input type="text" class="form-control" value="' + end_time + '" id="editEndTime">\n' +
+            '       <div class="form-group">\n' +
+            '           <input type="text" class="form-control" value="' + moment(end_time).format("MM/DD/YYYY hh:mm A") + '" id="editEndTime">\n' +
             '       </div>\n' +
             '   </div>\n' +
             '</div>',
+        onOpen: function() {
+            if (document.getElementById("editStartTime").value !== null) {
+                $('#editStartTime').datetimepicker({
+                    icons: {
+                        time: "fas fa-clock",
+                        date: "fa fa-calendar",
+                        up: "fa fa-chevron-up",
+                        down: "fa fa-chevron-down",
+                        previous: 'fa fa-chevron-left',
+                        next: 'fa fa-chevron-right',
+                        today: 'fa fa-screenshot',
+                        clear: 'fa fa-trash',
+                        close: 'fa fa-remove'
+                    }
+                });
+            }
+            if (document.getElementById("editEndTime").value !== null) {
+                $('#editEndTime').datetimepicker({
+                    icons: {
+                        time: "fas fa-clock",
+                        date: "fa fa-calendar",
+                        up: "fa fa-chevron-up",
+                        down: "fa fa-chevron-down",
+                        previous: 'fa fa-chevron-left',
+                        next: 'fa fa-chevron-right',
+                        today: 'fa fa-screenshot',
+                        clear: 'fa fa-trash',
+                        close: 'fa fa-remove'
+                    }
+                });
+            }
+        },
         showCancelButton: true,
         confirmButtonText: 'Update',
-    }).then(() => {
-        let new_bib_number = document.getElementById("editBib").value;
-        let new_entry_name = document.getElementById("editName").value;
-        let new_category = document.getElementById("editCategory").value;
-        let new_start_time = document.getElementById("editStartTime").value;
-        let new_end_time = document.getElementById("editEndTime").value;
-        if (new_bib_number !== bib_number || new_entry_name !== entry_name || new_category !== category || new_start_time !== start_time || new_end_time !== end_time) {
-            if (new_start_time === "null") {
-                new_start_time = "";
-            }
-            if (new_end_time === "null") {
-                new_end_time = "";
-            }
-            $.ajax({
-                type: "POST",
-                url: "/api/entry/edit",
-                data: {
-                    old_bib_number: bib_number,
-                    bib_number: new_bib_number,
-                    entry_name: new_entry_name,
-                    category: new_category,
-                    start_time: new_start_time,
-                    end_time: new_end_time,
-                },
-                success: function (data) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Entry has been updated'
-                    });
-                },
-                error: function (error_reason) {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Error: ' + error_reason.responseText,
-                    });
+    }).then((result) => {
+        if (result.value) {
+            let new_bib_number = document.getElementById("editBib").value;
+            let new_entry_name = document.getElementById("editName").value;
+            let new_category = document.getElementById("editCategory").value;
+            let new_start_time = moment(document.getElementById("editStartTime").value).format();
+            let new_end_time = moment(document.getElementById("editEndTime").value).format();
+            if (new_bib_number !== bib_number || new_entry_name !== entry_name || new_category !== category || new_start_time !== start_time || new_end_time !== end_time) {
+                if (new_start_time === "null") {
+                    new_start_time = "";
                 }
-            });
+                if (new_end_time === "null") {
+                    new_end_time = "";
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/api/entry/edit",
+                    data: {
+                        old_bib_number: bib_number,
+                        bib_number: new_bib_number,
+                        entry_name: new_entry_name,
+                        category: new_category,
+                        start_time: new_start_time,
+                        end_time: new_end_time,
+                    },
+                    success: function (data) {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Entry has been updated'
+                        });
+                    },
+                    error: function (error_reason) {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Error: ' + error_reason.responseText,
+                        });
+                    }
+                });
+            }
         }
     })
 }

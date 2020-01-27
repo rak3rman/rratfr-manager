@@ -20,6 +20,14 @@ function getSettings() {
             document.getElementById("voting_end_time").value = moment(data.voting_end_time).format("MM/DD/YYYY hh:mm A");
             document.getElementById("console_port").value = data.console_port;
             document.getElementById("mongodb_url").value = data.mongodb_url;
+            document.getElementById("signup").value = data.signup_mode;
+            document.getElementById("debug").value = data.debug_mode;
+            if (data.signup_mode === "true") {
+                document.getElementById("signup").setAttribute("checked", "");
+            }
+            if (data.debug_mode === "true") {
+                document.getElementById("debug").setAttribute("checked", "");
+            }
         },
         error: function (data) {
             Toast.fire({
@@ -33,30 +41,42 @@ function getSettings() {
 
 //Update settings to server
 function updateSettings() {
-    console.log(moment(document.getElementById("race_start_time").value).format());
-    console.log(moment(document.getElementById("voting_end_time").value).format());
-    $.ajax({
-        type: "POST",
-        url: "/api/settings",
-        data: {
-            race_start_time: moment(document.getElementById("race_start_time").value).format(),
-            voting_end_time: moment(document.getElementById("voting_end_time").value).format(),
-            console_port: document.getElementById("console_port").value,
-            mongodb_url: document.getElementById("mongodb_url").value
-        },
-        success: function (data) {
-            Toast.fire({
-                type: 'success',
-                title: 'Successfully updated settings'
-            });
-        },
-        error: function (data) {
-            Toast.fire({
-                type: 'error',
-                title: 'Error with sending data...'
+    Swal.fire({
+        title: 'Save Settings',
+        text: "These changes will cause a temporary loss in connection and restart the software",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Save'
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                type: "POST",
+                url: "/api/settings",
+                data: {
+                    race_start_time: moment(document.getElementById("race_start_time").value).format(),
+                    voting_end_time: moment(document.getElementById("voting_end_time").value).format(),
+                    console_port: document.getElementById("console_port").value,
+                    mongodb_url: document.getElementById("mongodb_url").value,
+                    signup_mode: document.getElementById("signup").checked,
+                    debug_mode: document.getElementById("debug").checked
+                },
+                success: function (data) {
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Successfully updated settings'
+                    });
+                },
+                error: function (data) {
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Error with sending data...'
+                    });
+                }
             });
         }
-    });
+    })
 }
 
 //Setup Datetimepicker

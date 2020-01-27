@@ -58,8 +58,6 @@ if (signup_mode === undefined) {
     storage.set('signup_mode', 'true');
     console.log('Config Manager: Signup Mode Set to DEFAULT: true');
 }
-//Number of Users Connected
-storage.set('userconnect', 0);
 //End of System Config Checks - - - - - - - - - - - - - -
 
 //Declare App
@@ -216,7 +214,7 @@ mongoose.connection.on('timeout', function () {
 mongoose.connection.on('disconnected', function () {
     console.log('MongoDB: Disconnected')
 });
-mongoose.connect(storage.get('mongodb_url'), {useNewUrlParser: true, connectTimeoutMS: 10000});
+mongoose.connect(storage.get('mongodb_url'), {useNewUrlParser: true,  useUnifiedTopology: true, connectTimeoutMS: 10000});
 
 //Initialize Socket.io
 socket.socket_config(server);
