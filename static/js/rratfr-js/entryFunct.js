@@ -40,7 +40,7 @@ socket.on('entry_data', function (data) {
     entryTable.clear();
     $.each(data, function (i, value) {
         let tools = ("<div class=\"td-actions text-right\">\n" +
-            "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-info\" data-original-title=\"\" onclick=\"editEntry('" + value.bib_number + "', '" + value.entry_name + "', '" + value.category + "', '" + value.start_time + "', '" + value.end_time + "')\" title=\"\">\n" +
+            "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-info\" data-original-title=\"\" onclick=\"editEntry('" + value.bib_number + "', '" + value.entry_name + "', '" + value.category + "', '" + value.start_time + "', '" + value.end_time + "', '" + value.timing_status + "')\" title=\"\">\n" +
             "<i class=\"fas fa-edit\"></i> Edit\n" +
             "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-danger ml-2\" data-original-title=\"\" onclick=\"deleteEntry('" + value.bib_number + "')\" title=\"\">\n" +
             "<i class=\"fas fa-times-circle\"></i> Delete\n" +
@@ -140,7 +140,7 @@ function createEntry() {
 }
 
 //Entry Edit SA
-function editEntry(bib_number, entry_name, category, start_time, end_time) {
+function editEntry(bib_number, entry_name, category, start_time, end_time, timing_status) {
     Swal.fire({
         title: 'Edit Entry: ' + entry_name,
         html:
@@ -172,6 +172,18 @@ function editEntry(bib_number, entry_name, category, start_time, end_time) {
             '<h5 class="mb-0 mt-2"><strong>Timing Information:</strong></h5>' +
             '<h6 class="mb-0 mt-0">Entry must be in finished state to recalculate final time</h6>' +
             '<div class="row">\n' +
+            '   <label class="col-sm-3 col-form-label text-left pb-0">Status</label>\n' +
+            '   <div class="col-sm-9 mb-1">\n' +
+            '      <select class="selectpicker float-left" data-size="3" data-style="select-with-transition" title="Status">\n' +
+            '          <option id="waiting" value="waiting"> Waiting </option>\n' +
+            '          <option id="en_route" value="en_route"> En Route </option>\n' +
+            '          <option id="finished" value="finished"> Finished </option>\n' +
+            '          <option id="dq" value="dq"> Disqualified </option>\n' +
+            '          <option id="reset" value="reset"> Reset </option>\n' +
+            '      </select>' +
+            '   </div>\n' +
+            '</div>' +
+            '<div class="row">\n' +
             '   <label class="col-sm-3 col-form-label text-left pb-0">Start Time</label>\n' +
             '   <div class="col-sm-9">\n' +
             '       <div class="form-group">\n' +
@@ -188,6 +200,9 @@ function editEntry(bib_number, entry_name, category, start_time, end_time) {
             '   </div>\n' +
             '</div>',
         onOpen: function() {
+            $(".selectpicker").selectpicker();
+            console.log(timing_status);
+            document.getElementById(timing_status).setAttribute("selected", "");
             if (document.getElementById("editStartTime").value !== null) {
                 $('#editStartTime').datetimepicker({
                     icons: {
