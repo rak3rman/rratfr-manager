@@ -87,6 +87,8 @@ function getStatistics(socketid) {
     let updated_time_missing_check;
     let updated_time_entries_in_water;
     let updated_time_entries_finished;
+    let race_start_time;
+    let voting_end_time;
     vote.find({}, function (err, listed_votes) {
         if (err) {
             console.log("Socket.io: Retrieve failed: " + err);
@@ -132,6 +134,12 @@ function getStatistics(socketid) {
                         if (variables[i]["var_name"] === "updated_time_entries_finished") {
                             updated_time_entries_finished = variables[i]["var_value"];
                         }
+                        if (variables[i]["var_name"] === "race_start_time") {
+                            race_start_time = variables[i]["var_value"];
+                        }
+                        if (variables[i]["var_name"] === "voting_end_time") {
+                            voting_end_time = variables[i]["var_value"];
+                        }
                     }
                     console.log(socketid);
                     if (socketid === undefined) {
@@ -145,7 +153,8 @@ function getStatistics(socketid) {
                             updated_entries_in_water: updated_time_entries_in_water,
                             updated_entries_finished: updated_time_entries_finished,
                             connected_users: storage.get('userconnect'),
-                            racestart: storage.get('racedate'),
+                            race_start_time: race_start_time,
+                            voting_end_time: voting_end_time,
                             votes_cast: votes_cast
                         });
                     } else {
@@ -159,7 +168,8 @@ function getStatistics(socketid) {
                             updated_entries_in_water: updated_time_entries_in_water,
                             updated_entries_finished: updated_time_entries_finished,
                             connected_users: storage.get('userconnect'),
-                            racestart: storage.get('racedate'),
+                            race_start_time: race_start_time,
+                            voting_end_time: voting_end_time,
                             votes_cast: votes_cast
                         });
                     }

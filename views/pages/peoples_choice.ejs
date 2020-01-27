@@ -60,7 +60,7 @@
                                 <div class="card-icon">
                                     <i class="fas fa-check"></i>
                                 </div>
-                                <p class="card-category">Sunday, August 18th, 2019</p>
+                                <p class="card-category"><span id="racedate">RRATFR Awards</span></p>
                                 <h3 class="card-title">People's Choice</h3>
                             </div>
                             <div class="card-footer">
@@ -69,9 +69,7 @@
                                     </h2>
                                     <h4 class="col-12 m-auto"><u>Reminders:</u> Select below the entry that
                                         <strong>you</strong> like the best based on <strong>creativity</strong> and
-                                        <strong>ingenuity</strong>. Voting is open August 18, 2019 from <strong>11am to
-                                            4pm CDT</strong>.
-                                        Each person is only allowed <strong>one</strong> entry per device. Please make
+                                        <strong>ingenuity</strong>. <span id="votingopen"></span>Each person is only allowed <strong>one</strong> entry per device. Please make
                                         sure to submit your vote at the bottom of the page!</h4>
                                 </div>
                             </div>
@@ -103,11 +101,10 @@
                             <i class="fas fa-vote-yea"></i>
                         </div>
                         <p class="card-category">People's Choice Award</p>
-                        <h3 class="card-title">2019 Entries</h3>
+                        <h3 class="card-title"><span id="year1"></span> Entries</h3>
                     </div>
                     <div class="card-footer">
-                        <h3 class="m-auto p-3 card-title"><strong>Voting is Closed</strong><br> Voting opens at 11am CDT
-                            August 18, 2019 and closes at 4pm CDT August 18, 2019.</h3>
+                        <h3 class="m-auto p-3 card-title"><strong>Voting is closed</strong><br> <span id="votingclosed"></span></h3>
                     </div>
                 </div>
                 <div class="card card-stats" id="open">
@@ -116,7 +113,7 @@
                             <i class="fas fa-vote-yea"></i>
                         </div>
                         <p class="card-category">People's Choice Award</p>
-                        <h3 class="card-title">2019 Entries</h3>
+                        <h3 class="card-title"><span id="year2"></span> Entries</h3>
                     </div>
                     <div class="card-footer">
                         <select class="image-picker show-labels show-html" id="entries"></select>
@@ -137,7 +134,6 @@
     document.ready = function () {
         setImage();
         getInfo();
-        timeCheck();
         setInterval(timeCheck, 10000);
     }
 </script>

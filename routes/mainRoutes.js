@@ -7,12 +7,12 @@ let storage = new dataStore({path: './config/sysConfig.json'});
 
 //Public Results Page Route
 exports.liveResultsRoute = function (req, res) {
-    res.render('pages/live_results.ejs', {title: 'Live Results', user: req.user})
+    res.render('pages/live_results.ejs', {title: 'Live Results'})
 };
 
 //Results (Historic) Dashboard Page Route
 exports.historicResultsRoute = function (req, res) {
-    res.render('pages/historic_results.ejs', {title: 'Historic Results', racedate: storage.get('racedate')})
+    res.render('pages/historic_results.ejs', {title: 'Historic Results'})
 };
 
 //Display Dashboard Page Route

@@ -4,6 +4,7 @@ Author       : RAk3rman
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\*/
 let entry = require('../models/entryModel.js');
 let vote = require('../models/voteModel.js');
+let varSet = require('../models/varModel.js');
 let dataStore = require('data-store');
 let storage = new dataStore({path: './config/sysConfig.json'});
 let debug_mode = storage.get('debug_mode');
@@ -414,24 +415,47 @@ exports.submit_vote = function (req, res) {
 
 //Get Settings Data
 exports.settings_get = function (req, res) {
-    res.json({
-        racedate: storage.get('racedate'),
-        voting_end_time: storage.get('voting_end_time'),
-        console_port: storage.get('console_port'),
-        mongodb_url: storage.get('mongodb_url')
+    varSet.find({}, function (err, variables) {
+        if (err) {
+            console.log("Socket.io: Retrieve failed: " + err);
+            io.emit('error', err);
+        } else {
+            let race_start_time;
+            let voting_end_time;
+            for (let i in variables) {
+                if (variables[i]["var_name"] === "race_start_time") {
+                    race_start_time = variables[i]["var_value"];
+                }
+                if (variables[i]["var_name"] === "voting_end_time") {
+                    voting_end_time = variables[i]["var_value"];
+                }
+            }
+            res.json({
+                race_start_time: race_start_time,
+                voting_end_time: voting_end_time,
+                console_port: storage.get('console_port'),
+                mongodb_url: storage.get('mongodb_url')
+            });
+            if (debug_mode === "true") {
+                console.log("SETTINGS Resolver: Current settings sent")
+            }
+        }
     });
 };
 
 //Update Settings Data
 exports.settings_update = function (req, res) {
-    console.log(req.body["racedate"]);
-    storage.set('racedate', req.body["racedate"]);
-    storage.set('voting_end_time', req.body["voting_end_time"]);
+    console.log(req.body["race_start_time"]);
+    var_Updater("race_start_time", req.body["race_start_time"]);
+    var_Updater("voting_end_time", req.body["voting_end_time"]);
+    events.save_event('System', 'Saved new system and race settings');
     res.status(200).send('success');
+    if (debug_mode === "true") {
+        console.log("SETTINGS Resolver: Saved new settings as" + JSON.stringify(req.body))
+    }
 };
 
 //Update Variables to DB
-let varSet = require('../models/varModel.js');
 function var_Updater(var_name, var_value) {
     varSet.findOneAndUpdate({ var_name: var_name }, { $set: { var_value: var_value }}, function (err, data) {
         if (err) {

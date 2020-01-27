@@ -58,18 +58,6 @@ if (signup_mode === undefined) {
     storage.set('signup_mode', 'true');
     console.log('Config Manager: Signup Mode Set to DEFAULT: true');
 }
-//Race Start Time
-let racedate = storage.get('racedate');
-if (racedate === undefined) {
-    storage.set('racedate', ' ');
-    console.log('Config Manager: Race Date needs to be configured');
-}
-//People's Choice Voting End Time
-let voting_end_time = storage.get('voting_end_time');
-if (voting_end_time === undefined) {
-    storage.set('voting_end_time', ' ');
-    console.log('Config Manager: People\'s Choice Voting End Time needs to be configured');
-}
 //Number of Users Connected
 storage.set('userconnect', 0);
 //End of System Config Checks - - - - - - - - - - - - - -
@@ -128,7 +116,7 @@ app.enable('trust proxy');
 entryRouter(app);
 
 //Live-Historic Scheduler
-if (storage.get('racedate') > Date.now()) {
+if (1 == 1) {
     app.get('/', (req, res) => {
         res.redirect('/results/historic')
     })

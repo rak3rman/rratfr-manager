@@ -62,7 +62,7 @@ socket.on('race_data', function(data){
     document.getElementById("inwaterStat").innerHTML = data.entries_in_water;
     document.getElementById("finishStat").innerHTML = data.entries_finished;
     document.getElementById("connected_users").innerHTML = data.connected_users;
-    racestart = data.racestart;
+    racestart = moment(data.race_start_time).format("x");
     document.getElementById("votes_cast").innerHTML = data.votes_cast;
 });
 

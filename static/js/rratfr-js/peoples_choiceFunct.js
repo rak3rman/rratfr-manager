@@ -11,6 +11,10 @@ const Toast = Swal.mixin({
     showConfirmButton: false,
     timer: 5000
 });
+//Variables
+let votingstat = 0;
+let race_start_time;
+let voting_end_time_ms;
 
 //Socket.io Get Entries
 let entries = $('#entries');
@@ -31,15 +35,23 @@ socket.on('entry_data', function (data) {
     }
 });
 
-//Check to see if voting is open
-let votingstat = 0;
-let starttime = 1566144000000;
-let endtime = 1566162000000;
+//Socket.io handle Statistics
+socket.on('race_data', function(data){
+    race_start_time = moment(data.race_start_time).format("x");
+    voting_end_time_ms = moment(data.voting_end_time).format("x");
+    document.getElementById("votingopen").innerHTML = "Votes can be cast on " + moment(data.race_start_time).format('MMMM Do, YYYY') + " from <strong>" + moment(data.race_start_time).format('h:mma') + " to " + moment(data.voting_end_time).format('h:mma') + " CDT</strong>. ";
+    document.getElementById("racedate").innerHTML = moment(data.race_start_time).format('dddd, MMMM Do, YYYY');
+    document.getElementById("year1").innerHTML = moment(data.race_start_time).format('YYYY');
+    document.getElementById("year2").innerHTML = moment(data.race_start_time).format('YYYY');
+    document.getElementById("votingclosed").innerHTML = "Votes can be cast on " + moment(data.race_start_time).format('MMMM Do, YYYY') + " from <strong>" + moment(data.race_start_time).format('h:mma') + " to " + moment(data.voting_end_time).format('h:mma') + " CDT</strong>. ";
+    timeCheck();
+});
 
+//Check to see if voting is open
 function timeCheck() {
     let closed = document.getElementById("closed");
     let open = document.getElementById("open");
-    if (!((starttime < Date.now()) && (Date.now() < endtime))) {
+    if (!((race_start_time < Date.now()) && (Date.now() < voting_end_time_ms))) {
         //Voting Closed
         closed.style.display = "block";
         open.style.display = "none";
@@ -54,7 +66,6 @@ function timeCheck() {
 //Get User Information for IP Limiter
 let userIP;
 let userData;
-
 function getInfo() {
     $.ajax({
         type: "GET",

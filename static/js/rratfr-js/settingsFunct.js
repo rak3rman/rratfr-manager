@@ -16,8 +16,8 @@ function getSettings() {
         type: "GET",
         url: "/api/settings",
         success: function (data) {
-            document.getElementById("racedate").value = data.racedate;
-            document.getElementById("voting_end_time").value = data.voting_end_time;
+            document.getElementById("race_start_time").value = moment(data.race_start_time).format("MM/DD/YYYY hh:mm A");
+            document.getElementById("voting_end_time").value = moment(data.voting_end_time).format("MM/DD/YYYY hh:mm A");
             document.getElementById("console_port").value = data.console_port;
             document.getElementById("mongodb_url").value = data.mongodb_url;
         },
@@ -33,13 +33,14 @@ function getSettings() {
 
 //Update settings to server
 function updateSettings() {
-    console.log(document.getElementById("racedate").data("datetimepicker").date());
+    console.log(moment(document.getElementById("race_start_time").value).format());
+    console.log(moment(document.getElementById("voting_end_time").value).format());
     $.ajax({
         type: "POST",
         url: "/api/settings",
         data: {
-            racedate: moment(document.getElementById("racedate").value).format("x"),
-            voting_end_time: moment(document.getElementById("voting_end_time").value).format("x"),
+            race_start_time: moment(document.getElementById("race_start_time").value).format(),
+            voting_end_time: moment(document.getElementById("voting_end_time").value).format(),
             console_port: document.getElementById("console_port").value,
             mongodb_url: document.getElementById("mongodb_url").value
         },
@@ -60,7 +61,7 @@ function updateSettings() {
 
 //Setup Datetimepicker
 function setupPicker() {
-    $('#racedate').datetimepicker({
+    $('#race_start_time').datetimepicker({
         icons: {
             time: "fas fa-clock",
             date: "fa fa-calendar",
