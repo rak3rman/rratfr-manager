@@ -31,7 +31,7 @@ exports.socket_config = function (server) {
                     console.log("Socket.io: Bib number not found");
                     socket.emit('check_bib_result', 'not_found');
                 } else {
-                    if (details[0]["timing_status"] === "waiting") {
+                    if (details[0]["timing_status"] === "in_queue") {
                         console.log("Socket.io: Bib #" + bib_number + " - Ready to Start");
                         socket.emit('check_bib_result', {
                             result: 'start_ready',
@@ -80,12 +80,12 @@ exports.socket_config = function (server) {
 //Get Statistics and send
 function getStatistics(socketid) {
     let total_entries_count = 0;
-    let missing_check_count = 0;
+    let entries_in_queue_count = 0;
     let entries_in_water_count = 0;
     let entries_finished_count = 0;
     let votes_cast = 0;
     let updated_time_total_entries;
-    let updated_time_missing_check;
+    let updated_time_in_queue;
     let updated_time_entries_in_water;
     let updated_time_entries_finished;
     let race_start_time;
@@ -106,8 +106,8 @@ function getStatistics(socketid) {
             io.emit('error', err);
         } else {
             for (let i in listed_entries) {
-                if (listed_entries[i]["check_status"] === "NOT CHECKED") {
-                    missing_check_count += 1;
+                if (listed_entries[i]["timing_status"] === "in_queue") {
+                    entries_in_queue_count += 1;
                 }
                 if (listed_entries[i]["timing_status"] === "en_route") {
                     entries_in_water_count += 1;
@@ -126,8 +126,8 @@ function getStatistics(socketid) {
                         if (variables[i]["var_name"] === "updated_time_total_entries") {
                             updated_time_total_entries = variables[i]["var_value"];
                         }
-                        if (variables[i]["var_name"] === "updated_time_missing_check") {
-                            updated_time_missing_check = variables[i]["var_value"];
+                        if (variables[i]["var_name"] === "updated_time_in_queue") {
+                            updated_time_in_queue = variables[i]["var_value"];
                         }
                         if (variables[i]["var_name"] === "updated_time_entries_in_water") {
                             updated_time_entries_in_water = variables[i]["var_value"];
@@ -146,11 +146,11 @@ function getStatistics(socketid) {
                     if (socketid === undefined) {
                         io.emit('race_data', {
                             total_entries: total_entries_count,
-                            missing_check: missing_check_count,
+                            entries_in_queue: entries_in_queue_count,
                             entries_in_water: entries_in_water_count,
                             entries_finished: entries_finished_count,
                             updated_total_entries: updated_time_total_entries,
-                            updated_missing_check: updated_time_missing_check,
+                            updated_time_in_queue: updated_time_in_queue,
                             updated_entries_in_water: updated_time_entries_in_water,
                             updated_entries_finished: updated_time_entries_finished,
                             connected_users: userconnect,
@@ -161,11 +161,11 @@ function getStatistics(socketid) {
                     } else {
                         io.to(socketid).emit('race_data', {
                             total_entries: total_entries_count,
-                            missing_check: missing_check_count,
+                            entries_in_queue: entries_in_queue_count,
                             entries_in_water: entries_in_water_count,
                             entries_finished: entries_finished_count,
                             updated_total_entries: updated_time_total_entries,
-                            updated_missing_check: updated_time_missing_check,
+                            updated_time_in_queue: updated_time_in_queue,
                             updated_entries_in_water: updated_time_entries_in_water,
                             updated_entries_finished: updated_time_entries_finished,
                             connected_users: userconnect,

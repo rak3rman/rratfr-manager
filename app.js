@@ -130,15 +130,13 @@ app.get('/results/historic', mainRouter.historicResultsRoute);
 //Display Dashboard
 app.get('/display', mainRouter.displayDashRoute);
 //People's Choice Voting
-app.get('/peoples-choice', mainRouter.peoplesChoiceRoute);
+app.get('/voting/people\'s-choice', mainRouter.peoplesChoiceRoute);
 //Admin Dashboard
 app.get('/dashboard', auth.isLoggedIn, mainRouter.adminDashRoute);
 //Timing Interface
 app.get('/timing', auth.isLoggedIn, mainRouter.timingRoute);
-//Entry List
-app.get('/entry/list', auth.isLoggedIn, mainRouter.entryListRoute);
-//Entry Check
-app.get('/entry/check', auth.isLoggedIn, mainRouter.entryCheckRoute);
+//Entry Management
+app.get('/entry/management', auth.isLoggedIn, mainRouter.entryMangementRoute);
 //Entry Check
 app.get('/settings', auth.isLoggedIn, mainRouter.settingsRoute);
 

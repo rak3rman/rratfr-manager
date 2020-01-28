@@ -11,6 +11,7 @@ const Toast = Swal.mixin({
     timer: 5000
 });
 let racestart = 0;
+
 //Set Table Settings
 let tableSettings = {
     "lengthMenu": [
@@ -58,10 +59,14 @@ $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
 //Socket.io handle Statistics
 socket.on('race_data', function(data){
     document.getElementById("totalStat").innerHTML = data.total_entries;
-    document.getElementById("checkStat").innerHTML = data.missing_check;
+    document.getElementById("queueStat").innerHTML = data.entries_in_queue;
     document.getElementById("inwaterStat").innerHTML = data.entries_in_water;
     document.getElementById("finishStat").innerHTML = data.entries_finished;
     document.getElementById("connected_users").innerHTML = data.connected_users;
+    document.getElementById("pushedDate1").innerHTML = 'Updated ' + moment(data.updated_total_entries).fromNow();
+    document.getElementById("pushedDate2").innerHTML = 'Updated ' + moment(data.updated_time_in_queue).fromNow();
+    document.getElementById("pushedDate3").innerHTML = 'Updated ' + moment(data.updated_entries_in_water).fromNow();
+    document.getElementById("pushedDate4").innerHTML = 'Updated ' + moment(data.updated_entries_finished).fromNow();
     racestart = moment(data.race_start_time).format("x");
     document.getElementById("votes_cast").innerHTML = data.votes_cast;
 });

@@ -17,13 +17,9 @@ let entrySchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    check_status: {
-        type: String,
-        default: "NOT CHECKED",
-    },
     timing_status: {
         type: String,
-        default: "waiting",
+        default: "in_queue",
     },
     final_place: {
         type: String,
@@ -31,7 +27,7 @@ let entrySchema = mongoose.Schema({
     },
     final_time: {
         type: String,
-        default: "NT - WAITING",
+        default: "NT - IN QUEUE",
     },
     raw_final_time: {
         type: String,

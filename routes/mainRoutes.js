@@ -30,14 +30,9 @@ exports.adminDashRoute = function (req, res) {
     res.render('pages/admin_dashboard.ejs', {title: 'Dashboard', user: req.user})
 };
 
-//Entry List Page Route
-exports.entryListRoute = function (req, res) {
-    res.render('pages/entry_list.ejs', {title: 'Entry List', user: req.user})
-};
-
-//Entry Check Page Route
-exports.entryCheckRoute = function (req, res) {
-    res.render('pages/entry_check.ejs', {title: 'Entry Check', user: req.user})
+//Entry Management Page Route
+exports.entryMangementRoute = function (req, res) {
+    res.render('pages/entry_management.ejs', {title: 'Entry Management', user: req.user})
 };
 
 //Time Interface Page Route

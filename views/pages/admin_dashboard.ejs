@@ -3,9 +3,9 @@
 <div class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="card card-stats pb-4">
-                    <div class="card-header card-header-success card-header-icon">
+                    <div class="card-header card-header-secondary card-header-icon">
                         <div class="card-icon">
                             <i class="fas fa-stopwatch"></i>
                         </div>
@@ -14,25 +14,47 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="card card-stats pb-4">
-                    <div class="card-header card-header-secondary card-header-icon">
+                    <div class="card-header card-header-success card-header-icon">
                         <div class="card-icon">
-                            <i class="fas fa-user-friends"></i>
+                            <i class="fas fa-server"></i>
                         </div>
-                        <p class="card-category"><strong>Connected Users</strong></p>
-                        <h3 class="card-title"><span id="connected_users">0</span></h3>
+                        <p class="card-category"><strong>System Status</strong></p>
+                        <h3 class="card-title text-success">Operational</h3>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
+                <div class="card card-stats pb-4">
+                    <div class="card-header card-header-warning card-header-icon">
+                        <div class="card-icon">
+                            <i class="fas fa-feather"></i>
+                        </div>
+                        <p class="card-category"><strong>Chuck a Duck Entries</strong></p>
+                        <h3 class="card-title"><span id="">0</span></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
                 <div class="card card-stats pb-4">
                     <div class="card-header card-header-info card-header-icon">
                         <div class="card-icon">
                             <i class="fas fa-vote-yea"></i>
                         </div>
-                        <p class="card-category"><strong>Votes Cast</strong></p>
+                        <p class="card-category"><strong>People's Choice Votes</strong></p>
                         <h3 class="card-title"><span id="votes_cast">0</span></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
+                <div class="card card-stats pb-4">
+                    <div class="card-header card-header-primary card-header-icon">
+                        <div class="card-icon">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                        <p class="card-category"><strong>Connected Users</strong></p>
+                        <h3 class="card-title"><span id="connected_users">0</span></h3>
                     </div>
                 </div>
             </div>
@@ -47,8 +69,8 @@
                     </div>
                     <div class="card-footer">
                         <div class="stats">
-                            <i class="material-icons">add</i>
-                            <a href="/entry/list">Add an Entry</a>
+                            <i class="material-icons">history</i>
+                            <span id="pushedDate1">Updated just now</span>
                         </div>
                     </div>
                 </div>
@@ -57,15 +79,15 @@
                 <div class="card card-stats">
                     <div class="card-header card-header-danger card-header-icon">
                         <div class="card-icon">
-                            <i class="fas fa-exclamation-triangle"></i>
+                            <i class="fas fa-arrow-right"></i>
                         </div>
-                        <p class="card-category"><strong>Missing Pre-Race Check</strong></p>
-                        <h3 class="card-title text-danger"><span id="checkStat">0</span></h3>
+                        <p class="card-category"><strong>Entries in Queue</strong></p>
+                        <h3 class="card-title text-danger"><span id="queueStat">0</span></h3>
                     </div>
                     <div class="card-footer">
                         <div class="stats">
-                            <i class="material-icons pr-1">pan_tool</i>
-                            <a href="/entry/check">See Entry Check</a>
+                            <i class="material-icons">history</i>
+                            <span id="pushedDate2">Updated just now</span>
                         </div>
                     </div>
                 </div>
@@ -81,8 +103,8 @@
                     </div>
                     <div class="card-footer">
                         <div class="stats">
-                            <i class="material-icons">timer</i>
-                            <a href="/timing">Race Timing</a>
+                            <i class="material-icons">history</i>
+                            <span id="pushedDate3">Updated just now</span>
                         </div>
                     </div>
                 </div>
@@ -98,8 +120,8 @@
                     </div>
                     <div class="card-footer">
                         <div class="stats">
-                            <i class="material-icons">timer</i>
-                            <a href="/timing">Race Timing</a>
+                            <i class="material-icons">history</i>
+                            <span id="pushedDate4">Updated just now</span>
                         </div>
                     </div>
                 </div>
@@ -110,7 +132,7 @@
                 <div class="card">
                     <div class="card-header card-header-info">
                         <h4 class="card-title"><i class="fas fa-trophy"></i> Entry Leaderboard</h4>
-                        <p class="card-category">Updated in Real Time</p>
+                        <p class="card-category"><i class="fas fa-circle text-danger" style="font-size: 10px"></i> Live | Results of the raft race</p>
                     </div>
                     <div class="card-body table-responsive">
                         <table class="table table-hover table-striped dt-responsive display nowrap"
@@ -130,7 +152,7 @@
                 <div class="card">
                     <div class="card-header card-header-info">
                         <h4 class="card-title"><i class="fas fa-vote-yea"></i> People's Choice Leaderboard</h4>
-                        <p class="card-category">Updated in Real Time</p>
+                        <p class="card-category"><i class="fas fa-circle text-danger" style="font-size: 10px"></i> Live | Results of the People's Choice poll</p>
                     </div>
                     <div class="card-body table-responsive">
                         <table class="table table-hover table-striped dt-responsive display nowrap"

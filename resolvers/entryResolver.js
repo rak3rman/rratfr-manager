@@ -52,6 +52,7 @@ exports.create_entry = function (req, res) {
                     }
                     socket.updateSockets("create_entry");
                     var_Updater('updated_time_total_entries', Date.now());
+                    var_Updater('updated_time_in_queue', Date.now());
                     events.save_event('Entries', 'Created new entry ' + created_entry.entry_name + ' - Bib #' + created_entry.bib_number)
                 }
                 res.json(created_entry);
@@ -143,7 +144,6 @@ exports.entry_delete = function (req, res) {
             res.json(req.body["bib_number"]);
             sortEntries();
             var_Updater('updated_time_total_entries', Date.now());
-            var_Updater('updated_time_missing_check', Date.now());
             var_Updater('updated_time_entries_in_water', Date.now());
             var_Updater('updated_time_entries_finished', Date.now());
             fs.unlink('./static/img/entries/entry_' + req.body["bib_number"] + '.jpg', (err) => {
@@ -182,7 +182,6 @@ exports.entry_timing_update = function (req, res) {
                             console.log("ENTRY Resolver: Entry Status Updated: " + data);
                         }
                         res.json(data);
-                        var_Updater('updated_time_missing_check', Date.now());
                         events.save_event('Timing', data.entry_name + ' - Bib #' + req.body["bib_number"] + ' has passed the Entry Check');
                         socket.updateSockets("update_check");
                     }
@@ -261,9 +260,9 @@ exports.entry_timing_update = function (req, res) {
     if (req.body["status"] === "reset") {
         entry.findOneAndUpdate({bib_number: req.body["bib_number"]}, {
             $set: {
-                timing_status: 'waiting',
+                timing_status: 'in_queue',
                 final_place: 'NT',
-                final_time: 'NT - WAITING',
+                final_time: 'NT - IN QUEUE',
                 raw_final_time: '999999'
             }
         }, function (err, data) {
@@ -276,6 +275,7 @@ exports.entry_timing_update = function (req, res) {
                 }
                 res.json(data);
                 sortEntries();
+                var_Updater('updated_time_in_queue', Date.now());
                 events.save_event('Timing', data.entry_name + ' - Bib #' + req.body["bib_number"] + ' has been Reset');
             }
         });
