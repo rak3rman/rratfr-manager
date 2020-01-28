@@ -3,24 +3,60 @@
 <div class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+            <div class="col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-secondary card-header-icon">
+                        <div class="card-icon">
+                            <i class="fas fa-medal"></i>
+                        </div>
+                        <p class="card-category"><strong>People's Choice Award</strong></p>
+                        <h3 class="card-title">Not posed</h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <i class="material-icons">info</i>
+                            Total votes cast towards the People's Choice Award
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fas fa-gavel"></i>
+                        </div>
+                        <p class="card-category"><strong>Judges's Choice Award</strong></p>
+                        <h3 class="card-title">Not posed</h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <i class="material-icons">info</i>
+                            Click or tap on this element to view the voting form
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
                 <div class="card card-stats">
                     <div class="card-header card-header-info card-header-icon">
                         <div class="card-icon">
                             <i class="fas fa-vote-yea"></i>
                         </div>
                         <p class="card-category"><strong>People's Choice Votes</strong></p>
-                        <h3 class="card-title"><span id="totalStat">0</span></h3>
+                        <h3 class="card-title"><span id="votes_cast">0</span></h3>
                     </div>
                     <div class="card-footer">
                         <div class="stats">
-                            <i class="material-icons">history</i>
-                            <span id="pushedDate1">Updated just now</span>
+                            <i class="material-icons">info</i>
+                            Total votes cast towards the People's Choice Award
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+            <div class="col-sm-6">
                 <div class="card card-stats" onclick="window.location.href = '/voting/people\'s-choice'">
                     <div class="card-header card-header-success card-header-icon">
                         <div class="card-icon">
@@ -54,17 +90,11 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-hover table-striped dt-responsive display nowrap"
-                                   id="entryTable" style="width: 100%">
+                                   id="pcTable" style="width: 100%">
                                 <thead class="text-muted">
                                 <th>Bib #</th>
-                                <th>Name</th>
-                                <th>Category</th>
-                                <th>PC Votes</th>
-                                <th>Timing Status</th>
-                                <th>Start Time</th>
-                                <th>End Time</th>
-                                <th>Final Time</th>
-                                <th>Final Place</th>
+                                <th>Origin IP</th>
+                                <th>Date</th>
                                 <th>Tools</th>
                                 </thead>
                                 <tbody></tbody>
@@ -81,6 +111,7 @@
 <script type="text/javascript" src="/static/js/rratfr-js/voting_managementFunct.js"></script>
 <script>
     document.ready = function () {
+        getVotes();
         activateLink("<%= title %>");
     }
 </script>

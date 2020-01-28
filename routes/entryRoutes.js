@@ -28,8 +28,10 @@ module.exports = function (app) {
     app.route('/api/entry/timing/update')
         .post(auth.isLoggedIn, entry.entry_timing_update);
 
-    app.route('/api/voting')
-        .post(entry.submit_vote);
+    app.route('/api/voting/people\'s-choice')
+        .post(entry.submit_vote)
+        .get(auth.isLoggedIn, entry.return_all_votes);
+
 
     app.route('/api/settings')
         .get(auth.isLoggedIn, entry.settings_get)

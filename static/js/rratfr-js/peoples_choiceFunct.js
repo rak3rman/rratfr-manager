@@ -99,7 +99,7 @@ function sendVote() {
             if (result.value) {
                 $.ajax({
                     type: "POST",
-                    url: "/api/voting",
+                    url: "/api/voting/people's-choice",
                     data: {
                         bib_number: bib_number,
                         user_ip: userIP,

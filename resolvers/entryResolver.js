@@ -413,6 +413,21 @@ exports.submit_vote = function (req, res) {
     });
 };
 
+//List all votes in database
+exports.return_all_votes = function (req, res) {
+    vote.find({}, function (err, listed_votes) {
+        if (err) {
+            console.log("VOTE Resolver: Retrieve failed: " + err);
+            res.send(err);
+        } else {
+            if (debug_mode === "true") {
+                console.log("VOTE Resolver: Votes Sent: " + JSON.stringify(listed_votes))
+            }
+        }
+        res.json(listed_votes);
+    });
+};
+
 //Get Settings Data
 exports.settings_get = function (req, res) {
     varSet.find({}, function (err, variables) {
