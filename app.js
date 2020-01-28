@@ -123,21 +123,25 @@ if (1 == 1) {
         res.redirect('/results/live')
     })
 }
+//Admin Dashboard
+app.get('/dashboard', auth.isLoggedIn, mainRouter.adminDashRoute);
+//Entry Management
+app.get('/entry/management', auth.isLoggedIn, mainRouter.entryManagementRoute);
+//Voting Management
+app.get('/voting/management', auth.isLoggedIn, mainRouter.votingManagementRoute);
+//Chuck a Duck Race Management
+app.get('/chuck-a-duck/management', auth.isLoggedIn, mainRouter.duckManagementRoute);
+//Timing Interface
+app.get('/timing', auth.isLoggedIn, mainRouter.timingRoute);
 //Live Results
 app.get('/results/live', mainRouter.liveResultsRoute);
 //Historical Results
 app.get('/results/historic', mainRouter.historicResultsRoute);
-//Display Dashboard
-app.get('/display', mainRouter.displayDashRoute);
 //People's Choice Voting
 app.get('/voting/people\'s-choice', mainRouter.peoplesChoiceRoute);
-//Admin Dashboard
-app.get('/dashboard', auth.isLoggedIn, mainRouter.adminDashRoute);
-//Timing Interface
-app.get('/timing', auth.isLoggedIn, mainRouter.timingRoute);
-//Entry Management
-app.get('/entry/management', auth.isLoggedIn, mainRouter.entryMangementRoute);
-//Entry Check
+//Display Dashboard
+app.get('/display', mainRouter.displayDashRoute);
+//Admin Settings
 app.get('/settings', auth.isLoggedIn, mainRouter.settingsRoute);
 
 //Auth Routes

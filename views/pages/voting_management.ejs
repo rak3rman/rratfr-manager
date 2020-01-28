@@ -7,9 +7,9 @@
                 <div class="card card-stats">
                     <div class="card-header card-header-info card-header-icon">
                         <div class="card-icon">
-                            <i class="far fa-copy"></i>
+                            <i class="fas fa-vote-yea"></i>
                         </div>
-                        <p class="card-category"><strong>Total Entries</strong></p>
+                        <p class="card-category"><strong>People's Choice Votes</strong></p>
                         <h3 class="card-title"><span id="totalStat">0</span></h3>
                     </div>
                     <div class="card-footer">
@@ -21,18 +21,18 @@
                 </div>
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
-                <div class="card card-stats" onclick="createEntry()">
+                <div class="card card-stats" onclick="window.location.href = '/voting/people\'s-choice'">
                     <div class="card-header card-header-success card-header-icon">
                         <div class="card-icon">
-                            <i class="fas fa-plus"></i>
+                            <i class="fas fa-clipboard-list"></i>
                         </div>
-                        <p class="card-category"><strong>Entry Management</strong></p>
-                        <h3 class="card-title">Create Entry</h3>
+                        <p class="card-category"><strong>People's Choice</strong></p>
+                        <h3 class="card-title">Voting Form</h3>
                     </div>
                     <div class="card-footer">
                         <div class="stats">
                             <i class="material-icons">info</i>
-                            Click or tap on this element to create a new entry
+                            Click or tap on this element to view the voting form
                         </div>
                     </div>
                 </div>
@@ -45,17 +45,9 @@
                         <div class="nav-tabs-navigation">
                             <div class="nav-tabs-wrapper">
                                 <span class="nav-tabs-title p-0">
-                                    <h4 class="card-title"><strong>All Entries</strong></h4>
-                                    <p class="card-category">View, edit, and delete entries in the table below</p>
+                                    <h4 class="card-title"><strong>People's Choice Votes</strong></h4>
+                                    <p class="card-category">View all votes cast in the table below</p>
                                 </span>
-                                <ul class="nav nav-tabs justify-content-end" data-tabs="tabs">
-                                    <li class="nav-item dropdown mr-2">
-                                        <a class="nav-link active" onclick="sortEntries()">
-                                            <i class="fas fa-sort-numeric-up"></i>
-                                            <div class="ripple-container"></div>
-                                        </a>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -86,7 +78,7 @@
 </div>
 <% include ../partials/wrapper-bottom.ejs %>
 <% include ../partials/footer.ejs %>
-<script type="text/javascript" src="/static/js/rratfr-js/entry_managementFunct.js"></script>
+<script type="text/javascript" src="/static/js/rratfr-js/voting_managementFunct.js"></script>
 <script>
     document.ready = function () {
         activateLink("<%= title %>");
