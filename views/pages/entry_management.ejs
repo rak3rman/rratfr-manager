@@ -3,6 +3,42 @@
 <div class="content">
     <div class="container-fluid">
         <div class="row">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="far fa-copy"></i>
+                        </div>
+                        <p class="card-category"><strong>Total Entries</strong></p>
+                        <h3 class="card-title"><span id="totalStat">0</span></h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <i class="material-icons">history</i>
+                            <span id="pushedDate1">Updated just now</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                <div class="card card-stats" onclick="createEntry()">
+                    <div class="card-header card-header-success card-header-icon">
+                        <div class="card-icon">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <p class="card-category"><strong>Entry Management</strong></p>
+                        <h3 class="card-title">Create Entry</h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <i class="material-icons">info</i>
+                            Click or tap on this element to create a new entry
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header card-header-tabs card-header-success">
@@ -10,16 +46,9 @@
                             <div class="nav-tabs-wrapper">
                                 <span class="nav-tabs-title p-0">
                                     <h4 class="card-title"><strong>All Entries</strong></h4>
-                                    <p class="card-category">Total Number of Entries: <strong><span
-                                                    id="totalCount"></span></strong></p>
+                                    <p class="card-category">View, edit, and delete entries in the table below</p>
                                 </span>
                                 <ul class="nav nav-tabs justify-content-end" data-tabs="tabs">
-                                    <li class="nav-item dropdown mr-2 mb-1">
-                                        <a class="nav-link active" onclick="createEntry()">
-                                            <i class="fas fa-plus"></i>
-                                            <div class="ripple-container"></div>
-                                        </a>
-                                    </li>
                                     <li class="nav-item dropdown mr-2">
                                         <a class="nav-link active" onclick="sortEntries()">
                                             <i class="fas fa-sort-numeric-up"></i>
@@ -39,7 +68,6 @@
                                 <th>Name</th>
                                 <th>Category</th>
                                 <th>PC Votes</th>
-                                <th>Check Status</th>
                                 <th>Timing Status</th>
                                 <th>Start Time</th>
                                 <th>End Time</th>
@@ -59,3 +87,8 @@
 <% include ../partials/wrapper-bottom.ejs %>
 <% include ../partials/footer.ejs %>
 <script type="text/javascript" src="/static/js/rratfr-js/entryFunct.js"></script>
+<script>
+    document.ready = function () {
+        activateLink("<%= title %>");
+    }
+</script>

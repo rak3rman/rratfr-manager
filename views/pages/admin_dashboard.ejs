@@ -3,7 +3,7 @@
 <div class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-lg-8 col-md-6">
                 <div class="card card-stats pb-4">
                     <div class="card-header card-header-secondary card-header-icon">
                         <div class="card-icon">
@@ -14,29 +14,29 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="card card-stats pb-4">
                     <div class="card-header card-header-success card-header-icon">
                         <div class="card-icon">
                             <i class="fas fa-server"></i>
                         </div>
                         <p class="card-category"><strong>System Status</strong></p>
-                        <h3 class="card-title text-success">Operational</h3>
+                        <h3 class="card-title text-success">Active</h3>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
+            <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="card card-stats pb-4">
                     <div class="card-header card-header-warning card-header-icon">
                         <div class="card-icon">
                             <i class="fas fa-feather"></i>
                         </div>
                         <p class="card-category"><strong>Chuck a Duck Entries</strong></p>
-                        <h3 class="card-title"><span id="">0</span></h3>
+                        <h3 class="card-title"><span id="">NA</span></h3>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
+            <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="card card-stats pb-4">
                     <div class="card-header card-header-info card-header-icon">
                         <div class="card-icon">
@@ -47,7 +47,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
+            <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="card card-stats pb-4">
                     <div class="card-header card-header-primary card-header-icon">
                         <div class="card-icon">
@@ -258,3 +258,8 @@
 <% include ../partials/wrapper-bottom.ejs %>
 <% include ../partials/footer.ejs %>
 <script type="text/javascript" src="/static/js/rratfr-js/admin_dashboardFunct.js"></script>
+<script>
+    document.ready = function () {
+        activateLink("<%= title %>");
+    }
+</script>
