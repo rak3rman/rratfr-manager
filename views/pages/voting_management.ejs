@@ -42,14 +42,17 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header card-header-info">
-                        <h4 class="card-title">People's Choice Leaderboard | Judges Choice</h4>
+                        <h4 class="card-title">People's Choice Leaderboard & Judges Choice Selection</h4>
                         <p class="card-category">View the current leaderboard of the People's Choice Award. Select the Judges Choice Award winner.</p>
                     </div>
                     <div class="card-body table-responsive">
+                        <button class="btn btn-outline-info" onclick="window.location.href = '/settings'"><i class="fas fa-history"></i> Configure Results Release</button>
+                        <button class="btn btn-outline-danger" id="selectedJudgesClass"><i class="fas fa-trophy"></i> Judges Choice: <strong><span id="judgesSelected">Not Selected</span></strong></button>
+                        <span id="resetbutton"></span>
                         <table class="table table-hover table-striped dt-responsive display nowrap"
                                id="voteTable" style="width: 100%">
                             <thead class="text-muted">
-                            <th>Vote Count</th>
+                            <th>Vote #</th>
                             <th>Name</th>
                             <th>Category</th>
                             <th>Tools</th>

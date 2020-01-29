@@ -32,6 +32,11 @@ module.exports = function (app) {
         .post(entry.submit_vote)
         .get(auth.isLoggedIn, entry.return_all_votes);
 
+    app.route('/api/voting/judges-choice/assign')
+        .post(auth.isLoggedIn, entry.select_judges_choice);
+
+    app.route('/api/voting/judges-choice/reset')
+        .post(auth.isLoggedIn, entry.reset_judges_choice);
 
     app.route('/api/settings')
         .get(auth.isLoggedIn, entry.settings_get)

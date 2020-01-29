@@ -428,6 +428,42 @@ exports.return_all_votes = function (req, res) {
     });
 };
 
+//Select Judges Choice Award
+exports.select_judges_choice = function (req, res) {
+    entry.findOneAndUpdate({ bib_number: req.body["bib_number"] }, { $set: { judges_choice: "true" }}, function (err, data) {
+        if (err) {
+            console.log("ENTRY Resolver: Retrieve failed: " + err);
+            res.send(err);
+        } else {
+            if (debug_mode === "true") { console.log('ENTRY Resolver: ENTRY Updated: ' + JSON.stringify(data)) }
+            res.json(data);
+            events.save_event('Voting', 'Assigned Judges Choice Award to  ' + data.entry_name + ' | Bib #: ' + data.bib_number);
+            //Delay to wait for DB to update
+            setTimeout(function(){
+                socket.updateSockets("select_judges_choice");
+            }, 300);
+        }
+    });
+};
+
+//Reset Judges Choice Award
+exports.reset_judges_choice = function (req, res) {
+    entry.findOneAndUpdate({ bib_number: req.body["bib_number"] }, { $set: { judges_choice: "false" }}, function (err, data) {
+        if (err) {
+            console.log("ENTRY Resolver: Retrieve failed: " + err);
+            res.send(err);
+        } else {
+            if (debug_mode === "true") { console.log('ENTRY Resolver: ENTRY Updated: ' + JSON.stringify(data)) }
+            res.json(data);
+            events.save_event('Voting', 'Reset Judges Choice Award assignment');
+            //Delay to wait for DB to update
+            setTimeout(function(){
+                socket.updateSockets("reset_judges_choice");
+            }, 300);
+        }
+    });
+};
+
 //Get Settings Data
 exports.settings_get = function (req, res) {
     varSet.find({}, function (err, variables) {
@@ -481,6 +517,7 @@ exports.settings_update = function (req, res) {
         storage.set('debug_mode', req.body["debug_mode"]);
     }
     events.save_event('System', 'Saved new system and race settings');
+    socket.updateSockets("settings_update");
     res.status(200).send('success');
     if (debug_mode === "true") {
         console.log("SETTINGS Resolver: Saved new settings as" + JSON.stringify(req.body))

@@ -25,7 +25,7 @@ let tableSettings2 = {
         [10, 25, 50, -1],
         [10, 25, 50, "All"]
     ],
-    "order": [[ 0, "asc" ]],
+    "order": [[ 0, "desc" ]],
     "responsive": true,
 };
 let pcTable = $('#pcTable').DataTable(tableSettings1);
@@ -34,16 +34,41 @@ let voteTable = $('#voteTable').DataTable(tableSettings2);
 //Socket.io handle Leaderboard Data
 socket.on('entry_data', function (data) {
     voteTable.clear();
+    let judges_choice_stat = false;
     $.each(data, function (i, value) {
-        let judgesButton = ("<div class=\"td-actions text-left\">\n" +
-            "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-outline-success\" data-original-title=\"\" onclick=\"judgesWinner('" + value.bib_number + "', '" + value.entry_name + "', '" + value.category + "')\" title=\"\">\n" +
-            "<i class=\"fas fa-trophy\"></i> Select as Judges Choice Winner\n" +
-            "</div></div>"
-        );
-        let detailed_name = value.entry_name + " <a class='text-gray'>" + value.bib_number + "</a>";
-        voteTable.row.add([ value.vote_count, detailed_name, value.category, judgesButton]);
+        if (value.judges_choice === "true") {
+            judges_choice_stat = true;
+            document.getElementById("judgesSelected").innerHTML = value.entry_name + " | " + value.bib_number;
+            document.getElementById("selectedJudgesClass").className = "btn btn-outline-success";
+            document.getElementById("resetbutton").innerHTML = "<button class=\"btn btn-outline-warning\" onclick=\"resetJudges(" + value.bib_number + ")\"><i class=\"fas fa-redo-alt\"></i> Reset Judges Choice</button>";
+        }
     });
+    if (judges_choice_stat === true) {
+        $.each(data, function (i, value) {
+            let judgesButton = ("<div class=\"td-actions text-left\">\n" +
+                "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-outline-warning\" data-original-title=\"\" title=\"\">\n" +
+                "<i class=\"fas fa-trophy\"></i> Judges Choice Assigned\n" +
+                "</div></div>"
+            );
+            let detailed_name = value.entry_name + " <a class='text-gray'>" + value.bib_number + "</a>";
+            voteTable.row.add([ value.vote_count, detailed_name, value.category, judgesButton]);
+        })
+    } else {
+        document.getElementById("judgesSelected").innerHTML = "Not Selected";
+        document.getElementById("selectedJudgesClass").className = "btn btn-outline-danger";
+        document.getElementById("resetbutton").innerHTML = "";
+        $.each(data, function (i, value) {
+            let judgesButton = ("<div class=\"td-actions text-left\">\n" +
+                "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-outline-success\" data-original-title=\"\" onclick=\"judgesWinner('" + value.bib_number + "', '" + value.entry_name + "', '" + value.category + "')\" title=\"\">\n" +
+                "<i class=\"fas fa-trophy\"></i> Award Judges Choice\n" +
+                "</div></div>"
+            );
+            let detailed_name = value.entry_name + " <a class='text-gray'>" + value.bib_number + "</a>";
+            voteTable.row.add([ value.vote_count, detailed_name, value.category, judgesButton]);
+        })
+    }
     voteTable.draw();
+    $(window).trigger('resize');
 });
 
 //Socket.io Get Statistics
@@ -127,7 +152,7 @@ function judgesWinner(bib_number, entry_name, category) {
         if (result.value) {
             $.ajax({
                 type: "POST",
-                url: "/api/voting/judges-choice",
+                url: "/api/voting/judges-choice/assign",
                 data: {
                     bib_number: bib_number,
                 },
@@ -141,6 +166,41 @@ function judgesWinner(bib_number, entry_name, category) {
                     Toast.fire({
                         type: 'error',
                         title: 'Error in assigning award...'
+                    });
+                }
+            });
+        }
+    })
+}
+
+//Reset Judges Choice
+function resetJudges(bib_number) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This will reset the Judges Choice Award",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Reset award'
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                type: "POST",
+                url: "/api/voting/judges-choice/reset",
+                data: {
+                    bib_number: bib_number,
+                },
+                success: function (data) {
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Judges Choice Award reset!'
+                    });
+                },
+                error: function (data) {
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Error in resetting award...'
                     });
                 }
             });
