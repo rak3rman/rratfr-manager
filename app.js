@@ -113,16 +113,6 @@ app.enable('trust proxy');
 //Forward Entry Routes
 entryRouter(app);
 
-//Live-Historic Scheduler
-if (1 == 1) {
-    app.get('/', (req, res) => {
-        res.redirect('/results/historic')
-    })
-} else {
-    app.get('/', (req, res) => {
-        res.redirect('/results/live')
-    })
-}
 //Admin Dashboard
 app.get('/dashboard', auth.isLoggedIn, mainRouter.adminDashRoute);
 //Entry Management
@@ -133,6 +123,8 @@ app.get('/voting/management', auth.isLoggedIn, mainRouter.votingManagementRoute)
 app.get('/chuck-a-duck/management', auth.isLoggedIn, mainRouter.duckManagementRoute);
 //Timing Interface
 app.get('/timing', auth.isLoggedIn, mainRouter.timingRoute);
+//Public Results
+app.get('/', mainRouter.publicResultsRoute);
 //Live Results
 app.get('/results/live', mainRouter.liveResultsRoute);
 //Historical Results

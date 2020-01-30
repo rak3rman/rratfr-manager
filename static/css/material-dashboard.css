@@ -19545,7 +19545,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr[role=row] > td:first-child:bef
 
 table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before, table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child:before {
     content: "-";
-    background-color: #d33333
+    /*background-color: #d33333*/
 }
 
 table.dataTable.dtr-inline.collapsed.compact > tbody > tr > td:first-child, table.dataTable.dtr-inline.collapsed.compact > tbody > tr > th:first-child {
@@ -19591,7 +19591,7 @@ table.dataTable.dtr-column > tbody > tr > td.control:before, table.dataTable.dtr
 
 table.dataTable.dtr-column > tbody > tr.parent td.control:before, table.dataTable.dtr-column > tbody > tr.parent th.control:before {
     content: "-";
-    background-color: #d33333
+    /*background-color: #d33333*/
 }
 
 table.dataTable > tbody > tr.child {

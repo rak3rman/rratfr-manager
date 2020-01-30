@@ -473,6 +473,7 @@ exports.settings_get = function (req, res) {
         } else {
             let race_start_time;
             let voting_end_time;
+            let voting_results_time;
             for (let i in variables) {
                 if (variables[i]["var_name"] === "race_start_time") {
                     race_start_time = variables[i]["var_value"];
@@ -480,10 +481,14 @@ exports.settings_get = function (req, res) {
                 if (variables[i]["var_name"] === "voting_end_time") {
                     voting_end_time = variables[i]["var_value"];
                 }
+                if (variables[i]["var_name"] === "voting_results_time") {
+                    voting_results_time = variables[i]["var_value"];
+                }
             }
             res.json({
                 race_start_time: race_start_time,
                 voting_end_time: voting_end_time,
+                voting_results_time: voting_results_time,
                 console_port: storage.get('console_port'),
                 mongodb_url: storage.get('mongodb_url'),
                 signup_mode: storage.get('signup_mode'),
@@ -500,6 +505,7 @@ exports.settings_get = function (req, res) {
 exports.settings_update = function (req, res) {
     var_Updater("race_start_time", req.body["race_start_time"]);
     var_Updater("voting_end_time", req.body["voting_end_time"]);
+    var_Updater("voting_results_time", req.body["voting_results_time"]);
     if (storage.get('mongodb_url') !== req.body["mongodb_url"]) {
         console.log("SETTINGS Resolver: Restarting due to mongodb_url");
         storage.set('mongodb_url', req.body["mongodb_url"]);

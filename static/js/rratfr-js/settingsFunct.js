@@ -18,6 +18,7 @@ function getSettings() {
         success: function (data) {
             document.getElementById("race_start_time").value = moment(data.race_start_time).format("MM/DD/YYYY hh:mm A");
             document.getElementById("voting_end_time").value = moment(data.voting_end_time).format("MM/DD/YYYY hh:mm A");
+            document.getElementById("voting_results_time").value = moment(data.voting_results_time).format("MM/DD/YYYY hh:mm A");
             document.getElementById("console_port").value = data.console_port;
             document.getElementById("mongodb_url").value = data.mongodb_url;
             document.getElementById("signup").value = data.signup_mode;
@@ -57,6 +58,7 @@ function updateSettings() {
                 data: {
                     race_start_time: moment(document.getElementById("race_start_time").value).format(),
                     voting_end_time: moment(document.getElementById("voting_end_time").value).format(),
+                    voting_results_time: moment(document.getElementById("voting_results_time").value).format(),
                     console_port: document.getElementById("console_port").value,
                     mongodb_url: document.getElementById("mongodb_url").value,
                     signup_mode: document.getElementById("signup").checked,
@@ -95,6 +97,19 @@ function setupPicker() {
         }
     });
     $('#voting_end_time').datetimepicker({
+        icons: {
+            time: "fas fa-clock",
+            date: "fa fa-calendar",
+            up: "fa fa-chevron-up",
+            down: "fa fa-chevron-down",
+            previous: 'fa fa-chevron-left',
+            next: 'fa fa-chevron-right',
+            today: 'fa fa-screenshot',
+            clear: 'fa fa-trash',
+            close: 'fa fa-remove'
+        }
+    });
+    $('#voting_results_time').datetimepicker({
         icons: {
             time: "fas fa-clock",
             date: "fa fa-calendar",

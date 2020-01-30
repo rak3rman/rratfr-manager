@@ -171,17 +171,17 @@ function editEntry(bib_number, entry_name, category, start_time, end_time, timin
             '   </div>\n' +
             '</div>' +
             '<h5 class="mb-0 mt-2"><strong>Timing Information:</strong></h5>' +
-            '<h6 class="mb-0 mt-0">Entry must be in finished state to recalculate final time</h6>' +
             '<div class="row">\n' +
             '   <label class="col-sm-3 col-form-label text-left pb-0">Status</label>\n' +
-            '   <div class="col-sm-9 mb-1">\n' +
-            '      <select class="selectpicker float-left" data-size="3" data-style="select-with-transition" title="Status">\n' +
-            '          <option id="waiting" value="waiting"> Waiting </option>\n' +
-            '          <option id="en_route" value="en_route"> En Route </option>\n' +
-            '          <option id="finished" value="finished"> Finished </option>\n' +
-            '          <option id="dq" value="dq"> Disqualified </option>\n' +
-            '          <option id="reset" value="reset"> Reset </option>\n' +
-            '      </select>' +
+            '   <div class="col-sm-5">\n' +
+            '       <div class="form-group">\n' +
+            '           <input type="text" class="form-control" disabled value="' + timing_status + '">\n' +
+            '       </div>\n' +
+            '   </div>\n' +
+            '   <div class="col-sm-4 pl-0">\n' +
+            '       <div class="form-group pb-0">\n' +
+            '           <button class="btn btn-outline-info btn-sm" onclick="window.location.href = \'/timing\'\"><i class="fas fa-cog"></i> Set Status</button>\n' +
+            '       </div>\n' +
             '   </div>\n' +
             '</div>' +
             '<div class="row">\n' +
@@ -201,39 +201,40 @@ function editEntry(bib_number, entry_name, category, start_time, end_time, timin
             '   </div>\n' +
             '</div>',
         onOpen: function() {
-            $(".selectpicker").selectpicker();
-            console.log(timing_status);
-            document.getElementById(timing_status).setAttribute("selected", "");
-            if (document.getElementById("editStartTime").value !== null) {
-                $('#editStartTime').datetimepicker({
-                    icons: {
-                        time: "fas fa-clock",
-                        date: "fa fa-calendar",
-                        up: "fa fa-chevron-up",
-                        down: "fa fa-chevron-down",
-                        previous: 'fa fa-chevron-left',
-                        next: 'fa fa-chevron-right',
-                        today: 'fa fa-screenshot',
-                        clear: 'fa fa-trash',
-                        close: 'fa fa-remove'
-                    }
-                });
+            if (!(timing_status == "finished" || timing_status == "en_route")) {
+                document.getElementById("editStartTime").setAttribute("disabled", "");
+                document.getElementById("editStartTime").placeholder = "Entry must be 'en route' or 'finished' to set this value";
             }
-            if (document.getElementById("editEndTime").value !== null) {
-                $('#editEndTime').datetimepicker({
-                    icons: {
-                        time: "fas fa-clock",
-                        date: "fa fa-calendar",
-                        up: "fa fa-chevron-up",
-                        down: "fa fa-chevron-down",
-                        previous: 'fa fa-chevron-left',
-                        next: 'fa fa-chevron-right',
-                        today: 'fa fa-screenshot',
-                        clear: 'fa fa-trash',
-                        close: 'fa fa-remove'
-                    }
-                });
+            if (timing_status !== "finished") {
+                document.getElementById("editEndTime").setAttribute("disabled", "");
+                document.getElementById("editEndTime").placeholder = "Entry must be 'finished' to set this value";
             }
+            $('#editStartTime').datetimepicker({
+                icons: {
+                    time: "fas fa-clock",
+                    date: "fa fa-calendar",
+                    up: "fa fa-chevron-up",
+                    down: "fa fa-chevron-down",
+                    previous: 'fa fa-chevron-left',
+                    next: 'fa fa-chevron-right',
+                    today: 'fa fa-screenshot',
+                    clear: 'fa fa-trash',
+                    close: 'fa fa-remove'
+                }
+            });
+            $('#editEndTime').datetimepicker({
+                icons: {
+                    time: "fas fa-clock",
+                    date: "fa fa-calendar",
+                    up: "fa fa-chevron-up",
+                    down: "fa fa-chevron-down",
+                    previous: 'fa fa-chevron-left',
+                    next: 'fa fa-chevron-right',
+                    today: 'fa fa-screenshot',
+                    clear: 'fa fa-trash',
+                    close: 'fa fa-remove'
+                }
+            });
         },
         showCancelButton: true,
         confirmButtonText: 'Update',
