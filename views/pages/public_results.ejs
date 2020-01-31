@@ -1,26 +1,54 @@
-<% include ../partials/head.ejs %>
-<body class="off-canvas-sidebar">
-<nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top text-white">
-    <div class="container-fluid">
-        <div class="navbar-wrapper">
-            <a class="navbar-brand" href="/">
-                <img src="/static/img/rratfr-logo.png" class="pr-1"
-                     style="width: auto; max-width: 55px; -webkit-filter: invert(100%);">
-                <fontb>Race Manager</fontb>
-            </a>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title><%= title %> | RRATFR Manager</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+          name='viewport'/>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href="/static/landing_page/css/material-kit.css?v=2.0.6" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/static/img/favicon/site.webmanifest">
+</head>
+
+<body class="landing-page sidebar-collapse">
+<nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
+    <div class="container">
+        <div class="navbar-translate">
+            <div class="navbar-wrapper">
+                <a class="navbar-brand" href="/">
+                    <div class="logo-big">
+                        <img src="/static/img/rratfr-logo.png" style="-webkit-filter: invert(100%);">
+                    </div>
+                    <div class="logo-small">
+                        <img src="/static/img/rratfr-logo.png" class="pr-1"
+                             style="width: auto; max-width: 45px;">
+                    </div>
+                </a>
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end pt-4">
+        <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav">
                 <li class="nav-item active">
                     <a href="/" class="nav-link">
                         <i class="material-icons">dashboard</i> Results
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/voting/people's-choice" class="nav-link">
+                        <i class="material-icons">waves</i> Chuck a Duck
                     </a>
                 </li>
                 <li class="nav-item">
@@ -42,33 +70,131 @@
         </div>
     </div>
 </nav>
-<div class="wrapper wrapper-full-page">
-    <div class="page-header register-page header-filter" id="coverImage" filter-color="black"
-         style="background-image: url('/static/img/race-2.jpg'); background-size: cover; background-position: top center;">
-        <div class="container">
-            <div class="container-fluid">
+<div class="page-header header-filter" data-parallax="true" id="coverImage" style="background-image: url('/static/img/race-2.jpg');">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="title">Rock River Anything That Floats Race</h1>
+                <h4>Ahoy, Mateys! Here you can view live race results, vote for the People's Choice Award, and view the winners of the Judges Choice Award and the Chuck A Duck Race!</h4>
+                <br>
+                <div class="row ml-0">
+                    <a href="/voting/people's-choice" target="_blank" class="btn btn-info btn-raised btn-lg mr-2">
+                        <i class="fas fa-vote-yea"></i> Vote for People's Choice
+                    </a>
+                    <a href="/voting/people's-choice" target="_blank" class="btn btn-warning btn-raised btn-lg">
+                        <i class="fas fa-feather"></i> Chuck A Duck
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main main-raised">
+    <div class="container">
+        <div class="section text-center">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto">
+                    <h2 class="title">Let&apos;s talk product</h2>
+                    <h5 class="description">This is the paragraph where you can write more details about your product. Keep you user engaged by providing meaningful information. Remember that by this time, the user is curious, otherwise he wouldn&apos;t scroll to get here. Add a button if you want the user to see more.</h5>
+                </div>
+            </div>
+            <div class="features">
                 <div class="row">
-                    <div class="col-lg-9 col-sm-12 m-auto">
-                        <div class="card card-stats">
-                            <div class="card-header card-header-info card-header-icon">
-                                <div class="card-icon">
-                                    <i class="fas fa-trophy"></i>
-                                </div>
-                                <p class="card-category">Race Timing</p>
-                                <h3 class="card-title">Entry Leaderboard</h3>
+                    <div class="col-md-4">
+                        <div class="info">
+                            <div class="icon icon-info">
+                                <i class="material-icons">chat</i>
                             </div>
-                            <div class="card-footer">
-                                <div class="table-responsive">
-                                    <table class="table table-hover table-striped dt-responsive display nowrap"
-                                           id="leaderTable" style="width: 100%">
-                                        <thead class="text-muted">
-                                        <th>Place</th>
-                                        <th>Name</th>
-                                        <th>Time/Status</th>
-                                        <th>Category</th>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
+                            <h4 class="info-title">Free Chat</h4>
+                            <p>Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="info">
+                            <div class="icon icon-success">
+                                <i class="material-icons">verified_user</i>
+                            </div>
+                            <h4 class="info-title">Verified Users</h4>
+                            <p>Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="info">
+                            <div class="icon icon-danger">
+                                <i class="material-icons">fingerprint</i>
+                            </div>
+                            <h4 class="info-title">Fingerprint</h4>
+                            <p>Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section text-center">
+            <h2 class="title">Here is our team</h2>
+            <div class="team">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="team-player">
+                            <div class="card card-plain">
+                                <div class="col-md-6 ml-auto mr-auto">
+                                    <img src="/static/landing_page/img/faces/avatar.jpg" alt="Thumbnail Image" class="img-raised rounded-circle img-fluid">
+                                </div>
+                                <h4 class="card-title">Gigi Hadid
+                                    <br>
+                                    <small class="card-description text-muted">Model</small>
+                                </h4>
+                                <div class="card-body">
+                                    <p class="card-description">You can write here details about one of your team members. You can give more details about what they do. Feel free to add some
+                                        <a href="#">links</a> for people to be able to follow them outside the site.</p>
+                                </div>
+                                <div class="card-footer justify-content-center">
+                                    <a href="#pablo" class="btn btn-link btn-just-icon"><i class="fa fa-twitter"></i></a>
+                                    <a href="#pablo" class="btn btn-link btn-just-icon"><i class="fa fa-instagram"></i></a>
+                                    <a href="#pablo" class="btn btn-link btn-just-icon"><i class="fa fa-facebook-square"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="team-player">
+                            <div class="card card-plain">
+                                <div class="col-md-6 ml-auto mr-auto">
+                                    <img src="/static/landing_page/img/faces/christian.jpg" alt="Thumbnail Image" class="img-raised rounded-circle img-fluid">
+                                </div>
+                                <h4 class="card-title">Christian Louboutin
+                                    <br>
+                                    <small class="card-description text-muted">Designer</small>
+                                </h4>
+                                <div class="card-body">
+                                    <p class="card-description">You can write here details about one of your team members. You can give more details about what they do. Feel free to add some
+                                        <a href="#">links</a> for people to be able to follow them outside the site.</p>
+                                </div>
+                                <div class="card-footer justify-content-center">
+                                    <a href="#pablo" class="btn btn-link btn-just-icon"><i class="fa fa-twitter"></i></a>
+                                    <a href="#pablo" class="btn btn-link btn-just-icon"><i class="fa fa-linkedin"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="team-player">
+                            <div class="card card-plain">
+                                <div class="col-md-6 ml-auto mr-auto">
+                                    <img src="/static/landing_page/img/faces/kendall.jpg" alt="Thumbnail Image" class="img-raised rounded-circle img-fluid">
+                                </div>
+                                <h4 class="card-title">Kendall Jenner
+                                    <br>
+                                    <small class="card-description text-muted">Model</small>
+                                </h4>
+                                <div class="card-body">
+                                    <p class="card-description">You can write here details about one of your team members. You can give more details about what they do. Feel free to add some
+                                        <a href="#">links</a> for people to be able to follow them outside the site.</p>
+                                </div>
+                                <div class="card-footer justify-content-center">
+                                    <a href="#pablo" class="btn btn-link btn-just-icon"><i class="fa fa-twitter"></i></a>
+                                    <a href="#pablo" class="btn btn-link btn-just-icon"><i class="fa fa-instagram"></i></a>
+                                    <a href="#pablo" class="btn btn-link btn-just-icon"><i class="fa fa-facebook-square"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -76,179 +202,93 @@
                 </div>
             </div>
         </div>
-        <footer class="footer">
-            <div class="container">
-                <div class="arrow bounce mb-2">
-                    <a style="color: white; text-decoration: none;" class="fa fa-arrow-down fa-2x" href="#"></a>
-                </div>
-                <div class="copyright float-right pr-2">
-                    Made with <a class="text-danger"><i class="fas fa-heart"></i></a> by <a class="text-white"
-                                                                                            href="https://github.com/RAK3RMAN">RAk3rman</a>
+        <div class="section section-contacts">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto">
+                    <h2 class="text-center title">Work with us</h2>
+                    <h4 class="text-center description">Divide details about your product or agency work into parts. Write a few lines about each one and contact us about any further collaboration. We will responde get back to you in a couple of hours.</h4>
+                    <form class="contact-form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Your Name</label>
+                                    <input type="email" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Your Email</label>
+                                    <input type="email" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleMessage" class="bmd-label-floating">Your Message</label>
+                            <textarea type="email" class="form-control" rows="4" id="exampleMessage"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 ml-auto mr-auto text-center">
+                                <button class="btn btn-primary btn-raised">
+                                    Send Message
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </footer>
+        </div>
     </div>
 </div>
-<footer>
-    <div class="container" style="width: 100%">
-        <div class="row mt-4">
-            <div class="col-12">
-                <div class="card card-stats" onclick="window.location.href = '/voting/people\'s-choice'">
-                    <div class="card-header card-header-primary card-header-icon">
-                        <div class="card-icon">
-                            <i class="fas fa-vote-yea"></i>
-                        </div>
-                        <p class="card-category">Click on the title below</p>
-                        <h3 class="card-title">Vote for People's Choice!</h3>
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            <i class="material-icons">playlist_add_check</i>
-                            <span id="votes_cast"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card card-stats mb-5">
-                    <div class="card-header card-header-muted card-header-icon">
-                        <div class="card-icon">
-                            <i class="far fa-copy"></i>
-                        </div>
-                        <p class="card-category"><strong>Total Entries</strong></p>
-                        <h3 class="card-title"><span id="totalStat">0</span></h3>
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            <i class="material-icons">history</i>
-                            <span id="pushedDate1">Just Now</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card card-stats">
-                    <div class="card-header card-header-info card-header-icon">
-                        <div class="card-icon">
-                            <i class="fas fa-water"></i>
-                        </div>
-                        <p class="card-category"><strong>Entries in Water</strong></p>
-                        <h3 class="card-title text-info"><span id="inwaterStat">0</span></h3>
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            <i class="material-icons">history</i>
-                            <span id="pushedDate2">Updated Just Now</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card card-stats">
-                    <div class="card-header card-header-success card-header-icon">
-                        <div class="card-icon">
-                            <i class="fas fa-flag-checkered"></i>
-                        </div>
-                        <p class="card-category"><strong>Entries Finished</strong></p>
-                        <h3 class="card-title text-success"><span id="finishStat">0</span></h3>
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            <i class="material-icons">history</i>
-                            <span id="pushedDate3">Updated Just Now</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card card-stats">
-                    <div class="card-header card-header-info card-header-icon">
-                        <div class="card-icon">
-                            <i class="fas fa-ship"></i>
-                        </div>
-                        <p class="card-category">All time since 2016</p>
-                        <h3 class="card-title">Times to Beat!</h3>
-                    </div>
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <h2 class="card-title m-auto text-info">00:12:13.0</h2>
-                            </div>
-                            <div class="col-lg-6 m-auto">
-                                <h4 class="m-auto">By <a class="text-primary">Kira</a> in 2017 | Double Canoe | 1.65
-                                    miles</h4>
-                            </div>
-                            <div class="col-lg-6 pt-3">
-                                <h2 class="card-title m-auto text-info">00:16:00.0</h2>
-                            </div>
-                            <div class="col-lg-6 m-auto">
-                                <h4 class="m-auto">By <a class="text-primary">Team Danfoss</a> in 2017 | RAFT | 1.65
-                                    miles</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card card-stats">
-                    <div class="card-header card-header-muted card-header-icon">
-                        <div class="card-icon">
-                            <i class="fas fa-list-ol"></i>
-                        </div>
-                        <p class="card-category">Entry Leaderboard</p>
-                        <h3 class="card-title">2018 Results | Top 5</h3>
-                    </div>
-                    <div class="card-footer">
-                        <div class="table-responsive">
-                            <table class="table table-hover table-striped dt-responsive display nowrap"
-                                   id="results2018" style="width: 100%">
-                                <thead class="text-muted">
-                                <th>Place</th>
-                                <th>Name</th>
-                                <th>Category</th>
-                                <th>Final Time</th>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td><strong><a style='color:#D4AF37'>1</a></strong></td>
-                                    <td>Broken Bone</td>
-                                    <td>HULL</td>
-                                    <td>00:17:11.0</td>
-                                </tr>
-                                <tr>
-                                    <td><strong><a style='color:#C4CACE'>2</a></strong></td>
-                                    <td>Slumberin Sloth</td>
-                                    <td>DIY</td>
-                                    <td>00:24:37.0</td>
-                                </tr>
-                                <tr>
-                                    <td><strong><a style='color:#CD7F32'>3</a></strong></td>
-                                    <td>DAnimal / Powder Monkey</td>
-                                    <td>HULL</td>
-                                    <td>00:32:07.0</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>Fehr Graham</td>
-                                    <td>DIY</td>
-                                    <td>00:38:32.0</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>Meiborg</td>
-                                    <td>HULL</td>
-                                    <td>00:44:47.0</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<footer class="footer footer-default">
+    <div class="container">
+        <nav class="float-left">
+            <ul>
+                <li>
+                    <a href="https://www.creative-tim.com">
+                        Creative Tim
+                    </a>
+                </li>
+                <li>
+                    <a href="https://creative-tim.com/presentation">
+                        About Us
+                    </a>
+                </li>
+                <li>
+                    <a href="http://blog.creative-tim.com">
+                        Blog
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.creative-tim.com/license">
+                        Licenses
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="copyright float-right">
+            &copy;
+            <script>
+                document.write(new Date().getFullYear())
+            </script>, made with <i class="material-icons">favorite</i> by
+            <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a> for a better web.
         </div>
     </div>
 </footer>
-<% include ../partials/footer.ejs %>
+<!--   Core JS Files   -->
+<script src="/static/landing_page/js/core/jquery.min.js" type="text/javascript"></script>
+<script src="/static/landing_page/js/core/popper.min.js" type="text/javascript"></script>
+<script src="/static/landing_page/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
+<script src="/static/landing_page/js/plugins/moment.min.js"></script>
+<!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
+<script src="/static/landing_page/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+<script src="/static/landing_page/js/plugins/nouislider.min.js" type="text/javascript"></script>
+<!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
+<script src="/static/landing_page/js/material-kit.js?v=2.0.6" type="text/javascript"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+</body>
+</html>
 <script type="text/javascript" src="/static/js/rratfr-js/live_resultsFunct.js"></script>
 <script>
     document.ready = function () {

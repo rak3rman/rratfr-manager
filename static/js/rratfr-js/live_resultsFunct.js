@@ -17,6 +17,8 @@ let tableSettings = {
         [10, 25, 50, "All"]
     ],
     "responsive": true,
+    "searching": false,
+    "bLengthChange": false,
     "order": [[2, "asc"]],
     "columnDefs": [
         {"orderable": false, "targets": 0}
@@ -74,7 +76,7 @@ socket.on('entry_data', function (data) {
 //Select Dashboard Image
 function setImage() {
     let random = (Math.floor(Math.random() * 8)) + 1;
-    document.getElementById("coverImage").style = "background-image: url('/static/img/race-" + random + ".jpg'); background-size: cover; background-position: top center;";
+    document.getElementById("coverImage").style = "background-image: url('/static/img/race-" + random + ".jpg');";
 }
 
 //Socket.io Error
