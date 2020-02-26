@@ -3,6 +3,8 @@ RRATFR Manager Front-End JS - Authored by: RAk3rman
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\*/
 //Declare socket.io
 let socket = io();
+//Setup Variables
+let race_start_time;
 //Set SA Toast Settings
 const Toast = Swal.mixin({
     toast: true,
@@ -47,16 +49,17 @@ let results2018 = $('#results2018').DataTable(pastSettings);
 let results2017 = $('#results2017').DataTable(pastSettings);
 let results2016 = $('#results2016').DataTable(pastSettings);
 $(window).trigger('resize');
-//Socket.io Get Statistics
-// socket.on('race_data', function (data) {
-//     document.getElementById("totalStat").innerHTML = data.total_entries;
-//     document.getElementById("inwaterStat").innerHTML = data.entries_in_water;
-//     document.getElementById("finishStat").innerHTML = data.entries_finished;
-//     document.getElementById("pushedDate1").innerHTML = 'Updated ' + moment(data.updated_total_entries).fromNow();
-//     document.getElementById("pushedDate2").innerHTML = 'Updated ' + moment(data.updated_entries_in_water).fromNow();
-//     document.getElementById("pushedDate3").innerHTML = 'Updated ' + moment(data.updated_entries_finished).fromNow();
-//     document.getElementById("votes_cast").innerHTML = data.votes_cast.toString() + ' Votes Cast';
-// });
+// Socket.io Get Statistics
+socket.on('race_data', function (data) {
+    // document.getElementById("totalStat").innerHTML = data["total_entries"];
+    // document.getElementById("inwaterStat").innerHTML = data["entries_in_water"];
+    // document.getElementById("finishStat").innerHTML = data["entries_finished"];
+    // document.getElementById("pushedDate1").innerHTML = 'Updated ' + moment(data["updated_total_entries"]).fromNow();
+    // document.getElementById("pushedDate2").innerHTML = 'Updated ' + moment(data["updated_entries_in_water"]).fromNow();
+    // document.getElementById("pushedDate3").innerHTML = 'Updated ' + moment(data["updated_entries_finished"]).fromNow();
+    // document.getElementById("votes_cast").innerHTML = data["votes_cast"].toString() + ' Votes Cast';
+    race_start_time = data["race_start_time"];
+});
 
 //Socket.io Get Leaderboard Data
 // socket.on('entry_data', function (data) {
@@ -78,6 +81,16 @@ $(window).trigger('resize');
 //     });
 //     leaderTable.draw();
 // });
+
+//Countdown Timer
+function updateCountdown() {
+    if (moment(race_start_time) > moment()) {
+        document.getElementById("countdown").innerHTML = countdown(moment(race_start_time).format("x")).toString();
+        document.getElementById("race_start_time").innerHTML = moment(race_start_time).format("MMMM Do YYYY, h:mm:ss a");
+    } else {
+
+    }
+}
 
 //Select Dashboard Image
 function setImage() {
