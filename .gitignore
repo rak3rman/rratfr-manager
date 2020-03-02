@@ -8,5 +8,3 @@ node_modules/
 config/sysConfig\.json
 
 static/img/entries
-
-package-lock.json
