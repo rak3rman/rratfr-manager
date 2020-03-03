@@ -1,32 +1,49 @@
-<% include ../partials/head.ejs %>
-<link href="/static/css/image-picker.css" rel="stylesheet"/>
-<body class="off-canvas-sidebar">
-<nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top text-white">
-    <div class="container-fluid">
-        <div class="navbar-wrapper">
-            <a class="navbar-brand" href="/">
-                <img src="/static/img/rratfr-logo.png" class="pr-1"
-                     style="width: auto; max-width: 55px; -webkit-filter: invert(100%);">
-                <fontb>Race Manager</fontb>
-            </a>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title><%= title %> | RRATFR Manager</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+          name='viewport'/>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href="/static/landing_page/css/material-kit.css?v=2.0.6" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/static/img/favicon/site.webmanifest">
+    <link href="/static/css/image-picker.css" rel="stylesheet"/>
+</head>
+<body class="landing-page sidebar-collapse">
+<nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
+    <div class="container">
+        <div class="navbar-translate">
+            <div class="navbar-wrapper">
+                <a class="navbar-brand" href="/">
+                    <div class="logo-big">
+                        <img src="/static/img/rratfr-logo.png" style="-webkit-filter: invert(100%);">
+                    </div>
+                    <div class="logo-small">
+                        <img src="/static/img/rratfr-logo.png" class="pr-1"
+                             style="width: auto; max-width: 45px;">
+                    </div>
+                </a>
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end pt-4">
+        <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a href="/results/live" class="nav-link">
-                        <i class="material-icons">dashboard</i> <strong>Live</strong> Results
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/results/historic" class="nav-link">
-                        <i class="material-icons">library_books</i> Historic Results
+                    <a href="/" class="nav-link">
+                        <i class="material-icons">dashboard</i> Results
                     </a>
                 </li>
                 <li class="nav-item active">
@@ -48,92 +65,102 @@
         </div>
     </div>
 </nav>
-<div class="wrapper wrapper-full-page">
-    <div class="page-header register-page header-filter" id="coverImage" filter-color="black"
-         style="background-image: url('/static/img/race-2.jpg'); background-size: cover; background-position: top center;">
-        <div class="container">
-            <div class="container-fluid">
+<div class="page-header header-filter" data-parallax="true" id="coverImage" style="background-image: url('/static/img/race-2.jpg');">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="title">Vote for the People's Choice Award!</h1>
+                <h4 class="">An award selected by the public based on creativity and ingenuity. Vote for your favorite on race day using the form below. The entry with the most number of votes is given the award.</h4>
+                <br>
+                <div class="row ml-0">
+                    <a href="/" class="btn btn-info btn-raised btn-lg mr-2">
+                        <i class="fas fa-tasks"></i> Results
+                    </a>
+                    <a href="https://www.rratfr.com" target="_blank" class="btn btn-muted btn-raised btn-lg">
+                        <i class="fas fa-sign-out-alt"></i> Return to RRATFR.COM
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main main-raised">
+    <div class="container">
+        <div class="section text-center">
+            <div id="closed">
                 <div class="row">
-                    <div class="col-lg-9 col-sm-12 m-auto">
-                        <div class="card card-stats">
-                            <div class="card-header card-header-info card-header-icon">
-                                <div class="card-icon">
-                                    <i class="fas fa-check"></i>
-                                </div>
-                                <p class="card-category"><span id="racedate">RRATFR Awards</span></p>
-                                <h3 class="card-title">People's Choice</h3>
-                            </div>
-                            <div class="card-footer">
-                                <div class="row p-3">
-                                    <h2 class="col-12 card-title m-auto">Vote for the People's Choice Award!
-                                    </h2>
-                                    <h4 class="col-12 m-auto"><u>Reminders:</u> Select below the entry that
-                                        <strong>you</strong> like the best based on <strong>creativity</strong> and
-                                        <strong>ingenuity</strong>. <span id="votingopen"></span>Each person is only allowed <strong>one</strong> entry per device. Please make
-                                        sure to submit your vote at the bottom of the page!</h4>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-md-8 ml-auto mr-auto">
+                        <h2 class="title mt-3">People's Choice <br><a class="text-danger">Voting Closed</a></h2>
+                        <h4 class=""><span id="votingclosed"></span></h4>
+                    </div>
+                </div>
+            </div>
+            <div id="open">
+                <div class="row">
+                    <div class="col-md-10 ml-auto mr-auto">
+                        <h2 class="title">People's Choice Voting</h2>
+                        <h4 class="mb-4"><u>Reminders:</u> Select the entry that
+                            <strong>you</strong> like the best based on <strong>creativity</strong> and
+                            <strong>ingenuity</strong>. <span id="votingopen"></span>Each person is only allowed <strong>one</strong> entry per device. Please make
+                            sure to submit your vote at the bottom of the page!</h4>
+                        <select class="image-picker show-labels show-html mt-3" id="entries"></select>
+                        <button class="btn btn-lg btn-success m-3" onclick="sendVote()">
+                            <i class="far fa-paper-plane"></i> <strong>Submit Vote</strong>
+                            <div class="ripple-container"></div>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-        <footer class="footer">
-            <div class="container">
-                <div class="arrow bounce mb-2">
-                    <a style="color: white; text-decoration: none;" class="fa fa-arrow-down fa-2x" href="#"></a>
-                </div>
-                <div class="copyright float-right pr-2">
-                    Made with <a class="text-danger"><i class="fas fa-heart"></i></a> by <a class="text-white"
-                                                                                            href="https://github.com/RAK3RMAN">RAk3rman</a>
-                </div>
-            </div>
-        </footer>
     </div>
 </div>
-<footer>
-    <div class="container" style="width: 100%">
-        <div class="row mt-4">
-            <div class="col-12">
-                <div class="card card-stats" id="closed">
-                    <div class="card-header card-header-danger card-header-icon">
-                        <div class="card-icon">
-                            <i class="fas fa-vote-yea"></i>
-                        </div>
-                        <p class="card-category">People's Choice Award</p>
-                        <h3 class="card-title"><span id="year1"></span> Entries</h3>
-                    </div>
-                    <div class="card-footer">
-                        <h3 class="m-auto p-3 card-title"><strong>Voting is closed</strong><br> <span id="votingclosed"></span></h3>
-                    </div>
-                </div>
-                <div class="card card-stats" id="open">
-                    <div class="card-header card-header-success card-header-icon">
-                        <div class="card-icon">
-                            <i class="fas fa-vote-yea"></i>
-                        </div>
-                        <p class="card-category">People's Choice Award</p>
-                        <h3 class="card-title"><span id="year2"></span> Entries</h3>
-                    </div>
-                    <div class="card-footer">
-                        <select class="image-picker show-labels show-html" id="entries"></select>
-                    </div>
-                    <button class="btn btn-success m-3" onclick="sendVote()">
-                        <i class="far fa-paper-plane"></i> <strong>Submit Vote</strong>
-                        <div class="ripple-container"></div>
-                    </button>
-                </div>
-            </div>
+<footer class="footer footer-default">
+    <div class="container">
+        <nav class="float-left">
+            <ul>
+                <li>
+                    <a href="https://www.rak3rman.com">
+                        RAk3rman.com
+                    </a>
+                </li>
+                <li>
+                    <a href="https://github.com/RAK3RMAN/rratfr-manager">
+                        Github Repo
+                    </a>
+                </li>
+                <li>
+                    <a href="/login">
+                        Login
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="copyright float-right">
+            Made with <a class="text-danger"><i class="fas fa-heart"></i></a> by <a class="text-muted" href="https://www.rak3rman.com">RAk3rman</a>
         </div>
     </div>
 </footer>
-<% include ../partials/footer.ejs %>
+<!--   Core JS Files   -->
+<script src="/static/landing_page/js/core/jquery.min.js" type="text/javascript"></script>
+<script src="/static/landing_page/js/core/popper.min.js" type="text/javascript"></script>
+<script src="/static/landing_page/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
+<script src="/static/landing_page/js/plugins/moment.min.js"></script>
+<script src="/static/landing_page/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="/static/landing_page/js/plugins/nouislider.min.js" type="text/javascript"></script>
+<script src="/static/landing_page/js/material-kit.js?v=2.0.6" type="text/javascript"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" src="/static/js/plugins/countdown.js"></script>
 <script type="text/javascript" src="/static/js/plugins/image-picker.js"></script>
 <script type="text/javascript" src="/static/js/rratfr-js/peoples_choiceFunct.js"></script>
 <script>
-    document.ready = function () {
-        setImage();
-        getInfo();
-        setInterval(timeCheck, 10000);
-    }
+    setImage();
+    setInterval(setImage, 600000);
+    getInfo();
+    setInterval(timeCheck, 10000);
 </script>
+</body>
+</html>

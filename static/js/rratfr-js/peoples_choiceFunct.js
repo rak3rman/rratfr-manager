@@ -25,7 +25,7 @@ socket.on('entry_data', function (data) {
         );
         $.each(data, function (i, value) {
             entries.append(
-                "<option data-img-src='/static/img/entries/entry_" + value.bib_number + ".jpg' value='" + value.bib_number + "'>Bib #: " + value.bib_number + " | Category: " + value.category + "</option>"
+                "<option data-img-src='/static/img/entries/entry_" + value.bib_number + ".jpg' value='" + value.bib_number + "'>" + value.entry_name + " " + value.bib_number + " | " + value.category + "</option>"
             );
         });
         $("select").imagepicker({
@@ -40,9 +40,9 @@ socket.on('race_data', function(data){
     race_start_time = moment(data.race_start_time).format("x");
     voting_end_time_ms = moment(data.voting_end_time).format("x");
     document.getElementById("votingopen").innerHTML = "Votes can be cast on " + moment(data.race_start_time).format('MMMM Do, YYYY') + " from <strong>" + moment(data.race_start_time).format('h:mma') + " to " + moment(data.voting_end_time).format('h:mma') + " CDT</strong>. ";
-    document.getElementById("racedate").innerHTML = moment(data.race_start_time).format('dddd, MMMM Do, YYYY');
-    document.getElementById("year1").innerHTML = moment(data.race_start_time).format('YYYY');
-    document.getElementById("year2").innerHTML = moment(data.race_start_time).format('YYYY');
+    //document.getElementById("racedate").innerHTML = moment(data.race_start_time).format('dddd, MMMM Do, YYYY');
+    //document.getElementById("year1").innerHTML = moment(data.race_start_time).format('YYYY');
+    //document.getElementById("year2").innerHTML = moment(data.race_start_time).format('YYYY');
     document.getElementById("votingclosed").innerHTML = "Votes can be cast on " + moment(data.race_start_time).format('MMMM Do, YYYY') + " from <strong>" + moment(data.race_start_time).format('h:mma') + " to " + moment(data.voting_end_time).format('h:mma') + " CDT</strong>. ";
     timeCheck();
 });
@@ -55,10 +55,12 @@ function timeCheck() {
         //Voting Closed
         closed.style.display = "block";
         open.style.display = "none";
+        document.getElementById("votingstat").innerHTML = "<a class='text-danger'>CLOSED</a>";
     } else if (votingstat === 0) {
         //Voting Open
         closed.style.display = "none";
         open.style.display = "block";
+        document.getElementById("votingstat").innerHTML = "<a class='text-success'>OPEN</a>";
         votingstat = 1;
     }
 }
