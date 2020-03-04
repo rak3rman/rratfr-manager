@@ -62,31 +62,31 @@ socket.on('race_data', function (data) {
 });
 
 //Socket.io Get Leaderboard Data
-// socket.on('entry_data', function (data) {
-//     leaderTable.clear();
-//     $.each(data, function (i, value) {
-//         console.log(value.final_place + ". " + value.entry_name +  " " + value.final_time + value.category);
-//         let final_place_text = value.final_place;
-//         if (value.final_place === "1") {
-//             final_place_text = "<strong><a style='color:#D4AF37'>" + value.final_place + "</a></strong>";
-//         }
-//         if (value.final_place === "2") {
-//             final_place_text = "<strong><a style='color:#C4CACE'>" + value.final_place + "</a></strong>";
-//         }
-//         if (value.final_place === "3") {
-//             final_place_text = "<strong><a style='color:#CD7F32'>" + value.final_place + "</a></strong>";
-//         }
-//         let detailed_name = value.entry_name + " <a class='text-gray'>" + value.bib_number + "</a>";
-//         leaderTable.row.add([final_place_text, detailed_name, value.final_time, value.category]);
-//     });
-//     leaderTable.draw();
-// });
+socket.on('entry_data', function (data) {
+    resultslive.clear();
+    $.each(data, function (i, value) {
+        console.log(value.final_place + ". " + value.entry_name +  " " + value.final_time + value.category);
+        let final_place_text = value.final_place;
+        if (value.final_place === "1") {
+            final_place_text = "<strong><a style='color:#D4AF37'>" + value.final_place + "</a></strong>";
+        }
+        if (value.final_place === "2") {
+            final_place_text = "<strong><a style='color:#C4CACE'>" + value.final_place + "</a></strong>";
+        }
+        if (value.final_place === "3") {
+            final_place_text = "<strong><a style='color:#CD7F32'>" + value.final_place + "</a></strong>";
+        }
+        let detailed_name = value.entry_name + " <a class='text-gray'>" + value.bib_number + "</a>";
+        resultslive.row.add([final_place_text, detailed_name, value.final_time, value.category]);
+    });
+    resultslive.draw();
+});
 
 //Countdown Timer
 function updateCountdown() {
     if (moment(race_start_time) > moment()) {
         document.getElementById("countdown").innerHTML = countdown(moment(race_start_time).format("x")).toString();
-        document.getElementById("race_start_time").innerHTML = moment(race_start_time).format("MMMM Do YYYY, h:mm:ss a");
+        document.getElementById("race_start_time").innerHTML = moment(race_start_time).format("MMMM Do YYYY, h:mm a");
     } else {
 
     }

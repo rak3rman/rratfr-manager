@@ -4,7 +4,8 @@ RRATFR Manager Front-End JS - Authored by: RAk3rman
 //Declare socket.io
 let socket = io();
 let getDataCheck = 0;
-let selected_entry;
+let selected_entry_bib;
+let selected_entry_name;
 //Set SA Toast Settings
 const Toast = Swal.mixin({
     toast: true,
@@ -21,10 +22,23 @@ let voting_end_time_ms;
 let entries = $('#entries');
 socket.on('entry_data', function (data) {
     if (getDataCheck === 0) {
-        $.each(data, function (i, value) {
+        let shuffle_data = data;
+        let ctr = shuffle_data.length, temp, index;
+// While there are elements in the array
+        while (ctr > 0) {
+// Pick a random index
+            index = Math.floor(Math.random() * ctr);
+// Decrease ctr by 1
+            ctr--;
+// And swap the last element with it
+            temp = shuffle_data[ctr];
+            shuffle_data[ctr] = shuffle_data[index];
+            shuffle_data[index] = temp;
+        }
+        $.each(shuffle_data, function (i, value) {
             entries.append(
                 "<div class=\"col-md-6 mt-2 mb-2\">\n" +
-                "    <div class=\"card m-0\" onclick=\"selectedEntry('" + value.bib_number + "')\">\n" +
+                "    <div class=\"card m-0\" onclick=\"selectedEntry('" + value.bib_number + "', '" + value.entry_name + "')\">\n" +
                 "        <img class=\"card-img-top\" src=\"/static/img/entries/entry_" + value.bib_number + ".jpg\" alt=\"Entry Image\">\n" +
                 "        <div class=\"card-body p-0\" style=\"background: linear-gradient(60deg, #66bb6a, #43a047)\" id='vote" + value.bib_number + "'></div>\n" +
                 "        <div class=\"card-body\">\n" +
@@ -48,12 +62,14 @@ socket.on('race_data', function(data){
 });
 
 //Mark entry
-function selectedEntry(bib_number) {
-    if (selected_entry) {
-        document.getElementById("vote" + selected_entry).innerHTML = "";
+function selectedEntry(bib_number, entry_name) {
+    if (selected_entry_bib) {
+        document.getElementById("vote" + selected_entry_bib).innerHTML = "";
     }
     document.getElementById("vote" + bib_number).innerHTML = "<p class=\"mb-0 p-1 text-white\"><i class=\"fas fa-check-circle\"></i> Selected for People's Choice</p>";
-    selected_entry = bib_number;
+    selected_entry_bib = bib_number;
+    selected_entry_name = entry_name;
+
 
 }
 
@@ -95,10 +111,10 @@ function getInfo() {
 
 //Send Vote
 function sendVote() {
-    if (selected_entry) {
+    if (selected_entry_bib) {
         Swal.fire({
             title: 'Final Submission',
-            html: "<h5>Are you sure you want to select this entry for the People's Choice Award? Remember, you only get one entry per device.</h5><p>Selected Bib #: " + selected_entry + "</p>",
+            html: "<h5>Are you sure you want to select this entry for the People's Choice Award? Remember, you only get one entry per device.</h5><p>Selected Entry Name: " + selected_entry_name + "</p><p>Selected Bib #: " + selected_entry_bib + "</p>",
             type: 'info',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -110,7 +126,7 @@ function sendVote() {
                     type: "POST",
                     url: "/api/voting/people's-choice",
                     data: {
-                        bib_number: selected_entry,
+                        bib_number: selected_entry_bib,
                         user_ip: userIP,
                         user_data: userData
                     },
@@ -130,7 +146,7 @@ function sendVote() {
                         if (data.responseText === "User Already Voted") {
                             Swal.fire({
                                 title: 'Already Voted!',
-                                html: "<p>Only one vote is allowed per device. Click below to see the results!</p>",
+                                html: "<p>Only one vote is allowed per device. Click below to see live race results!</p><p>Having issues? Complete the form <a href='https://www.rak3rman.com/#contact' target='_blank'>here</a> to submit a request.</p>",
                                 type: 'error',
                                 showCancelButton: false,
                                 confirmButtonColor: '#3085d6',
