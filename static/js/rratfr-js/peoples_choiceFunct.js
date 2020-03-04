@@ -4,6 +4,7 @@ RRATFR Manager Front-End JS - Authored by: RAk3rman
 //Declare socket.io
 let socket = io();
 let getDataCheck = 0;
+let selected_entry;
 //Set SA Toast Settings
 const Toast = Swal.mixin({
     toast: true,
@@ -20,16 +21,18 @@ let voting_end_time_ms;
 let entries = $('#entries');
 socket.on('entry_data', function (data) {
     if (getDataCheck === 0) {
-        entries.append(
-            "<option value=\"\"></option>"
-        );
         $.each(data, function (i, value) {
             entries.append(
-                "<option data-img-src='/static/img/entries/entry_" + value.bib_number + ".jpg' value='" + value.bib_number + "'>" + value.entry_name + " " + value.bib_number + " | " + value.category + "</option>"
+                "<div class=\"col-md-6 mt-2 mb-2\">\n" +
+                "    <div class=\"card m-0\" onclick=\"selectedEntry('" + value.bib_number + "')\">\n" +
+                "        <img class=\"card-img-top\" src=\"/static/img/entries/entry_" + value.bib_number + ".jpg\" alt=\"Entry Image\">\n" +
+                "        <div class=\"card-body p-0\" style=\"background: linear-gradient(60deg, #66bb6a, #43a047)\" id='vote" + value.bib_number + "'></div>\n" +
+                "        <div class=\"card-body\">\n" +
+                "            <h4 class=\"card-text mt-0\">" + value.entry_name + " <a class=\"text-gray\">" + value.bib_number + " " + value.category + "</a></h4>\n" +
+                "        </div>\n" +
+                "    </div>\n" +
+                "</div>"
             );
-        });
-        $("select").imagepicker({
-            show_label: true,
         });
         getDataCheck = 1;
     }
@@ -40,12 +43,19 @@ socket.on('race_data', function(data){
     race_start_time = moment(data.race_start_time).format("x");
     voting_end_time_ms = moment(data.voting_end_time).format("x");
     document.getElementById("votingopen").innerHTML = "Votes can be cast on " + moment(data.race_start_time).format('MMMM Do, YYYY') + " from <strong>" + moment(data.race_start_time).format('h:mma') + " to " + moment(data.voting_end_time).format('h:mma') + " CDT</strong>. ";
-    //document.getElementById("racedate").innerHTML = moment(data.race_start_time).format('dddd, MMMM Do, YYYY');
-    //document.getElementById("year1").innerHTML = moment(data.race_start_time).format('YYYY');
-    //document.getElementById("year2").innerHTML = moment(data.race_start_time).format('YYYY');
     document.getElementById("votingclosed").innerHTML = "Votes can be cast on " + moment(data.race_start_time).format('MMMM Do, YYYY') + " from <strong>" + moment(data.race_start_time).format('h:mma') + " to " + moment(data.voting_end_time).format('h:mma') + " CDT</strong>. ";
     timeCheck();
 });
+
+//Mark entry
+function selectedEntry(bib_number) {
+    if (selected_entry) {
+        document.getElementById("vote" + selected_entry).innerHTML = "";
+    }
+    document.getElementById("vote" + bib_number).innerHTML = "<p class=\"mb-0 p-1 text-white\"><i class=\"fas fa-check-circle\"></i> Selected for People's Choice</p>";
+    selected_entry = bib_number;
+
+}
 
 //Check to see if voting is open
 function timeCheck() {
@@ -55,12 +65,10 @@ function timeCheck() {
         //Voting Closed
         closed.style.display = "block";
         open.style.display = "none";
-        document.getElementById("votingstat").innerHTML = "<a class='text-danger'>CLOSED</a>";
     } else if (votingstat === 0) {
         //Voting Open
         closed.style.display = "none";
         open.style.display = "block";
-        document.getElementById("votingstat").innerHTML = "<a class='text-success'>OPEN</a>";
         votingstat = 1;
     }
 }
@@ -87,11 +95,10 @@ function getInfo() {
 
 //Send Vote
 function sendVote() {
-    let bib_number = $("select").data("picker").selected_values()[0];
-    if (bib_number) {
+    if (selected_entry) {
         Swal.fire({
             title: 'Final Submission',
-            html: "<p>Are you sure you want to select this entry for the People's Choice Award? Remember, you only get one entry per device.</p><p>Selected Bib #: " + bib_number + "</p>",
+            html: "<h5>Are you sure you want to select this entry for the People's Choice Award? Remember, you only get one entry per device.</h5><p>Selected Bib #: " + selected_entry + "</p>",
             type: 'info',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -103,24 +110,35 @@ function sendVote() {
                     type: "POST",
                     url: "/api/voting/people's-choice",
                     data: {
-                        bib_number: bib_number,
+                        bib_number: selected_entry,
                         user_ip: userIP,
                         user_data: userData
                     },
                     success: function (data) {
                         Swal.fire({
                             title: 'Vote Submitted!',
-                            html: "<p>Thank you for casting your vote for the People's Choice Award! Click below to live the live results!</p>",
+                            html: "<p>Thank you for casting your vote for the People's Choice Award! Click below to see the results!</p>",
                             type: 'success',
                             showCancelButton: false,
                             confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'Live Results'
+                            confirmButtonText: 'Results'
                         }).then((result) => {
-                            window.location.href = "/results/live";
+                            window.location.href = "/";
                         })
                     },
                     error: function (data) {
-                        if (data.responseText) {
+                        if (data.responseText === "User Already Voted") {
+                            Swal.fire({
+                                title: 'Already Voted!',
+                                html: "<p>Only one vote is allowed per device. Click below to see the results!</p>",
+                                type: 'error',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'Results'
+                            }).then((result) => {
+                                window.location.href = "/";
+                            })
+                        } else if (data.responseText) {
                             Toast.fire({
                                 type: 'error',
                                 title: data.responseText

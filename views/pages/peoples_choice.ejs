@@ -87,7 +87,7 @@
 <div class="main main-raised">
     <div class="container">
         <div class="section text-center">
-            <div id="closed">
+            <div id="closed" style="display: none">
                 <div class="row">
                     <div class="col-md-8 ml-auto mr-auto">
                         <h2 class="title mt-3">People's Choice <br><a class="text-danger">Voting Closed</a></h2>
@@ -95,16 +95,17 @@
                     </div>
                 </div>
             </div>
-            <div id="open">
+            <div id="open" style="display: none">
                 <div class="row">
                     <div class="col-md-10 ml-auto mr-auto">
                         <h2 class="title">People's Choice Voting</h2>
                         <h4 class="mb-4"><u>Reminders:</u> Select the entry that
                             <strong>you</strong> like the best based on <strong>creativity</strong> and
-                            <strong>ingenuity</strong>. <span id="votingopen"></span>Each person is only allowed <strong>one</strong> entry per device. Please make
-                            sure to submit your vote at the bottom of the page!</h4>
-                        <select class="image-picker show-labels show-html mt-3" id="entries"></select>
-                        <button class="btn btn-lg btn-success m-3" onclick="sendVote()">
+                            <strong>ingenuity</strong>. <span id="votingopen"></span>Each person is only allowed <strong>one</strong> entry per device. Once you have submitted your vote, you <strong>cannot</strong> change your selection. <strong>Please make
+                                sure to submit your vote at the bottom of the page!</strong></h4>
+<!--                        <select class="image-picker show-labels show-html mt-3" id="entries"></select>-->
+                        <div class="row" id="entries"></div>
+                        <button class="btn btn-lg btn-success m-3 mt-5" onclick="sendVote()">
                             <i class="far fa-paper-plane"></i> <strong>Submit Vote</strong>
                             <div class="ripple-container"></div>
                         </button>
@@ -124,8 +125,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="https://github.com/RAK3RMAN/rratfr-manager">
-                        Github Repo
+                    <a href="/results">
+                        Results
                     </a>
                 </li>
                 <li>

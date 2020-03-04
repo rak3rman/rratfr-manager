@@ -43,7 +43,7 @@ let pastSettings = {
         "emptyTable": "Entries will be updated soon!"
     },
 };
-//let leaderTable = $('#leaderTable').DataTable(tableSettings);
+let resultslive = $('#resultslive').DataTable(tableSettings);
 let results2019 = $('#results2019').DataTable(pastSettings);
 let results2018 = $('#results2018').DataTable(pastSettings);
 let results2017 = $('#results2017').DataTable(pastSettings);

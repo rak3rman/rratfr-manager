@@ -6,6 +6,8 @@ ul.thumbnails.image_picker_selector {
     list-style-type: none;
     padding: 0px;
     margin: 0px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 /* line 15, source/sass/image-picker.scss */
@@ -16,6 +18,8 @@ ul.thumbnails.image_picker_selector ul {
     list-style-type: none;
     padding: 0px;
     margin: 0px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 /* line 25, source/sass/image-picker.scss */
@@ -26,7 +30,8 @@ ul.thumbnails.image_picker_selector li.group_title {
 /* line 30, source/sass/image-picker.scss */
 ul.thumbnails.image_picker_selector li {
     margin: 0px 6px 12px 6px;
-    float: left;
+    flex: 0 0 50%;
+    max-width: 50%
 }
 
 /* line 35, source/sass/image-picker.scss */
