@@ -51,8 +51,8 @@ exports.create_entry = function (req, res) {
                         console.log('ENTRY Resolver: Entry Created: ' + JSON.stringify(created_entry))
                     }
                     socket.updateSockets("create_entry");
-                    var_Updater('updated_time_total_entries', Date.now());
-                    var_Updater('updated_time_in_queue', Date.now());
+                    var_Updater('updated_time_total_entries', Date.now(), null);
+                    var_Updater('updated_time_in_queue', Date.now(), null);
                     events.save_event('Entries', 'Created new entry ' + created_entry.entry_name + ' - Bib #' + created_entry.bib_number)
                 }
                 res.json(created_entry);
@@ -143,9 +143,9 @@ exports.entry_delete = function (req, res) {
             console.log("ENTRY Resolver: Entry Deleted: " + req.body["bib_number"]);
             res.json(req.body["bib_number"]);
             sortEntries();
-            var_Updater('updated_time_total_entries', Date.now());
-            var_Updater('updated_time_entries_in_water', Date.now());
-            var_Updater('updated_time_entries_finished', Date.now());
+            var_Updater('updated_time_total_entries', Date.now(), null);
+            var_Updater('updated_time_entries_in_water', Date.now(), null);
+            var_Updater('updated_time_entries_finished', Date.now(), null);
             fs.unlink('./static/img/entries/entry_' + req.body["bib_number"] + '.jpg', (err) => {
                 if (err) {
                     console.log("ENTRY Resolver: Problem deleting image associated: " + err);
@@ -208,7 +208,7 @@ exports.entry_timing_update = function (req, res) {
                     console.log("ENTRY Resolver: Entry Status Updated: " + data);
                 }
                 res.json(data);
-                var_Updater('updated_time_entries_in_water', Date.now());
+                var_Updater('updated_time_entries_in_water', Date.now(), null);
                 events.save_event('Timing', data.entry_name + ' - Bib #' + req.body["bib_number"] + ' has Started');
                 socket.updateSockets("update_start");
             }
@@ -230,7 +230,7 @@ exports.entry_timing_update = function (req, res) {
                 }
                 res.json(data);
                 calcTime(req.body["bib_number"]);
-                var_Updater('updated_time_entries_finished', Date.now());
+                var_Updater('updated_time_entries_finished', Date.now(), null);
                 events.save_event('Timing', data.entry_name + ' - Bib #' + req.body["bib_number"] + ' has Finished');
             }
         });
@@ -275,7 +275,7 @@ exports.entry_timing_update = function (req, res) {
                 }
                 res.json(data);
                 sortEntries();
-                var_Updater('updated_time_in_queue', Date.now());
+                var_Updater('updated_time_in_queue', Date.now(), null);
                 events.save_event('Timing', data.entry_name + ' - Bib #' + req.body["bib_number"] + ' has been Reset');
             }
         });
@@ -367,21 +367,39 @@ exports.entry_sort = function (req, res) {
 //Return results of individual contests
 exports.return_results = function (req, res) {
     let pc_winner;
-    entry.find({}, function (err, listed_entries) {
+    let jc_winner;
+    varSet.find({}, function (err, variables) {
         if (err) {
-            console.log("ENTRY Resolver: Retrieve failed: " + err);
+            console.log("Socket.io: Retrieve failed: " + err);
+            io.emit('error', err);
         } else {
-            //Pre-sort entries based on votes
-            listed_entries.sort(function (a, b) {
-                return parseFloat(b.vote_count) - parseFloat(a.vote_count);
-            });
-            if (listed_entries[0]["vote_count"] !== 0) {
-                pc_winner = listed_entries[0]["entry_name"];
-            } else {
-                pc_winner = "Not Posted";
+            for (let i in variables) {
+                if (variables[i]["var_name"] === "judges_choice") {
+                    if (variables[i]["var_value"] !== null) {
+                        jc_winner = variables[i]["var_value"];
+                    } else {
+                        jc_winner = "Not Posted";
+                    }
+                }
             }
-            res.json({
-                pc_winner: pc_winner
+            entry.find({}, function (err, listed_entries) {
+                if (err) {
+                    console.log("ENTRY Resolver: Retrieve failed: " + err);
+                } else {
+                    //Pre-sort entries based on votes
+                    listed_entries.sort(function (a, b) {
+                        return parseFloat(b.vote_count) - parseFloat(a.vote_count);
+                    });
+                    if (listed_entries[0]["vote_count"] !== 0) {
+                        pc_winner = listed_entries[0]["entry_name"];
+                    } else {
+                        pc_winner = "Not Posted";
+                    }
+                    res.json({
+                        pc_winner: pc_winner,
+                        jc_winner: jc_winner
+                    });
+                }
             });
         }
     });
@@ -484,12 +502,12 @@ exports.re_tabulate_votes = function (req, res) {
 
 //Select Judges Choice Award
 exports.select_judges_choice = function (req, res) {
-    entry.findOneAndUpdate({ bib_number: req.body["bib_number"] }, { $set: { judges_choice: "true" }}, function (err, data) {
+    entry.find({ bib_number: req.body["bib_number"] }, function (err, data) {
         if (err) {
             console.log("ENTRY Resolver: Retrieve failed: " + err);
             res.send(err);
         } else {
-            if (debug_mode === "true") { console.log('ENTRY Resolver: ENTRY Updated: ' + JSON.stringify(data)) }
+            var_Updater("judges_choice", null, data.entry_name);
             res.status(200).send('success');
             events.save_event('Voting', 'Assigned Judges Choice Award to  ' + data.entry_name + ' | Bib #: ' + data.bib_number);
             //Delay to wait for DB to update
@@ -502,20 +520,13 @@ exports.select_judges_choice = function (req, res) {
 
 //Reset Judges Choice Award
 exports.reset_judges_choice = function (req, res) {
-    entry.findOneAndUpdate({ bib_number: req.body["bib_number"] }, { $set: { judges_choice: "false" }}, function (err, data) {
-        if (err) {
-            console.log("ENTRY Resolver: Retrieve failed: " + err);
-            res.send(err);
-        } else {
-            if (debug_mode === "true") { console.log('ENTRY Resolver: ENTRY Updated: ' + JSON.stringify(data)) }
-            res.status(200).send('success');
-            events.save_event('Voting', 'Reset Judges Choice Award assignment');
-            //Delay to wait for DB to update
-            setTimeout(function(){
-                socket.updateSockets("reset_judges_choice");
-            }, 300);
-        }
-    });
+    var_Updater("judges_choice", null, null);
+    res.status(200).send('success');
+    events.save_event('Voting', 'Reset Judges Choice Award assignment');
+    //Delay to wait for DB to update
+    setTimeout(function(){
+        socket.updateSockets("reset_judges_choice");
+    }, 300);
 };
 
 //Get Settings Data
@@ -530,13 +541,13 @@ exports.settings_get = function (req, res) {
             let voting_results_time;
             for (let i in variables) {
                 if (variables[i]["var_name"] === "race_start_time") {
-                    race_start_time = variables[i]["var_value"];
+                    race_start_time = variables[i]["var_date"];
                 }
                 if (variables[i]["var_name"] === "voting_end_time") {
-                    voting_end_time = variables[i]["var_value"];
+                    voting_end_time = variables[i]["var_date"];
                 }
                 if (variables[i]["var_name"] === "voting_results_time") {
-                    voting_results_time = variables[i]["var_value"];
+                    voting_results_time = variables[i]["var_date"];
                 }
             }
             res.json({
@@ -557,9 +568,9 @@ exports.settings_get = function (req, res) {
 
 //Update Settings Data
 exports.settings_update = function (req, res) {
-    var_Updater("race_start_time", req.body["race_start_time"]);
-    var_Updater("voting_end_time", req.body["voting_end_time"]);
-    var_Updater("voting_results_time", req.body["voting_results_time"]);
+    var_Updater("race_start_time", req.body["race_start_time"], null);
+    var_Updater("voting_end_time", req.body["voting_end_time"], null);
+    var_Updater("voting_results_time", req.body["voting_results_time"], null);
     if (storage.get('mongodb_url') !== req.body["mongodb_url"]) {
         console.log("SETTINGS Resolver: Restarting due to mongodb_url");
         storage.set('mongodb_url', req.body["mongodb_url"]);
@@ -585,13 +596,13 @@ exports.settings_update = function (req, res) {
 };
 
 //Update Variables to DB
-function var_Updater(var_name, var_value) {
-    varSet.findOneAndUpdate({ var_name: var_name }, { $set: { var_value: var_value }}, function (err, data) {
+function var_Updater(var_name, var_date, var_value) {
+    varSet.findOneAndUpdate({ var_name: var_name }, { $set: { var_date: var_date, var_value: var_value }}, function (err, data) {
         if (err) {
             console.log("VAR Resolver: Retrieve failed: " + err);
         }
         if (data == null) {
-            let newVar = new varSet({ var_name: var_name, var_value: var_value });
+            let newVar = new varSet({ var_name: var_name, var_date: var_date, var_value: var_value });
             newVar.save(function (err, created_var) {
                 if (err) {
                     console.log("VAR Resolver: Save failed: " + err);
@@ -601,7 +612,7 @@ function var_Updater(var_name, var_value) {
             });
         } else {
             if (debug_mode === "true") {
-                console.log("VAR Resolver: (" + var_name + ") updated to value: " + var_value)
+                console.log("VAR Resolver: (" + var_name + ") updated to value (DATE): " + var_date + " (VALUE): " + var_value)
             }
         }
     });

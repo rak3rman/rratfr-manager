@@ -9,9 +9,13 @@ let varSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    var_value: {
+    var_date: {
         type: Date,
-        required: true,
+        required: false,
+    },
+    var_value: {
+        type: String,
+        required: false,
     },
 });
 

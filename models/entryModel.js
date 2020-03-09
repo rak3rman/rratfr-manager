@@ -46,10 +46,6 @@ let entrySchema = mongoose.Schema({
         required: false,
         default: 0
     },
-    judges_choice: {
-        type: String,
-        default: "false",
-    },
     created_date: {
         type: Date,
         default: Date.now

@@ -124,25 +124,25 @@ function getStatistics(socketid) {
                 } else {
                     for (let i in variables) {
                         if (variables[i]["var_name"] === "updated_time_total_entries") {
-                            updated_time_total_entries = variables[i]["var_value"];
+                            updated_time_total_entries = variables[i]["var_date"];
                         }
                         if (variables[i]["var_name"] === "updated_time_in_queue") {
-                            updated_time_in_queue = variables[i]["var_value"];
+                            updated_time_in_queue = variables[i]["var_date"];
                         }
                         if (variables[i]["var_name"] === "updated_time_entries_in_water") {
-                            updated_time_entries_in_water = variables[i]["var_value"];
+                            updated_time_entries_in_water = variables[i]["var_date"];
                         }
                         if (variables[i]["var_name"] === "updated_time_entries_finished") {
-                            updated_time_entries_finished = variables[i]["var_value"];
+                            updated_time_entries_finished = variables[i]["var_date"];
                         }
                         if (variables[i]["var_name"] === "race_start_time") {
-                            race_start_time = variables[i]["var_value"];
+                            race_start_time = variables[i]["var_date"];
                         }
                         if (variables[i]["var_name"] === "voting_end_time") {
-                            voting_end_time = variables[i]["var_value"];
+                            voting_end_time = variables[i]["var_date"];
                         }
                         if (variables[i]["var_name"] === "voting_results_time") {
-                            voting_results_time = variables[i]["var_value"];
+                            voting_results_time = variables[i]["var_date"];
                         }
                     }
                     console.log(socketid);

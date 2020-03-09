@@ -109,8 +109,11 @@ function viewresultsHandler() {
             type: "GET",
             url: "/api/voting/results",
             success: function (data) {
-                console.log(data + "test");
                 document.getElementById("pc_winner").innerHTML = data.pc_winner;
+                document.getElementById("jc_winner").innerHTML = data.jc_winner;
+                document.getElementById("cd1_winner").innerHTML = data.cd1_winner;
+                document.getElementById("cd2_winner").innerHTML = data.cd2_winner;
+                document.getElementById("cd3_winner").innerHTML = data.cd3_winner;
             },
             error: function (data) {
                 Toast.fire({
