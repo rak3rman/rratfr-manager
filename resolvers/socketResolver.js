@@ -141,6 +141,9 @@ function getStatistics(socketid) {
                         if (variables[i]["var_name"] === "voting_end_time") {
                             voting_end_time = variables[i]["var_value"];
                         }
+                        if (variables[i]["var_name"] === "voting_results_time") {
+                            voting_results_time = variables[i]["var_value"];
+                        }
                     }
                     console.log(socketid);
                     if (socketid === undefined) {
@@ -156,6 +159,7 @@ function getStatistics(socketid) {
                             connected_users: userconnect,
                             race_start_time: race_start_time,
                             voting_end_time: voting_end_time,
+                            voting_results_time: voting_results_time,
                             votes_cast: votes_cast
                         });
                     } else {
@@ -171,6 +175,7 @@ function getStatistics(socketid) {
                             connected_users: userconnect,
                             race_start_time: race_start_time,
                             voting_end_time: voting_end_time,
+                            voting_results_time: voting_results_time,
                             votes_cast: votes_cast
                         });
                     }

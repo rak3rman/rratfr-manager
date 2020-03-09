@@ -69,22 +69,23 @@ function selectedEntry(bib_number, entry_name) {
     document.getElementById("vote" + bib_number).innerHTML = "<p class=\"mb-0 p-1 text-white\"><i class=\"fas fa-check-circle\"></i> Selected for People's Choice</p>";
     selected_entry_bib = bib_number;
     selected_entry_name = entry_name;
-
-
 }
 
 //Check to see if voting is open
 function timeCheck() {
     let closed = document.getElementById("closed");
     let open = document.getElementById("open");
+    let spinner_element = document.getElementById("spinner_element");
     if (!((race_start_time < Date.now()) && (Date.now() < voting_end_time_ms))) {
         //Voting Closed
         closed.style.display = "block";
         open.style.display = "none";
+        spinner_element.style.display = "none";
     } else if (votingstat === 0) {
         //Voting Open
         closed.style.display = "none";
         open.style.display = "block";
+        spinner_element.style.display = "none";
         votingstat = 1;
     }
 }

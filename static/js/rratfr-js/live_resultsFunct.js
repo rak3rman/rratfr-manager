@@ -5,6 +5,8 @@ RRATFR Manager Front-End JS - Authored by: RAk3rman
 let socket = io();
 //Setup Variables
 let race_start_time;
+let voting_end_time;
+let voting_results_time;
 //Set SA Toast Settings
 const Toast = Swal.mixin({
     toast: true,
@@ -58,14 +60,19 @@ socket.on('race_data', function (data) {
     // document.getElementById("pushedDate2").innerHTML = 'Updated ' + moment(data["updated_entries_in_water"]).fromNow();
     // document.getElementById("pushedDate3").innerHTML = 'Updated ' + moment(data["updated_entries_finished"]).fromNow();
     // document.getElementById("votes_cast").innerHTML = data["votes_cast"].toString() + ' Votes Cast';
+    document.getElementById("race_times").innerHTML = "<strong>Race Starts & People's Choice Voting Starts:</strong> " + moment(data["race_start_time"]).format("MMMM Do YYYY, h:mm a") +
+        "<br><strong>People's Choice Voting Ends:</strong> " + moment(data["voting_end_time"]).format("MMMM Do YYYY, h:mm a") +
+        "<br><strong>Individual Contests Results Released:</strong> " + moment(data["voting_results_time"]).format("MMMM Do YYYY, h:mm a");
     race_start_time = data["race_start_time"];
+    voting_end_time = data["voting_end_time"];
+    voting_results_time = data["voting_results_time"];
+    viewresultsHandler();
 });
 
 //Socket.io Get Leaderboard Data
 socket.on('entry_data', function (data) {
     resultslive.clear();
     $.each(data, function (i, value) {
-        console.log(value.final_place + ". " + value.entry_name +  " " + value.final_time + value.category);
         let final_place_text = value.final_place;
         if (value.final_place === "1") {
             final_place_text = "<strong><a style='color:#D4AF37'>" + value.final_place + "</a></strong>";
@@ -82,13 +89,28 @@ socket.on('entry_data', function (data) {
     resultslive.draw();
 });
 
-//Countdown Timer
-function updateCountdown() {
+//Handle the viewing options of the results
+function viewresultsHandler() {
+    let countdown_element = document.getElementById("countdown_element");
+    let leaderboard_element = document.getElementById("leaderboard_element");
+    let contest_results_element = document.getElementById("contest_results_element");
+    let spinner_element = document.getElementById("spinner_element");
     if (moment(race_start_time) > moment()) {
-        document.getElementById("countdown").innerHTML = countdown(moment(race_start_time).format("x")).toString();
+        document.getElementById("countdown_time").innerHTML = countdown(moment(race_start_time).format("x")).toString();
         document.getElementById("race_start_time").innerHTML = moment(race_start_time).format("MMMM Do YYYY, h:mm a");
-    } else {
-
+        countdown_element.style.display = "block";
+        leaderboard_element.style.display = "none";
+        contest_results_element.style.display = "none";
+        spinner_element.style.display = "none";
+    } else if (moment(race_start_time) < moment()) {
+        countdown_element.style.display = "none";
+        leaderboard_element.style.display = "block";
+        spinner_element.style.display = "none";
+        if (moment(voting_results_time) < moment()) {
+            contest_results_element.style.display = "block";
+        } else {
+            contest_results_element.style.display = "none";
+        }
     }
 }
 
