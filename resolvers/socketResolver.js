@@ -198,10 +198,26 @@ function getEntryData(socketid) {
             if (socketid === undefined) {
                 io.emit('entry_data', listed_entries);
             } else {
-                io.to(socketid).emit('entry_data', listed_entries);
+                let public_entry_data = '[]';
+                for (let i in listed_entries) {
+                    let obj = JSON.parse(public_entry_data);
+                    obj.push({
+                        bib_number: listed_entries[i]["bib_number"],
+                        entry_name: listed_entries[i]["entry_name"],
+                        category: listed_entries[i]["category"],
+                        timing_status: listed_entries[i]["timing_status"],
+                        final_place: listed_entries[i]["final_place"],
+                        final_time: listed_entries[i]["final_time"],
+                        start_time: listed_entries[i]["start_time"],
+                        end_time: listed_entries[i]["end_time"],
+                        vote_count: listed_entries[i]["vote_count"]
+                    });
+                    public_entry_data = JSON.stringify(obj);
+                }
+                io.to(socketid).emit('entry_data', JSON.parse(public_entry_data));
             }
             if (debug_mode === "true") {
-                console.log("Socket.io: Entries Sent (entry_data)")
+                console.log("Socket.io: Entries Sent (entry_data)");
             }
         }
     });

@@ -62,7 +62,7 @@ socket.on('race_data', function (data) {
     // document.getElementById("votes_cast").innerHTML = data["votes_cast"].toString() + ' Votes Cast';
     document.getElementById("race_times").innerHTML = "<strong>Race Starts & People's Choice Voting Starts:</strong> " + moment(data["race_start_time"]).format("MMMM Do YYYY, h:mm a") +
         "<br><strong>People's Choice Voting Ends:</strong> " + moment(data["voting_end_time"]).format("MMMM Do YYYY, h:mm a") +
-        "<br><strong>Individual Contests Results Released:</strong> " + moment(data["voting_results_time"]).format("MMMM Do YYYY, h:mm a");
+        "<br><strong>Individual Contest Results Release:</strong> " + moment(data["voting_results_time"]).format("MMMM Do YYYY, h:mm a");
     race_start_time = data["race_start_time"];
     voting_end_time = data["voting_end_time"];
     voting_results_time = data["voting_results_time"];
