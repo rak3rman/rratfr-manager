@@ -7,6 +7,7 @@ let socket = io();
 let race_start_time;
 let voting_end_time;
 let voting_results_time;
+let contest_status = 0;
 //Set SA Toast Settings
 const Toast = Swal.mixin({
     toast: true,
@@ -102,7 +103,22 @@ function viewresultsHandler() {
         leaderboard_element.style.display = "none";
         contest_results_element.style.display = "none";
         spinner_element.style.display = "none";
-    } else if (moment(race_start_time) < moment()) {
+        contest_status = 0;
+    } else if (moment(race_start_time) < moment() && contest_status === 0) {
+        $.ajax({
+            type: "GET",
+            url: "/api/voting/results",
+            success: function (data) {
+                console.log(data + "test");
+                document.getElementById("pc_winner").innerHTML = data.pc_winner;
+            },
+            error: function (data) {
+                Toast.fire({
+                    type: 'danger',
+                    title: 'Error in retrieving results'
+                });
+            }
+        });
         countdown_element.style.display = "none";
         leaderboard_element.style.display = "block";
         spinner_element.style.display = "none";
@@ -111,6 +127,7 @@ function viewresultsHandler() {
         } else {
             contest_results_element.style.display = "none";
         }
+        contest_status = 1;
     }
 }
 

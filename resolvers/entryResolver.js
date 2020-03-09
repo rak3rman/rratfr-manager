@@ -65,34 +65,34 @@ exports.create_entry = function (req, res) {
 };
 
 //Give details about the entry requested
-exports.entry_details = function (req, res) {
-    entry.find({bib_number: req.query.bib_number}, function (err, details) {
-        if (err) {
-            console.log("ENTRY Resolver: Retrieve failed: " + err);
-            res.send(err);
-        } else {
-            if (debug_mode === "true") {
-                console.log("ENTRY Resolver: Entry Sent: " + JSON.stringify(details))
-            }
-        }
-        res.json(details);
-    });
-};
+// exports.entry_details = function (req, res) {
+//     entry.find({bib_number: req.query.bib_number}, function (err, details) {
+//         if (err) {
+//             console.log("ENTRY Resolver: Retrieve failed: " + err);
+//             res.send(err);
+//         } else {
+//             if (debug_mode === "true") {
+//                 console.log("ENTRY Resolver: Entry Sent: " + JSON.stringify(details))
+//             }
+//         }
+//         res.json(details);
+//     });
+// };
 
 //List all entries in database
-exports.entry_details_all = function (req, res) {
-    entry.find({}, function (err, listed_entries) {
-        if (err) {
-            console.log("ENTRY Resolver: Retrieve failed: " + err);
-            res.send(err);
-        } else {
-            if (debug_mode === "true") {
-                console.log("ENTRY Resolver: Entries Sent: " + JSON.stringify(listed_entries))
-            }
-        }
-        res.json(listed_entries);
-    });
-};
+// exports.entry_details_all = function (req, res) {
+//     entry.find({}, function (err, listed_entries) {
+//         if (err) {
+//             console.log("ENTRY Resolver: Retrieve failed: " + err);
+//             res.send(err);
+//         } else {
+//             if (debug_mode === "true") {
+//                 console.log("ENTRY Resolver: Entries Sent: " + JSON.stringify(listed_entries))
+//             }
+//         }
+//         res.json(listed_entries);
+//     });
+// };
 
 //Edit an existing entry
 exports.entry_edit = function (req, res) {
@@ -364,6 +364,22 @@ exports.entry_sort = function (req, res) {
     res.status(200).send('success');
 };
 
+//Return results of individual contests
+exports.return_results = function (req, res) {
+    entry.find({}, function (err, listed_entries) {
+        if (err) {
+            console.log("ENTRY Resolver: Retrieve failed: " + err);
+        } else {
+            //Pre-sort entries based on votes
+            listed_entries.sort(function (a, b) {
+                return parseFloat(a.vote_count) - parseFloat(b.vote_count);
+            });
+            console.log("Ordered Data: " + listed_entries);
+            console.log(listed_entries[0]["timing_status"]);
+        }
+    });
+};
+
 //Submit Vote Logic
 exports.submit_vote = function (req, res) {
     vote.find({user_ip: req.body.user_ip}, function (err, details) {
@@ -397,7 +413,7 @@ exports.submit_vote = function (req, res) {
                                     res.send(err);
                                 } else {
                                     console.log("ENTRY Resolver: Entry Updated: " + updatedEntry);
-                                    res.json(updatedEntry);
+                                    res.status(200).send('success');
                                     socket.updateSockets("entry_edit");
                                     events.save_event('Entries', 'Updated entry ' + updatedEntry.entry_name + ' - Bib #' + updatedEntry.bib_number);
                                 }
@@ -423,8 +439,39 @@ exports.return_all_votes = function (req, res) {
             if (debug_mode === "true") {
                 console.log("VOTE Resolver: Votes Sent: " + JSON.stringify(listed_votes))
             }
+            res.json(listed_votes);
         }
-        res.json(listed_votes);
+    });
+};
+
+//Re-tabulate votes
+exports.re_tabulate_votes = function (req, res) {
+    vote.find({}, function (err, listed_votes) {
+        if (err) {
+            console.log("VOTE Resolver: Retrieve failed: " + err);
+            res.send(err);
+        } else {
+            for (let i in listed_votes) {
+                entry.find({bib_number: listed_votes[i]["bib_number"]}, function (err, details) {
+                    if (err) {
+                        console.log("ENTRY Resolver: Retrieve failed: " + err);
+                        console.log("VOTE Resolver: Error in matching entry to vote. Continuing anyway...");
+                    } else {
+                        entry.findOneAndUpdate({bib_number: listed_votes[i]["bib_number"]}, {$set: {vote_count: (details[0].vote_count + 1)}}, function (err, updatedEntry) {
+                            if (err) {
+                                console.log("ENTRY Resolver: Update failed: " + err);
+                                res.send(err);
+                            } else {
+                                console.log("ENTRY Resolver: Entry Updated: " + updatedEntry);
+                                res.status(200).send('success');
+                                socket.updateSockets("entry_edit");
+                                events.save_event('Entries', 'Updated entry ' + updatedEntry.entry_name + ' - Bib #' + updatedEntry.bib_number);
+                            }
+                        });
+                    }
+                })
+            }
+        }
     });
 };
 
@@ -436,7 +483,7 @@ exports.select_judges_choice = function (req, res) {
             res.send(err);
         } else {
             if (debug_mode === "true") { console.log('ENTRY Resolver: ENTRY Updated: ' + JSON.stringify(data)) }
-            res.json(data);
+            res.status(200).send('success');
             events.save_event('Voting', 'Assigned Judges Choice Award to  ' + data.entry_name + ' | Bib #: ' + data.bib_number);
             //Delay to wait for DB to update
             setTimeout(function(){
@@ -454,7 +501,7 @@ exports.reset_judges_choice = function (req, res) {
             res.send(err);
         } else {
             if (debug_mode === "true") { console.log('ENTRY Resolver: ENTRY Updated: ' + JSON.stringify(data)) }
-            res.json(data);
+            res.status(200).send('success');
             events.save_event('Voting', 'Reset Judges Choice Award assignment');
             //Delay to wait for DB to update
             setTimeout(function(){
