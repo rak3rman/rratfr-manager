@@ -366,16 +366,23 @@ exports.entry_sort = function (req, res) {
 
 //Return results of individual contests
 exports.return_results = function (req, res) {
+    let pc_winner;
     entry.find({}, function (err, listed_entries) {
         if (err) {
             console.log("ENTRY Resolver: Retrieve failed: " + err);
         } else {
             //Pre-sort entries based on votes
             listed_entries.sort(function (a, b) {
-                return parseFloat(a.vote_count) - parseFloat(b.vote_count);
+                return parseFloat(b.vote_count) - parseFloat(a.vote_count);
             });
-            console.log("Ordered Data: " + listed_entries);
-            console.log(listed_entries[0]["timing_status"]);
+            if (listed_entries[0]["vote_count"] !== 0) {
+                pc_winner = listed_entries[0]["entry_name"];
+            } else {
+                pc_winner = "Not Posted";
+            }
+            res.json({
+                pc_winner: pc_winner
+            });
         }
     });
 };

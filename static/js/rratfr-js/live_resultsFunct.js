@@ -114,7 +114,7 @@ function viewresultsHandler() {
             },
             error: function (data) {
                 Toast.fire({
-                    type: 'danger',
+                    type: 'error',
                     title: 'Error in retrieving results'
                 });
             }

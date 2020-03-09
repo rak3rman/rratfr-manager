@@ -103,6 +103,38 @@ function getVotes() {
     });
 }
 
+//Get votes from database
+function retabulateVotes() {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to re-tabulate all votes? (re-assign votes to entries)",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, re-tabulate votes!'
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                type: "POST",
+                url: "/api/voting/people's-choice/re-tabulate",
+                success: function (data) {
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Re-tabulating votes'
+                    });
+                },
+                error: function (data) {
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Error in re-tabulating votes'
+                    });
+                }
+            });
+        }
+    })
+}
+
 //Display SA of User Data
 function viewData(data) {
     Swal.fire({
