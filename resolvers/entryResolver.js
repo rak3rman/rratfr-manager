@@ -366,38 +366,45 @@ exports.entry_sort = function (req, res) {
 
 //Return results of individual contests
 exports.return_results = function (req, res) {
-    let pc_winner;
-    let jc_winner;
+    let pc_winner = "Not Released";
+    let jc_winner = "Not Released";
+    let cd1_winner = "Not Released";
+    let cd2_winner = "Not Released";
+    let cd3_winner = "Not Released";
     varSet.find({}, function (err, variables) {
         if (err) {
             console.log("Socket.io: Retrieve failed: " + err);
             io.emit('error', err);
         } else {
-            for (let i in variables) {
-                if (variables[i]["var_name"] === "judges_choice") {
-                    if (variables[i]["var_value"] !== null) {
-                        jc_winner = variables[i]["var_value"];
-                    } else {
-                        jc_winner = "Not Posted";
-                    }
-                }
-            }
             entry.find({}, function (err, listed_entries) {
                 if (err) {
                     console.log("ENTRY Resolver: Retrieve failed: " + err);
                 } else {
-                    //Pre-sort entries based on votes
+                    //Parse for JC
+                    for (let j in variables) {
+                        if (variables[j]["var_name"] === "judges_choice") {
+                            for (let i in listed_entries) {
+                                if (listed_entries[i]["bib_number"] === variables[j]["var_value"]) {
+                                    jc_winner = "<strong>" + listed_entries[i]["entry_name"] + "</strong> #" + listed_entries[i]["bib_number"];
+                                }
+                            }
+                        }
+                    }
+                    //Pre-sort entries based on votes for PC
                     listed_entries.sort(function (a, b) {
                         return parseFloat(b.vote_count) - parseFloat(a.vote_count);
                     });
                     if (listed_entries[0]["vote_count"] !== 0) {
-                        pc_winner = listed_entries[0]["entry_name"];
+                        pc_winner = "<strong>" + listed_entries[0]["entry_name"] + "</strong> #" + listed_entries[0]["bib_number"];
                     } else {
                         pc_winner = "Not Posted";
                     }
                     res.json({
                         pc_winner: pc_winner,
-                        jc_winner: jc_winner
+                        jc_winner: jc_winner,
+                        cd1_winner: cd1_winner,
+                        cd2_winner: cd2_winner,
+                        cd3_winner: cd3_winner
                     });
                 }
             });
@@ -507,9 +514,9 @@ exports.select_judges_choice = function (req, res) {
             console.log("ENTRY Resolver: Retrieve failed: " + err);
             res.send(err);
         } else {
-            var_Updater("judges_choice", null, data.entry_name);
+            var_Updater("judges_choice", null, req.body["bib_number"]);
             res.status(200).send('success');
-            events.save_event('Voting', 'Assigned Judges Choice Award to  ' + data.entry_name + ' | Bib #: ' + data.bib_number);
+            events.save_event('Voting', 'Assigned Judges Choice Award to ' + data[0].entry_name + ' | Bib #: ' + data[0].bib_number);
             //Delay to wait for DB to update
             setTimeout(function(){
                 socket.updateSockets("select_judges_choice");

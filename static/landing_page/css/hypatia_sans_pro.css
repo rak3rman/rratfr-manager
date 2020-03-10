@@ -1,0 +1,24 @@
+@font-face {
+    font-family: 'HypatiaSansPro';
+    src: url('/static/fonts/hypatia_sans_pro/HypatiaSansPro-Regular.woff2') format('woff2'),
+        url('/static/fonts/hypatia_sans_pro/HypatiaSansPro-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'HypatiaSansPro';
+    src: url('/static/fonts/hypatia_sans_pro/HypatiaSansPro-Semibold.woff2') format('woff2'),
+        url('/static/fonts/hypatia_sans_pro/HypatiaSansPro-Semibold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'HypatiaSansPro';
+    src: url('/static/fonts/hypatia_sans_pro/HypatiaSansPro-Bold.woff2') format('woff2'),
+        url('/static/fonts/hypatia_sans_pro/HypatiaSansPro-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+

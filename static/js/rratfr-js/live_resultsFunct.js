@@ -84,10 +84,13 @@ socket.on('entry_data', function (data) {
         if (value.final_place === "3") {
             final_place_text = "<strong><a style='color:#CD7F32'>" + value.final_place + "</a></strong>";
         }
-        let detailed_name = value.entry_name + " <a class='text-gray'>" + value.bib_number + "</a>";
+        let detailed_name = "<div href=\"/static/img/entries/entry_" + value.bib_number + ".jpg\" class=\"lightitem\" title=\"" + value.entry_name + " | #" + value.bib_number + " " + value.category + "\">" + value.entry_name + " <span class='text-gray'>" + value.bib_number + " <i class=\"fas fa-image\"></i></span></div>";
         resultslive.row.add([final_place_text, detailed_name, value.final_time, value.category]);
     });
     resultslive.draw();
+    lightGallery(document.getElementById('lightgallery'), {
+            selector: '.lightitem'
+        });
 });
 
 //Handle the viewing options of the results

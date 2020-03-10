@@ -7,9 +7,12 @@
     <title><%= title %> | RRATFR Manager</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
           name='viewport'/>
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"/>
+    <link rel="stylesheet" type="text/css" href="/static/landing_page/css/hypatia_sans_pro.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/landing_page/css/futura_pt.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <link href="/static/landing_page/css/material-kit.css?v=2.0.6" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/lightgallery.css"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="apple-touch-icon" sizes="180x180" href="/static/img/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon/favicon-32x32.png">
@@ -146,7 +149,7 @@
                     <h5 class="description">A key part of the Rock River Anything That Floats Race is the race itself: how fast can you make it down 1.65 miles of the Rock River? Live timing results are shown below. May the fastest entry win.</h5>
                 </div>
             </div>
-            <div class="table-responsive text-left">
+            <div class="table-responsive text-left" id="lightgallery">
                 <table class="table table-hover table-striped dt-responsive display nowrap"
                        id="resultslive" style="width: 100%">
                     <thead class="text-muted">
@@ -157,6 +160,20 @@
                     </thead>
                     <tbody></tbody>
                 </table>
+            </div>
+            <div class="row p-2 mt-5" onclick="$('.lightitem').trigger('click');">
+                <div class="col-md-3 col-6 p-2">
+                    <img src="/static/img/entries/entry_101.jpg" alt="Image not found" onerror="this.onerror=null;this.src='/static/img/race-1.jpg';" style="width: 100%; height: auto;" class="rounded">
+                </div>
+                <div class="col-md-3 col-6 p-2">
+                    <img src="/static/img/entries/entry_105.jpg" alt="Image not found" onerror="this.onerror=null;this.src='/static/img/race-2.jpg';" style="width: 100%; height: auto;" class="rounded">
+                </div>
+                <div class="col-md-3 col-6 p-2">
+                    <img src="/static/img/entries/entry_110.jpg" alt="Image not found" onerror="this.onerror=null;this.src='/static/img/race-5.jpg';" style="width: 100%; height: auto;" class="rounded">
+                </div>
+                <div class="col-md-3 col-6 p-2">
+                    <img src="/static/img/entries/entry_115.jpg" alt="Image not found" onerror="this.onerror=null;this.src='/static/img/race-8.jpg';" style="width: 100%; height: auto;" class="rounded">
+                </div>
             </div>
         </div>
         <div class="section text-center pt-0"  id="contest_results_element" style="display: none">
@@ -1385,6 +1402,8 @@
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
 <script type="text/javascript" src="/static/js/rratfr-js/live_resultsFunct.js"></script>
 <script type="text/javascript" src="/static/js/plugins/countdown.js"></script>
+<script type="text/javascript" src="/static/js/plugins/lightgallery.min.js"></script>
+<script type="text/javascript" src="/static/js/plugins/lg-share.min.js"></script>
 <script>
     setImage();
     setInterval(setImage, 600000);
