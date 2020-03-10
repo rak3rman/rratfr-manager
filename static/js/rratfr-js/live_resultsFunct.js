@@ -102,6 +102,16 @@ function viewresultsHandler() {
     if (moment(race_start_time) > moment()) {
         document.getElementById("countdown_time").innerHTML = countdown(moment(race_start_time).format("x")).toString();
         document.getElementById("race_start_time").innerHTML = moment(race_start_time).format("MMMM Do YYYY, h:mm a");
+        document.getElementById("desc_spread").innerHTML = "<h4>Ahoy, Mateys! Here you can view past race results, review race information, or stare at the countdown for the " + moment(race_start_time).format("YYYY") + " RRATFR. On race day, " + moment(race_start_time).format("MMMM Do YYYY") + ", you can use this page to see live race results and vote for People's Choice!</h4>\n" +
+            "                    <br>\n" +
+            "                    <div class=\"row ml-0\">\n" +
+            "                        <a href=\"https://www.rratfr.com/blog\" class=\"btn btn-info btn-raised btn-lg mr-2\">\n" +
+            "                            <i class=\"fas fa-bookmark\"></i> View the Blog\n" +
+            "                        </a>\n" +
+            "                        <a href=\"https://www.rratfr.com/about\" class=\"btn btn-muted btn-raised btn-lg\">\n" +
+            "                            <i class=\"fas fa-info-circle\"></i> About the Race\n" +
+            "                        </a>\n" +
+            "                    </div>";
         countdown_element.style.display = "block";
         leaderboard_element.style.display = "none";
         contest_results_element.style.display = "none";
