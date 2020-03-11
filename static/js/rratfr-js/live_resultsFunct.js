@@ -54,13 +54,10 @@ let results2016 = $('#results2016').DataTable(pastSettings);
 $(window).trigger('resize');
 // Socket.io Get Statistics
 socket.on('race_data', function (data) {
-    // document.getElementById("totalStat").innerHTML = data["total_entries"];
-    // document.getElementById("inwaterStat").innerHTML = data["entries_in_water"];
-    // document.getElementById("finishStat").innerHTML = data["entries_finished"];
-    // document.getElementById("pushedDate1").innerHTML = 'Updated ' + moment(data["updated_total_entries"]).fromNow();
-    // document.getElementById("pushedDate2").innerHTML = 'Updated ' + moment(data["updated_entries_in_water"]).fromNow();
-    // document.getElementById("pushedDate3").innerHTML = 'Updated ' + moment(data["updated_entries_finished"]).fromNow();
-    // document.getElementById("votes_cast").innerHTML = data["votes_cast"].toString() + ' Votes Cast';
+    document.getElementById("totalStat").innerHTML = data["total_entries"];
+    document.getElementById("inwaterStat").innerHTML = data["entries_in_water"];
+    document.getElementById("finishStat").innerHTML = data["entries_finished"];
+    document.getElementById("votes_cast").innerHTML = data["votes_cast"];
     document.getElementById("race_times").innerHTML = "<strong>Race Starts & People's Choice Voting Starts:</strong> " + moment(data["race_start_time"]).format("MMMM Do YYYY, h:mm a") +
         "<br><strong>People's Choice Voting Ends:</strong> " + moment(data["voting_end_time"]).format("MMMM Do YYYY, h:mm a") +
         "<br><strong>Individual Contest Results Release:</strong> " + moment(data["voting_results_time"]).format("MMMM Do YYYY, h:mm a");
@@ -99,6 +96,7 @@ function viewresultsHandler() {
     let leaderboard_element = document.getElementById("leaderboard_element");
     let contest_results_element = document.getElementById("contest_results_element");
     let spinner_element = document.getElementById("spinner_element");
+    let statistics_element = document.getElementById("statistics_element");
     if (moment(race_start_time) > moment()) {
         document.getElementById("countdown_time").innerHTML = countdown(moment(race_start_time).format("x")).toString();
         document.getElementById("race_start_time").innerHTML = moment(race_start_time).format("MMMM Do YYYY, h:mm a");
@@ -121,6 +119,16 @@ function viewresultsHandler() {
         countdown_element.style.display = "none";
         leaderboard_element.style.display = "block";
         spinner_element.style.display = "none";
+        document.getElementById("desc_spread").innerHTML = "<h4>Ahoy, Mateys! Here you can see live race results, vote for the People's Choice Award, and see the winners of the Judges Choice Award and the Chuck a Duck Race!</h4>\n" +
+            "                    <br>\n" +
+            "                    <div class=\"row ml-0\">\n" +
+            "                        <a href=\"/voting/people's-choice\" target=\"_blank\" class=\"btn btn-info btn-raised btn-lg mr-2\">\n" +
+            "                            <i class=\"fas fa-vote-yea\"></i> Vote for People's Choice\n" +
+            "                        </a>\n" +
+            "                        <a href=\"https://www.rratfr.com/about\" class=\"btn btn-muted btn-raised btn-lg\">\n" +
+            "                            <i class=\"fas fa-info-circle\"></i> About the Race\n" +
+            "                        </a>\n" +
+            "                    </div>";
         if (moment(voting_results_time) < moment() && contest_status === 0) {
             $.ajax({
                 type: "GET",
@@ -143,6 +151,11 @@ function viewresultsHandler() {
             contest_results_element.style.display = "block";
         } else if (moment(voting_results_time) > moment()) {
             contest_results_element.style.display = "none";
+        }
+        if (moment(voting_results_time) < moment()) {
+            statistics_element.style.display = "none";
+        } else {
+            statistics_element.style.display = "block";
         }
     }
 }
