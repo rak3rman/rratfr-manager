@@ -56,7 +56,7 @@ socket.on('entry_data', function (data) {
         if (value.final_place === "3") {
             final_place_text = "<strong><a style='color:#CD7F32'>" + value.final_place + "</a></strong>";
         }
-        let detailed_name = value.entry_name + " <a class='text-gray'>" + value.bib_number + "</a>";
+        let detailed_name = value.entry_name + " <a class='text-gray'>#" + value.bib_number + "</a>";
         leaderTable.row.add([final_place_text, detailed_name, value.final_time, value.category]);
 
     });

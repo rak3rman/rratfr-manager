@@ -41,7 +41,9 @@ socket.on('entry_data', function (data) {
     entryTable.clear();
     $.each(data, function (i, value) {
         let tools = ("<div class=\"td-actions text-right\">\n" +
-            "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-info\" data-original-title=\"\" onclick=\"editEntry('" + value.bib_number + "', '" + value.entry_name + "', '" + value.category + "', '" + value.start_time + "', '" + value.end_time + "', '" + value.timing_status + "')\" title=\"\">\n" +
+            "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-muted lightitem\" href=\"/static/img/entries/entry_" + value.bib_number + ".jpg\" title=\"" + value.entry_name + " | #" + value.bib_number + " " + value.category + "\">\n" +
+            "<i class=\"fas fa-image\"></i> Photo\n" +
+            "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-info ml-2\" data-original-title=\"\" onclick=\"editEntry('" + value.bib_number + "', '" + value.entry_name + "', '" + value.category + "', '" + value.start_time + "', '" + value.end_time + "', '" + value.timing_status + "')\" title=\"\">\n" +
             "<i class=\"fas fa-edit\"></i> Edit\n" +
             "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-danger ml-2\" data-original-title=\"\" onclick=\"deleteEntry('" + value.bib_number + "')\" title=\"\">\n" +
             "<i class=\"fas fa-times-circle\"></i> Delete\n" +
@@ -51,6 +53,9 @@ socket.on('entry_data', function (data) {
     });
     entryTable.draw();
     $(window).trigger('resize');
+    lightGallery(document.getElementById('lightgallery'), {
+        selector: '.lightitem'
+    });
 });
 
 //Socket.io Error

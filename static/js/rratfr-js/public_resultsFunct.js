@@ -86,8 +86,8 @@ socket.on('entry_data', function (data) {
     });
     resultslive.draw();
     lightGallery(document.getElementById('lightgallery'), {
-            selector: '.lightitem'
-        });
+        selector: '.lightitem'
+    });
 });
 
 //Handle the viewing options of the results

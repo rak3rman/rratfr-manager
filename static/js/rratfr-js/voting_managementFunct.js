@@ -30,6 +30,7 @@ let tableSettings2 = {
 };
 let pcTable = $('#pcTable').DataTable(tableSettings1);
 let voteTable = $('#voteTable').DataTable(tableSettings2);
+let gallery = lightGallery(document.getElementById('lightgallery'));
 
 //Socket.io handle Leaderboard Data
 socket.on('entry_data', function (data) {
@@ -50,7 +51,7 @@ socket.on('entry_data', function (data) {
                 "<i class=\"fas fa-trophy\"></i> Judges Choice Assigned\n" +
                 "</div></div>"
             );
-            let detailed_name = value.entry_name + " <a class='text-gray'>" + value.bib_number + "</a>";
+            let detailed_name = "<div href=\"/static/img/entries/entry_" + value.bib_number + ".jpg\" class=\"lightitem\" title=\"" + value.entry_name + " | #" + value.bib_number + " " + value.category + "\">" + value.entry_name + " <span class='text-gray'>#" + value.bib_number + "</span></div>";
             voteTable.row.add([ value.vote_count, detailed_name, value.category, judgesButton]);
         })
     } else {
@@ -63,12 +64,19 @@ socket.on('entry_data', function (data) {
                 "<i class=\"fas fa-trophy\"></i> Award Judges Choice\n" +
                 "</div></div>"
             );
-            let detailed_name = value.entry_name + " <a class='text-gray'>" + value.bib_number + "</a>";
+            let detailed_name = "<div href=\"/static/img/entries/entry_" + value.bib_number + ".jpg\" class=\"lightitem\" title=\"" + value.entry_name + " | #" + value.bib_number + " " + value.category + "\">" + value.entry_name + " <span class='text-gray'>#" + value.bib_number + "</span></div>";
             voteTable.row.add([ value.vote_count, detailed_name, value.category, judgesButton]);
         })
     }
     voteTable.draw();
     $(window).trigger('resize');
+    setTimeout(function() {
+        gallery.on("onCloseAfter.gallery", function() {
+            gallery.off("onCloseAfter.gallery") // <-- unbind
+                .data('lightGallery').destroy(true);
+        });
+        gallery = $("#lightgallery").lightGallery(); //re-initiate gallery
+    }, 100);
 });
 
 //Socket.io Get Statistics
