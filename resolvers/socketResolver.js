@@ -90,6 +90,7 @@ function getStatistics(socketid) {
     let updated_time_entries_finished;
     let race_start_time;
     let voting_end_time;
+    let voting_results_time;
     vote.find({}, function (err, listed_votes) {
         if (err) {
             console.log("Socket.io: Retrieve failed: " + err);
