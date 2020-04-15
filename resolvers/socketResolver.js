@@ -146,6 +146,7 @@ function getStatistics(socketid) {
                             voting_results_time = variables[i]["var_date"];
                         }
                     }
+                    console.log(voting_results_time);
                     console.log(socketid);
                     if (socketid === undefined) {
                         io.emit('race_data', {
