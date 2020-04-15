@@ -35,7 +35,7 @@ exports.publicResultsRoute = function (req, res) {
     res.render('pages/public_results.ejs', {title: 'Results'})
 };
 
-//Public Results Page Route
+//Live Results Page Route
 exports.liveResultsRoute = function (req, res) {
     res.render('pages/live_results.ejs', {title: 'Live Results'})
 };

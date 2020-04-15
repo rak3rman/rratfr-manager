@@ -57,7 +57,7 @@ socket.on('race_data', function(data){
     race_start_time = moment(data.race_start_time).format("x");
     voting_end_time_ms = moment(data.voting_end_time).format("x");
     document.getElementById("votingopen").innerHTML = "Votes can be cast on " + moment(data.race_start_time).format('MMMM Do, YYYY') + " from <strong>" + moment(data.race_start_time).format('h:mma') + " to " + moment(data.voting_end_time).format('h:mma') + " CDT</strong>. ";
-    document.getElementById("votingclosed").innerHTML = "Votes can be cast on " + moment(data.race_start_time).format('MMMM Do, YYYY') + " from <strong>" + moment(data.race_start_time).format('h:mma') + " to " + moment(data.voting_end_time).format('h:mma') + " CDT</strong>.<br>Voting results can be found on the <a href='/'>results page</a> after <strong>" + moment(data.voting_release_time).format('h:mma') + " CDT</strong> on " + moment(data.voting_release_time).format('MMMM Do, YYYY') + ".";
+    document.getElementById("votingclosed").innerHTML = "Votes can be cast on " + moment(data.race_start_time).format('MMMM Do, YYYY') + " from <strong>" + moment(data.race_start_time).format('h:mma') + " to " + moment(data.voting_end_time).format('h:mma') + " CDT</strong>.<br>Voting results can be found on the <a href='/'>results page</a> after <strong>" + moment(data.voting_results_time).format('h:mma') + " CDT</strong> on " + moment(data.voting_results_time).format('MMMM Do, YYYY') + ".";
     timeCheck();
 });
 
@@ -96,7 +96,7 @@ let userData;
 function getInfo() {
     $.ajax({
         type: "GET",
-        url: "https://api.muctool.de/whois",
+        url: "https://hutils.loxal.net/whois",
         success: function (data) {
             userIP = data.ip;
             userData = data;
