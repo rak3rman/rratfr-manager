@@ -1,10 +1,14 @@
 # RRATFR Manager
+### Rock River Anything That Floats Race | Race Manager
 [![Build Status](https://travis-ci.org/RAK3RMAN/rratfr-manager.svg?branch=master)](https://travis-ci.org/RAK3RMAN/rratfr-manager)
+![Language](https://img.shields.io/badge/language-HTML/NodeJS-informational.svg?style=flat)
+
+![](./static/img/demo/landingpage.png)
 
 ### Full documentation available at [notion.so](https://www.notion.so/a41e54eb6c05450b9d0787a8c5d98928?v=aa4705b0b97442f68cd8ff68766ac138)
 
-### Basic Structure
-This platform is built for the specific use on race day of the Rock River Anything That Floats Race. Running on NodeJS, this platform provides a webpage with functions for listing rafts, displaying status of raft, and timing with an externally accessible api for timing results.
+### Purpose
+This project was created to streamline the organizational efforts of the Rock River Anything That Floats Race. Running on NodeJS, this project displays a powerful web interface where administrators can manage raft information, conduct raft timing, and display results to the public. A smart timing plugin and a custom web voting limiter for the People's Choice Award were both built in-house and from scratch by myself. This manager is now live at [rratfr.rak3rman.com](https://rratfr.rak3rman.com) and has been in use since 2019.
 
 ## Install and Setup
 - Clone the repository from github.com
