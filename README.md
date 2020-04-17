@@ -1,9 +1,10 @@
 # RRATFR Manager
-### Rock River Anything That Floats Race | Race Manager
-[![Build Status](https://travis-ci.org/RAK3RMAN/rratfr-manager.svg?branch=master)](https://travis-ci.org/RAK3RMAN/rratfr-manager)
-![Language](https://img.shields.io/badge/language-HTML/NodeJS-informational.svg?style=flat)
 
 ![](./static/img/demo/landingpage.png)
+
+## Rock River Anything That Floats Race | Race Manager
+[![Build Status](https://travis-ci.org/RAK3RMAN/rratfr-manager.svg?branch=master)](https://travis-ci.org/RAK3RMAN/rratfr-manager)
+![Language](https://img.shields.io/badge/language-HTML/NodeJS-informational.svg?style=flat)
 
 ### Full documentation available at [notion.so](https://www.notion.so/a41e54eb6c05450b9d0787a8c5d98928?v=aa4705b0b97442f68cd8ff68766ac138)
 

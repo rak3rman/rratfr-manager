@@ -52,11 +52,41 @@ if (debug_mode === undefined) {
     storage.set('debug_mode', 'false');
     console.log('Config Manager: Debug Mode Set to DEFAULT: false');
 }
+//Passport Auth0 Mode
+let passport_auth0 = storage.get('passport_auth0');
+if (passport_auth0 === undefined) {
+    storage.set('passport_auth0', 'false');
+    console.log('Config Manager: Passport Auth0 Mode Set to DEFAULT: false');
+}
 //Single Sign Up Mode
 let signup_mode = storage.get('signup_mode');
 if (signup_mode === undefined) {
     storage.set('signup_mode', 'true');
     console.log('Config Manager: Signup Mode Set to DEFAULT: true');
+}
+//Production mode check
+let production = storage.get('production');
+if (production === undefined) {
+    storage.set('production', 'true');
+    console.log('Config Manager: Production to DEFAULT: true');
+}
+//Passport Auth0 - The URL where the application is served
+let passport_auth0_baseURL = storage.get('passport_auth0_baseURL');
+if (passport_auth0_baseURL === undefined) {
+    storage.set('passport_auth0_baseURL', 'https://localhost:3000');
+    console.log('Config Manager: Passport Auth0 Domain Set to DEFAULT: https://localhost:3000');
+}
+//Passport Auth0 - The issuer base url from Auth0
+let passport_auth0_issuerURL = storage.get('passport_auth0_issuerURL');
+if (passport_auth0_issuerURL === undefined) {
+    storage.set('passport_auth0_issuerURL', '');
+    console.log('Config Manager: Passport Auth0 Domain Set to DEFAULT: undefined');
+}
+//Passport Auth0 - The Client ID found in your Application settings
+let passport_auth0_clientID = storage.get('passport_auth0_clientID');
+if (passport_auth0_clientID === undefined) {
+    storage.set('passport_auth0_clientID', '');
+    console.log('Config Manager: Passport Auth0 Client Secret Set to DEFAULT: undefined');
 }
 //End of System Config Checks - - - - - - - - - - - - - -
 
@@ -110,19 +140,73 @@ app.enable('trust proxy');
 //    --- RRATFR Manager Config Routes/Logic  ---    //
 //===================================================//
 
+//Auth Routes
+let loginCheck;
+const { requiresAuth } = require('express-openid-connect');
+if (storage.get('passport_auth0') === 'true') {
+    //Configure Passport Auth0
+    if (passport_auth0_baseURL !== undefined || passport_auth0_clientID !== undefined) {
+        //Passport Setup
+        const { auth } = require("express-openid-connect");
+        app.use(session({
+            secret: storage.get('session_secret'),
+            cookie: {
+                // Sets the session cookie to expire after 12 hours.
+                maxAge: 7 * 24 * 60 * 60 * 1000
+            }
+        }));
+        // Auth router attaches /login, /logout, and /callback routes to the baseURL
+        app.use(auth({
+            required: false,
+            auth0Logout: true,
+            baseURL: storage.get('passport_auth0_baseURL'),
+            issuerBaseURL: storage.get('passport_auth0_issuerURL'),
+            clientID: storage.get('passport_auth0_clientID'),
+            appSessionSecret: storage.get('session_secret'),
+            handleCallback: async function (req, res, next) {
+                res.redirect("/dashboard");
+            }
+        }));
+        loginCheck = requiresAuth();
+    } else {
+        console.log("PASSPORT AUTH0 SETUP FAILURE: Please complete the configuration in /config/sysConfig.json to use Passport Auth0");
+    }
+} else {
+    //Configure Passport Local Login
+    app.get('/login', authRouter.loginPage);
+    app.get('/logout', function (req, res) {
+        req.logout();
+        res.redirect('/login');
+    });
+    app.post('/login', passport.authenticate('local-login', {
+        successRedirect: '/dashboard',
+        failureRedirect: '/login',
+        failureFlash: true
+    }));
+    if (storage.get('signup_mode') === 'true') {
+        app.get('/signup', authRouter.signupPage);
+        app.post('/signup', passport.authenticate('local-signup', {
+            successRedirect: '/dashboard',
+            failureRedirect: '/signup',
+            failureFlash: true
+        }));
+    }
+    loginCheck = auth.isLoggedIn;
+}
+
 //Forward Entry Routes
 entryRouter(app);
 
 //Admin Dashboard
-app.get('/dashboard', auth.isLoggedIn, mainRouter.adminDashRoute);
+app.get('/dashboard', loginCheck, mainRouter.adminDashRoute);
 //Entry Management
-app.get('/entry/management', auth.isLoggedIn, mainRouter.entryManagementRoute);
+app.get('/entry/management', loginCheck, mainRouter.entryManagementRoute);
 //Voting Management
-app.get('/voting/management', auth.isLoggedIn, mainRouter.votingManagementRoute);
+app.get('/voting/management', loginCheck, mainRouter.votingManagementRoute);
 //Chuck a Duck Race Management
-app.get('/chuck-a-duck/management', auth.isLoggedIn, mainRouter.duckManagementRoute);
+app.get('/chuck-a-duck/management', loginCheck, mainRouter.duckManagementRoute);
 //Timing Interface
-app.get('/timing', auth.isLoggedIn, mainRouter.timingRoute);
+app.get('/timing', loginCheck, mainRouter.timingRoute);
 //Public Results
 app.get('/', mainRouter.publicResultsRoute);
 //Live Results
@@ -134,27 +218,7 @@ app.get('/voting/people\'s-choice', mainRouter.peoplesChoiceRoute);
 //Display Dashboard
 app.get('/display', mainRouter.displayDashRoute);
 //Admin Settings
-app.get('/settings', auth.isLoggedIn, mainRouter.settingsRoute);
-
-//Auth Routes
-app.get('/login', authRouter.loginPage);
-app.get('/logout', function (req, res) {
-    req.logout();
-    res.redirect('/login');
-});
-app.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/login',
-    failureFlash: true
-}));
-if (storage.get('signup_mode') === 'true') {
-    app.get('/signup', authRouter.signupPage);
-    app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect: '/dashboard',
-        failureRedirect: '/signup',
-        failureFlash: true
-    }));
-}
+app.get('/settings', loginCheck, mainRouter.settingsRoute);
 
 //End of RRATFR Manager Config Routes/Logic - - - - - - - - -
 
@@ -185,18 +249,42 @@ app.use(function (err, req, res, next) {
 //        --- External Connections Setup ---         //
 //===================================================//
 
-//Port Listen
-let http = require('http');
-let server = http.createServer(app);
-server.listen(storage.get('console_port'), function () {
-    console.log(' ');
-    console.log('======================================');
-    console.log('    RRATFR Manager | RAk3rman 2019    ');
-    console.log('======================================');
-    console.log('Web Page Accessable at: ' + ip.address() + ":" + storage.get('console_port'));
-    console.log('MongoDB Accessed at: ' + storage.get('mongodb_url'));
-    console.log(' ');
-});
+if (storage.get('production') === 'false') {
+    //Port Listen
+    let https = require('https');
+    let fs = require('fs');
+    const key = fs.readFileSync('./config/dev-key.pem');
+    const cert = fs.readFileSync('./config/dev.pem');
+    let server = https.createServer({key, cert}, app);
+    server.listen(storage.get('console_port'), () => {
+        console.log(' ');
+        console.log('======================================');
+        console.log('      RRATFR Manager | RAk3rman       ');
+        console.log('======================================');
+        console.log('Running in DEVELOPMENT Mode (https)');
+        console.log('Web Page Accessible at: https://' + ip.address() + ":" + storage.get('console_port'));
+        console.log('MongoDB Accessed at: ' + storage.get('mongodb_url'));
+        console.log(' ');
+    });
+    //Initialize Socket.io
+    socket.socket_config(server);
+} else {
+    //Port Listen
+    let http = require('http');
+    let server = http.createServer(app);
+    server.listen(storage.get('console_port'), () => {
+        console.log(' ');
+        console.log('======================================');
+        console.log('      RRATFR Manager | RAk3rman       ');
+        console.log('======================================');
+        console.log('Running in PRODUCTION Mode (http)');
+        console.log('Web Page Accessible at: http://' + ip.address() + ":" + storage.get('console_port'));
+        console.log('MongoDB Accessed at: ' + storage.get('mongodb_url'));
+        console.log(' ');
+    });
+    //Initialize Socket.io
+    socket.socket_config(server);
+}
 
 //Database Setup
 mongoose.connection.on('connected', function () {
@@ -209,9 +297,6 @@ mongoose.connection.on('disconnected', function () {
     console.log('MongoDB: Disconnected')
 });
 mongoose.connect(storage.get('mongodb_url'), {useNewUrlParser: true,  useUnifiedTopology: true, connectTimeoutMS: 10000});
-
-//Initialize Socket.io
-socket.socket_config(server);
 
 //End of External Connections Setup - - - - - - - - - -
 

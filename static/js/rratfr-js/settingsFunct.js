@@ -21,13 +21,24 @@ function getSettings() {
             document.getElementById("voting_results_time").value = moment(data.voting_results_time).format("MM/DD/YYYY hh:mm A");
             document.getElementById("console_port").value = data.console_port;
             document.getElementById("mongodb_url").value = data.mongodb_url;
+            document.getElementById("passport_auth0_baseURL").value = data.passport_auth0_baseURL;
+            document.getElementById("passport_auth0_clientID").value = data.passport_auth0_clientID;
+            document.getElementById("passport_auth0_issuerURL").value = data.passport_auth0_issuerURL;
             document.getElementById("signup").value = data.signup_mode;
             document.getElementById("debug").value = data.debug_mode;
+            document.getElementById("production").value = data.production;
+            document.getElementById("passport_auth0").value = data.passport_auth0;
             if (data.signup_mode === "true") {
                 document.getElementById("signup").setAttribute("checked", "");
             }
             if (data.debug_mode === "true") {
                 document.getElementById("debug").setAttribute("checked", "");
+            }
+            if (data.production === "true") {
+                document.getElementById("production").setAttribute("checked", "");
+            }
+            if (data.passport_auth0 === "true") {
+                document.getElementById("passport_auth0").setAttribute("checked", "");
             }
         },
         error: function (data) {
@@ -61,8 +72,13 @@ function updateSettings() {
                     voting_results_time: moment(document.getElementById("voting_results_time").value).format(),
                     console_port: document.getElementById("console_port").value,
                     mongodb_url: document.getElementById("mongodb_url").value,
+                    passport_auth0_baseURL: document.getElementById("passport_auth0_baseURL").value,
+                    passport_auth0_clientID: document.getElementById("passport_auth0_clientID").value,
+                    passport_auth0_issuerURL: document.getElementById("passport_auth0_issuerURL").value,
                     signup_mode: document.getElementById("signup").checked,
-                    debug_mode: document.getElementById("debug").checked
+                    debug_mode: document.getElementById("debug").checked,
+                    production: document.getElementById("production").checked,
+                    passport_auth0: document.getElementById("passport_auth0").checked
                 },
                 success: function (data) {
                     Toast.fire({

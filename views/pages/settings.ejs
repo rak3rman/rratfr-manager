@@ -96,17 +96,61 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="togglebutton mt-2">
-                                <label>
-                                    <input type="checkbox" id="signup">
-                                    <span class="toggle"></span>
-                                    Allow new user creation
-                                </label>
-                                <label class="ml-3">
-                                    <input type="checkbox" id="debug">
-                                    <span class="toggle"></span>
-                                    Console debugger
-                                </label>
+                            <div class="row">
+                                <label class="col-md-2 col-form-label">Auth0 | Base URL</label>
+                                <div class="col-md-10">
+                                    <div class="form-group has-default bmd-form-group">
+                                        <input type="text" class="form-control" id="passport_auth0_baseURL" value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-md-2 col-form-label">Auth0 | Client ID</label>
+                                <div class="col-md-10">
+                                    <div class="form-group has-default bmd-form-group">
+                                        <input type="text" class="form-control" id="passport_auth0_clientID" value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-md-2 col-form-label">Auth0 | Issuer URL</label>
+                                <div class="col-md-10">
+                                    <div class="form-group has-default bmd-form-group">
+                                        <input type="text" class="form-control" id="passport_auth0_issuerURL" value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="togglebutton">
+                                <div class="row">
+                                    <label class="col-md-2 col-form-label">Authentication</label>
+                                    <div class="col-md-10 mt-md-3 mt-1">
+                                        <label>
+                                            <input type="checkbox" id="passport_auth0">
+                                            <span class="toggle"></span>
+                                            Use Auth0
+                                        </label>
+                                        <label class="ml-3">
+                                            <input type="checkbox" id="signup">
+                                            <span class="toggle"></span>
+                                            Allow new user creation
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label class="col-md-2 col-form-label">Console</label>
+                                    <div class="col-md-10 mt-md-3 mt-1">
+                                        <label>
+                                            <input type="checkbox" id="production">
+                                            <span class="toggle"></span>
+                                            Production
+                                        </label>
+                                        <label class="ml-3">
+                                            <input type="checkbox" id="debug">
+                                            <span class="toggle"></span>
+                                            Console debugger
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>

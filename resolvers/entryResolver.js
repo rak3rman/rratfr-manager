@@ -394,10 +394,11 @@ exports.return_results = function (req, res) {
                     listed_entries.sort(function (a, b) {
                         return parseFloat(b.vote_count) - parseFloat(a.vote_count);
                     });
-                    if (listed_entries[0]["vote_count"] !== 0) {
-                        pc_winner = "<strong>" + listed_entries[0]["entry_name"] + "</strong> #" + listed_entries[0]["bib_number"];
-                    } else {
-                        pc_winner = "Not Posted";
+                    pc_winner = "Not Posted";
+                    if (listed_entries[0]) {
+                        if (listed_entries[0]["vote_count"] !== 0) {
+                            pc_winner = "<strong>" + listed_entries[0]["entry_name"] + "</strong> #" + listed_entries[0]["bib_number"];
+                        }
                     }
                     res.json({
                         pc_winner: pc_winner,
@@ -563,8 +564,13 @@ exports.settings_get = function (req, res) {
                 voting_results_time: voting_results_time,
                 console_port: storage.get('console_port'),
                 mongodb_url: storage.get('mongodb_url'),
+                passport_auth0_baseURL: storage.get('passport_auth0_baseURL'),
+                passport_auth0_clientID: storage.get('passport_auth0_clientID'),
+                passport_auth0_issuerURL: storage.get('passport_auth0_issuerURL'),
                 signup_mode: storage.get('signup_mode'),
-                debug_mode: storage.get('debug_mode')
+                debug_mode: storage.get('debug_mode'),
+                passport_auth0: storage.get('passport_auth0'),
+                production: storage.get('production')
             });
             if (debug_mode === "true") {
                 console.log("SETTINGS Resolver: Current settings sent")
@@ -586,6 +592,18 @@ exports.settings_update = function (req, res) {
         console.log("SETTINGS Resolver: Restarting due to console_port");
         storage.set('console_port', req.body["console_port"]);
     }
+    if (storage.get('passport_auth0_baseURL') !== req.body["passport_auth0_baseURL"]) {
+        console.log("SETTINGS Resolver: Restarting due to passport_auth0_baseURL");
+        storage.set('passport_auth0_baseURL', req.body["passport_auth0_baseURL"]);
+    }
+    if (storage.get('passport_auth0_clientID') !== req.body["passport_auth0_clientID"]) {
+        console.log("SETTINGS Resolver: Restarting due to passport_auth0_clientID");
+        storage.set('passport_auth0_clientID', req.body["passport_auth0_clientID"]);
+    }
+    if (storage.get('passport_auth0_issuerURL') !== req.body["passport_auth0_issuerURL"]) {
+        console.log("SETTINGS Resolver: Restarting due to passport_auth0_issuerURL");
+        storage.set('passport_auth0_issuerURL', req.body["passport_auth0_issuerURL"]);
+    }
     if (storage.get('signup_mode') !== req.body["signup_mode"]) {
         console.log("SETTINGS Resolver: Restarting due to signup_mode");
         storage.set('signup_mode', req.body["signup_mode"]);
@@ -593,6 +611,14 @@ exports.settings_update = function (req, res) {
     if (storage.get('debug_mode') !== req.body["debug_mode"]) {
         console.log("SETTINGS Resolver: Restarting due to debug_mode");
         storage.set('debug_mode', req.body["debug_mode"]);
+    }
+    if (storage.get('passport_auth0') !== req.body["passport_auth0"]) {
+        console.log("SETTINGS Resolver: Restarting due to passport_auth0");
+        storage.set('passport_auth0', req.body["passport_auth0"]);
+    }
+    if (storage.get('production') !== req.body["production"]) {
+        console.log("SETTINGS Resolver: Restarting due to production");
+        storage.set('production', req.body["production"]);
     }
     events.save_event('System', 'Saved new system and race settings');
     socket.updateSockets("settings_update");
