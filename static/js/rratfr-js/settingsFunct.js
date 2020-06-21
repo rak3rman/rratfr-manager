@@ -40,6 +40,9 @@ function getSettings() {
             if (data.passport_auth0 === "true") {
                 document.getElementById("passport_auth0").setAttribute("checked", "");
             }
+            if (data.awaiting_date === "true") {
+                document.getElementById("awaiting_date").setAttribute("checked", "");
+            }
         },
         error: function (data) {
             Toast.fire({
@@ -78,7 +81,8 @@ function updateSettings() {
                     signup_mode: document.getElementById("signup").checked,
                     debug_mode: document.getElementById("debug").checked,
                     production: document.getElementById("production").checked,
-                    passport_auth0: document.getElementById("passport_auth0").checked
+                    passport_auth0: document.getElementById("passport_auth0").checked,
+                    awaiting_date: document.getElementById("awaiting_date").checked
                 },
                 success: function (data) {
                     Toast.fire({

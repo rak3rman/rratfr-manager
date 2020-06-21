@@ -570,7 +570,8 @@ exports.settings_get = function (req, res) {
                 signup_mode: storage.get('signup_mode'),
                 debug_mode: storage.get('debug_mode'),
                 passport_auth0: storage.get('passport_auth0'),
-                production: storage.get('production')
+                production: storage.get('production'),
+                awaiting_date: storage.get('awaiting_date')
             });
             if (debug_mode === "true") {
                 console.log("SETTINGS Resolver: Current settings sent")
@@ -619,6 +620,10 @@ exports.settings_update = function (req, res) {
     if (storage.get('production') !== req.body["production"]) {
         console.log("SETTINGS Resolver: Restarting due to production");
         storage.set('production', req.body["production"]);
+    }
+    if (storage.get('awaiting_date') !== req.body["awaiting_date"]) {
+        console.log("SETTINGS Resolver: Restarting due to awaiting_date");
+        storage.set('awaiting_date', req.body["awaiting_date"]);
     }
     events.save_event('System', 'Saved new system and race settings');
     socket.updateSockets("settings_update");

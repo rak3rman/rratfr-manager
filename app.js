@@ -70,6 +70,12 @@ if (production === undefined) {
     storage.set('production', 'true');
     console.log('Config Manager: Production to DEFAULT: true');
 }
+//Awaiting future date mode
+let awaiting_date = storage.get('awaiting_date');
+if (awaiting_date === undefined) {
+    storage.set('awaiting_date', 'true');
+    console.log('Config Manager: Awaiting future date to DEFAULT: true');
+}
 //Passport Auth0 - The URL where the application is served
 let passport_auth0_baseURL = storage.get('passport_auth0_baseURL');
 if (passport_auth0_baseURL === undefined) {

@@ -155,7 +155,8 @@ function getStatistics(socketid) {
                             race_start_time: race_start_time,
                             voting_end_time: voting_end_time,
                             voting_results_time: voting_results_time,
-                            votes_cast: votes_cast
+                            votes_cast: votes_cast,
+                            awaiting_date: storage.get('awaiting_date')
                         });
                     } else {
                         io.to(socketid).emit('race_data', {
@@ -171,7 +172,8 @@ function getStatistics(socketid) {
                             race_start_time: race_start_time,
                             voting_end_time: voting_end_time,
                             voting_results_time: voting_results_time,
-                            votes_cast: votes_cast
+                            votes_cast: votes_cast,
+                            awaiting_date: storage.get('awaiting_date')
                         });
                     }
                     if (debug_mode === "true") {
