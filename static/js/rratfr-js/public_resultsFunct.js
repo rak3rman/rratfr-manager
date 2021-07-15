@@ -104,7 +104,6 @@ function viewresultsHandler() {
     let contest_results_element = document.getElementById("contest_results_element");
     let spinner_element = document.getElementById("spinner_element");
     let statistics_element = document.getElementById("statistics_element");
-    console.log(awaiting_date);
     if (awaiting_date === "true") {
         document.getElementById("desc_spread").innerHTML = "<h4>Ahoy, Mateys! Here you can view past race results, review race information, or pace the Rock River Path as you wait for the " + moment(race_start_time).format("YYYY") + " RRATFR. On race day, you can use this page to see live race results and vote for People's Choice!</h4>\n" +
             "                    <br>\n" +
