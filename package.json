@@ -27,7 +27,7 @@
     "ejs": "^2.6.1",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.9",
-    "express-openid-connect": "^0.6.0",
+    "express-openid-connect": "^2.7.2",
     "express-rate-limit": "^3.4.0",
     "express-session": "^1.15.6",
     "formidable": "^1.2.1",
