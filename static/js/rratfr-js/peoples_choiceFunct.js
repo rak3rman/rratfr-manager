@@ -147,7 +147,7 @@ function sendVote() {
                         if (data.responseText === "User Already Voted") {
                             Swal.fire({
                                 title: 'Already Voted!',
-                                html: "<p>Only one vote is allowed per device. Click below to see live race results!</p><p>Having issues? Complete the form <a href='https://www.rak3rman.com/#contact' target='_blank'>here</a> to submit a request.</p>",
+                                html: "<p>Only one vote is allowed per device. Click below to see live race results!</p><p>Having issues? Email the timing director at rak3rman@gmail.com</p>",
                                 type: 'error',
                                 showCancelButton: false,
                                 confirmButtonColor: '#3085d6',

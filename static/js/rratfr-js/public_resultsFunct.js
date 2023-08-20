@@ -60,7 +60,7 @@ socket.on('race_data', function (data) {
     document.getElementById("finishStat").innerHTML = data["entries_finished"];
     document.getElementById("votes_cast").innerHTML = data["votes_cast"];
     if (data["awaiting_date"] === "true") {
-        document.getElementById("race_times").innerHTML = "What is the People's Choice Award? The chuck a what? Get an idea of what race day will look like below!";
+        document.getElementById("race_times").innerHTML = "What is the People's Choice Award? Get an idea of what race day will look like below!";
     } else {
         document.getElementById("race_times").innerHTML = "<strong>Race Starts & People's Choice Voting Starts:</strong> " + moment(data["race_start_time"]).format("MMMM Do YYYY, h:mm a") +
             "<br><strong>People's Choice Voting Ends:</strong> " + moment(data["voting_end_time"]).format("MMMM Do YYYY, h:mm a") +
@@ -70,6 +70,9 @@ socket.on('race_data', function (data) {
     voting_end_time = data["voting_end_time"];
     voting_results_time = data["voting_results_time"];
     awaiting_date = data["awaiting_date"];
+    document.getElementById("awaiting_year_2").innerHTML = moment(race_start_time).format("YYYY");
+    document.getElementById("awaiting_year_3").innerHTML = moment(race_start_time).format("YYYY");
+    // document.getElementById("awaiting_year_4").innerHTML = moment(race_start_time).format("YYYY");
     viewresultsHandler();
 });
 
@@ -115,7 +118,7 @@ function viewresultsHandler() {
             "                            <i class=\"fas fa-info-circle\"></i> About the Race\n" +
             "                        </a>\n" +
             "                    </div>";
-        document.getElementById("awaiting_year").innerHTML = moment(race_start_time).format("YYYY");
+        document.getElementById("awaiting_year_1").innerHTML = moment(race_start_time).format("YYYY");
         countdown_element.style.display = "none";
         awaiting_element.style.display = "block";
         leaderboard_element.style.display = "none";
@@ -146,7 +149,7 @@ function viewresultsHandler() {
             awaiting_element.style.display = "none";
             leaderboard_element.style.display = "block";
             spinner_element.style.display = "none";
-            document.getElementById("desc_spread").innerHTML = "<h4>Ahoy, Mateys! Here you can see live race results, vote for the People's Choice Award, and see the winners of the Judges Choice Award and the Chuck a Duck Race!</h4>\n" +
+            document.getElementById("desc_spread").innerHTML = "<h4>Ahoy, Mateys! Here you can view live race results and vote for the People's Choice Award! We'll post the award winners here when they become available!</h4>\n" +
                 "                    <br>\n" +
                 "                    <div class=\"row ml-0\">\n" +
                 "                        <a href=\"/voting/people's-choice\" target=\"_blank\" class=\"btn btn-info btn-raised btn-lg mr-2\">\n" +
