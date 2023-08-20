@@ -39,7 +39,7 @@ socket.on('entry_data', function (data) {
             entries.append(
                 "<div class=\"col-md-6 mt-2 mb-2\">\n" +
                 "    <div class=\"card m-0\" onclick=\"selectedEntry('" + value.bib_number + "', '" + value.entry_name + "')\">\n" +
-                "        <img class=\"card-img-top\" src=\"/static/img/entries/entry_" + value.bib_number + ".jpg\" alt=\"Entry Image\">\n" +
+                // "        <img class=\"card-img-top\" src=\"/static/img/entries/entry_" + value.bib_number + ".jpg\" alt=\"Entry Image\">\n" +
                 "        <div class=\"card-body p-0\" style=\"background: linear-gradient(60deg, #66bb6a, #43a047)\" id='vote" + value.bib_number + "'></div>\n" +
                 "        <div class=\"card-body\">\n" +
                 "            <h4 class=\"card-text mt-0\">" + value.entry_name + " <a class=\"text-gray\">" + value.bib_number + " " + value.category + "</a></h4>\n" +
