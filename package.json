@@ -25,7 +25,7 @@
     "cookie-parser": "^1.4.4",
     "data-store": "^3.1.0",
     "ejs": "^2.6.1",
-    "express": "^4.17.1",
+    "express": "^4.19.2",
     "express-fileupload": "^1.4.0",
     "express-openid-connect": "^0.6.0",
     "express-rate-limit": "^3.4.0",
